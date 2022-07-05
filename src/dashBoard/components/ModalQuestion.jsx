@@ -1,5 +1,5 @@
-import { Box, Button, Grid, IconButton, InputLabel, MenuItem, Modal, Select, TextField, Tooltip, Typography } from '@mui/material'
-import { Save, CancelOutlined, Add, Delete, Book } from '@mui/icons-material'
+import { Box, Button, Grid, IconButton, MenuItem, Modal, TextField, Tooltip, Typography } from '@mui/material'
+import { Save, Add, Delete, Book } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useFormik } from 'formik';
@@ -40,7 +40,7 @@ export const ModalQuestion = ({Show, setShow}) => {
 
     const [formValues, setFormValues] = useState([{ texto: '', correcta: '' }])
 
-    const {handleSubmit, resetForm, getFieldProps, touched, errors} = useFormik({
+    const {handleSubmit, getFieldProps, touched, errors} = useFormik({
         initialValues: {
             pregunta:   preguntaActiva?.pregunta || '',
             idPregunta: preguntaActiva?.idPregunta || '',
@@ -279,8 +279,8 @@ export const ModalQuestion = ({Show, setShow}) => {
 
                                             <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
                                                 <TextField error = {errors.respuesta} value = {element.correcta} onChange={e => handleChange(index, e)} variant='standard' id="select9" label="Acción" select>
-                                                    <MenuItem value="Correcta">Correcta</MenuItem>
-                                                    <MenuItem value="Incorrecta">Incorrecta</MenuItem>
+                                                    <MenuItem value="true">Correcta</MenuItem>
+                                                    <MenuItem value="false">Incorrecta</MenuItem>
                                                 </TextField>
                                                 {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
                                             </Grid>
