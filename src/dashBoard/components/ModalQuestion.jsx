@@ -21,7 +21,8 @@ const style = {
     bgcolor: 'background.paper',
     borderRadius: '12px',
     boxShadow: 24,
-    backgroundColor: 'secondary.main',
+    // backgroundImage: 'linear-gradient(-20deg, #2b5876 0%, #4e4376 100%)',
+    backgroundColor: '#383c45',
     // color: 'white',
     p: 4,
     overflowY: 'auto',
@@ -151,16 +152,16 @@ export const ModalQuestion = ({Show, setShow}) => {
 
                     <form onSubmit={handleSubmit}>
                         <Grid item container flexDirection='row'>
-                            <Grid flexDirection='column' container item xs = {8} sx = {{padding: 3, borderRadius: 2}} >
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
                                 <TextField error = {errors.pregunta} multiline maxRows={4} {...getFieldProps('pregunta')} variant='standard' label = 'Pregunta' type = 'text' fullWidth />
                                 {touched.pregunta && errors.pregunta && <span style={{color: 'red'}}>{errors.pregunta}</span>}
                             </Grid>
 
-                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                 <TextField inputProps={{readOnly: true}} {...getFieldProps('idPregunta')} variant='standard' label="Id Pregunta" type = 'number' />
                             </Grid>
 
-                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                 <TextField 
                                     error = {errors.dificultad}
                                     {...getFieldProps('dificultad')} 
@@ -176,7 +177,7 @@ export const ModalQuestion = ({Show, setShow}) => {
                                 {touched.dificultad && errors.dificultad && <span style={{color: 'red'}}>{errors.dificultad}</span>}
                             </Grid>
 
-                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                 <TextField error = {errors.categoria} {...getFieldProps('categoria')} variant='standard' id="select2" label="Categoría" select>
                                     <MenuItem value="Pentateuco">Pentateuco</MenuItem>
                                     <MenuItem value="Histórico">Histórico</MenuItem>
@@ -188,7 +189,7 @@ export const ModalQuestion = ({Show, setShow}) => {
                                 {touched.categoria && errors.categoria && <span style={{color: 'red'}}>{errors.categoria}</span>}
                             </Grid>
 
-                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                 <TextField error = {errors.testamento} {...getFieldProps('testamento')} variant='standard' id="select3" label="Testamento" select>
                                     <MenuItem value="AT">Antiguo</MenuItem>
                                     <MenuItem value="NT">Nuevo</MenuItem>
@@ -196,7 +197,7 @@ export const ModalQuestion = ({Show, setShow}) => {
                                 {touched.testamento && errors.testamento && <span style={{color: 'red'}}>{errors.testamento}</span>}
                             </Grid>
 
-                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                 <TextField error = {errors.libro} {...getFieldProps('libro')} variant='standard' id="select4" label="Libro" select>
                                     <MenuItem disabled value=''>Ninguno</MenuItem>
                                     {
@@ -222,7 +223,7 @@ export const ModalQuestion = ({Show, setShow}) => {
                                 {touched.libro && errors.libro && <span style={{color: 'red'}}>{errors.libro}</span>}
                             </Grid>
 
-                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}}>
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}}>
                                 <TextField error = {errors.capitulo} {...getFieldProps('capitulo')} variant='standard' label='Capítulo' id="select5" select>
                                     <MenuItem disabled value=''>0</MenuItem>
                                     {
@@ -236,7 +237,7 @@ export const ModalQuestion = ({Show, setShow}) => {
                                 {touched.capitulo && errors.capitulo && <span style={{color: 'red'}}>{errors.capitulo}</span>}
                             </Grid>
 
-                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                 <TextField error = {errors.desdeVersiculo} {...getFieldProps('desdeVersiculo')} variant='standard' id="select6" label="Desde el versiculo" select>
                                     <MenuItem disabled value=''>0</MenuItem>
                                     {
@@ -252,7 +253,7 @@ export const ModalQuestion = ({Show, setShow}) => {
                                 {touched.desdeVersiculo && errors.desdeVersiculo && <span style={{color: 'red'}}>{errors.desdeVersiculo}</span>}
                             </Grid>
 
-                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                 <TextField error = {errors.hastaVersiculo} {...getFieldProps('hastaVersiculo')} variant='standard' id="select7" label="Hasta el versiculo" select>
                                     <MenuItem disabled value=''>0</MenuItem>
                                     {
@@ -272,12 +273,12 @@ export const ModalQuestion = ({Show, setShow}) => {
                                 formValues?.map((element, index) => {
                                     return (
                                         <Fragment key={element + index}>
-                                            <Grid flexDirection='column' container item xs = {8} sx = {{padding: 3, borderRadius: 2}} >
+                                            <Grid flexDirection='column' container xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
                                                 <TextField error = {errors.respuesta} multiline maxRows={2} name='respuesta' value = {element.texto} onChange={e => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
                                                 {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
                                             </Grid>
 
-                                            <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                                 <TextField error = {errors.respuesta} value = {element.correcta} onChange={e => handleChange(index, e)} variant='standard' id="select9" label="Acción" select>
                                                     <MenuItem value="true">Correcta</MenuItem>
                                                     <MenuItem value="false">Incorrecta</MenuItem>
@@ -321,21 +322,6 @@ export const ModalQuestion = ({Show, setShow}) => {
                     </form>
 
                     {
-                        (getFieldProps('desdeVersiculo').value !== '')
-                            &&
-                        <Tooltip title="Verificar cita">
-                            <IconButton 
-                                size='large'
-                                onClick={openDialog}
-                                sx={{ position: 'absolute', bottom: 16, right: 16,}}
-                            >
-                                <Book fontSize='large' />
-                            </IconButton>
-                        </Tooltip>
-                    }
-
-
-                    {
                         (seleccionarLibro !== -1)
                             &&
                         <DialogContentBible
@@ -350,7 +336,21 @@ export const ModalQuestion = ({Show, setShow}) => {
                     }
 
             </Box>
+            {
+                (getFieldProps('desdeVersiculo').value !== '')
+                    &&
+                <Tooltip title="Verificar cita">
+                    <IconButton 
+                        size='large'
+                        onClick={openDialog}
+                        sx={{ position: 'sticky', bottom: 16, float: 'right' }}
+                    >
+                        <Book fontSize='large' />
+                    </IconButton>
+                </Tooltip>
+            }
         </Grid>
+        
     </Modal>
   )
 }

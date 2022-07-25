@@ -38,9 +38,10 @@ const createData = (avatar, name, calories, fat, carbs, protein) => {
 
         <TableContainer elevation = {4} component={Paper} sx = {{
           height: 400,
-          borderRadius: '5px'
+          borderRadius: '5px',
+          backgroundColor: '#383c45'
         }}>
-          <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto' }}>
+          <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto', backgroundColor: '#383c45' }}>
             <TableHead>
               <TableRow>
                 <TableCell>Foto</TableCell>

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { actualizarPreguntaActiva, crearPreguntaActiva, eliminarPreguntaActiva, getPreguntas, paginacion } from './preguntasSlice'
+import { actualizarPreguntaActiva, crearPreguntaActiva, eliminarPreguntaActiva, getPreguntas, getPreguntasGame, paginacion } from './preguntasSlice'
 import Swal from "sweetalert2"
 
 const point = process.env.REACT_APP_API_URL
@@ -13,6 +13,23 @@ export const obtenerPreguntas = (page, size) => {
             const resp = await axios.get(`${point}/pregunta/pag?page=${page || 1}&size=${size || 10}`)
             dispatch(getPreguntas(resp.data.preguntas))
             dispatch(paginacion({page: resp.data.page, total: resp.data.total, idPreguntasCount: resp.data.count}))
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}
+
+export const obtenerPreguntasJuego = (page, size) => {
+    return async(dispatch) => {
+
+        try {
+            const resp = await axios.get(`${point}/pregunta/juego`)
+            // const resp = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
+
+            dispatch(getPreguntasGame(resp.data.preguntas))
+            
             
         } catch (error) {
             console.log(error)

@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { AuthRoutes } from '../auth/routes/AuthRoutes';
-import { UserRoute } from '../dashBoard/routes/UserRoute';
 import { obtenerUsuarios } from '../store/auth/thunk';
+import { obtenerPreguntas } from '../store/preguntas/thunk';
+import { obtenerRecord } from '../store/record/thunk';
+import { UserRoute } from './UserRoute';
 
 export const AppRouter = () => {
 
@@ -13,7 +15,8 @@ export const AppRouter = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(obtenerUsuarios())
+    dispatch(obtenerPreguntas())
+    dispatch(obtenerRecord())
   }, [dispatch])
   
   return (
@@ -21,13 +24,15 @@ export const AppRouter = () => {
 
       {
         (authStatus === 'not-authenticated')
-
-          ?<Route path="/auth/*" element={ <AuthRoutes /> } />
-          :<Route path="/*" element={ <UserRoute /> } />
+          &&
+        <Route path="/auth/*" element={ <AuthRoutes /> } />
       }
 
-      <Route path='/*' element = {<Navigate to='/auth/login' />} />
-
+      {
+        (authStatus === 'checking')
+          &&
+        <Route path="/*" element={ <UserRoute /> } />
+      }
 
     </Routes>
   )

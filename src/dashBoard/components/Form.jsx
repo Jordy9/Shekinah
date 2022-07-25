@@ -126,12 +126,12 @@ export const Form = () => {
        
        <form onSubmit={handleSubmit}>
             <Grid item container flexDirection='row'>
-                <Grid flexDirection='column' container item xs = {8} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField error = {errors.pregunta} multiline maxRows={4} {...getFieldProps('pregunta')} variant='standard' label = 'Pregunta' type = 'text' fullWidth />
                     {touched.pregunta && errors.pregunta && <span style={{color: 'red'}}>{errors.pregunta}</span>}
                 </Grid>
 
-                <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField error = {errors.dificultad} {...getFieldProps('dificultad')} variant='standard' id="select1" label="Dificultad" select>
                         <MenuItem value="Tierno">Tierno</MenuItem>
                         <MenuItem value="Medio">Medio</MenuItem>
@@ -140,7 +140,7 @@ export const Form = () => {
                     {touched.dificultad && errors.dificultad && <span style={{color: 'red'}}>{errors.dificultad}</span>}
                 </Grid>
 
-                <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField error = {errors.categoria} {...getFieldProps('categoria')} variant='standard' id="select2" label="Categoría" select>
                         <MenuItem value="Pentateuco">Pentateuco</MenuItem>
                         <MenuItem value="Histórico">Histórico</MenuItem>
@@ -151,7 +151,7 @@ export const Form = () => {
                     {touched.categoria && errors.categoria && <span style={{color: 'red'}}>{errors.categoria}</span>}
                 </Grid>
 
-                <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField error = {errors.testamento} {...getFieldProps('testamento')} variant='standard' id="select3" label="Testamento" select>
                         <MenuItem value="AT">Antiguo</MenuItem>
                         <MenuItem value="NT">Nuevo</MenuItem>
@@ -159,7 +159,7 @@ export const Form = () => {
                     {touched.testamento && errors.testamento && <span style={{color: 'red'}}>{errors.testamento}</span>}
                 </Grid>
 
-                <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField error = {errors.libro} {...getFieldProps('libro')} variant='standard' id="select4" label="Libro" select>
                         <MenuItem disabled value=''>Ninguno</MenuItem>
                         {
@@ -185,7 +185,7 @@ export const Form = () => {
                     {touched.libro && errors.libro && <span style={{color: 'red'}}>{errors.libro}</span>}
                 </Grid>
 
-                <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField error = {errors.capitulo} {...getFieldProps('capitulo')} variant='standard' id="select5" label="Capítulo" select>
                         <MenuItem disabled value=''>0</MenuItem>
                         {
@@ -199,7 +199,7 @@ export const Form = () => {
                     {touched.capitulo && errors.capitulo && <span style={{color: 'red'}}>{errors.capitulo}</span>}
                 </Grid>
 
-                <Grid flexDirection='column' container item xs = {3} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {3} xl = {3} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField error = {errors.desdeVersiculo} {...getFieldProps('desdeVersiculo')} variant='standard' id="select6" label="Desde el versiculo"  select>
                         <MenuItem disabled value=''>0</MenuItem>
                         {
@@ -215,7 +215,7 @@ export const Form = () => {
                     {touched.desdeVersiculo && errors.desdeVersiculo && <span style={{color: 'red'}}>{errors.desdeVersiculo}</span>}
                 </Grid>
 
-                <Grid flexDirection='column' container item xs = {3} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {3} xl = {3} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField error = {errors.hastaVersiculo} {...getFieldProps('hastaVersiculo')} variant='standard' id="select7" label="Hasta el versiculo" select>
                         <MenuItem disabled value=''>0</MenuItem>
                         {
@@ -235,12 +235,12 @@ export const Form = () => {
                     formValues?.map((element, index) => {
                         return (
                             <Fragment key={element + index}>
-                                <Grid flexDirection='column' container item xs = {8} sx = {{padding: 3, borderRadius: 2}} >
+                                <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
                                     <TextField error = {errors.respuesta} multiline maxRows={2} name='texto' value = {element.texto} onChange={e => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
                                     {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
                                 </Grid>
 
-                                <Grid flexDirection='column' container item xs = {2} sx = {{padding: 3, borderRadius: 2}} >
+                                <Grid flexDirection='column' container item xs = {9} sm = {9} md = {9} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                     <TextField error = {errors.respuesta} name='correcta' value = {element.correcta} onChange={e => handleChange(index, e)} variant='standard' id="select9" label="Acción" select>
                                         <MenuItem value="true">Correcta</MenuItem>
                                         <MenuItem value="false">Incorrecta</MenuItem>
@@ -253,7 +253,7 @@ export const Form = () => {
                                         (formValues.length === index + 1)
                                             &&
                                         <Tooltip title="Agregar otra respuesta">  
-                                            <IconButton onClick={agregar}>
+                                            <IconButton color='secondary' onClick={agregar}>
                                                 <Add />
                                             </IconButton>
                                         </Tooltip>
@@ -263,7 +263,7 @@ export const Form = () => {
                                         (index !== 0)
                                             &&
                                         <Tooltip title="Eliminar respuesta">
-                                            <IconButton onClick = {() => eliminar(index)}>
+                                            <IconButton color='secondary' onClick = {() => eliminar(index)}>
                                                 <Delete />
                                             </IconButton>
                                         </Tooltip>
@@ -290,7 +290,7 @@ export const Form = () => {
                 <IconButton 
                     size='large'
                     onClick={openDialog}
-                    sx={{ position: 'absolute', bottom: 16, right: 16}}
+                    sx={{ position: 'fixed', bottom: 16, right: 16 }}
                 >
                     <Book fontSize='large' />
                 </IconButton>

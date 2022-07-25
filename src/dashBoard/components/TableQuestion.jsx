@@ -1,4 +1,4 @@
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, Box, Typography, TextField, IconButton, Button, CircularProgress } from '@mui/material'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, Box, Typography, TextField, IconButton, Button, CircularProgress, Grid } from '@mui/material'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { obtenerPreguntaFiltrada, obtenerPreguntas } from '../../store/preguntas/thunk';
@@ -41,13 +41,19 @@ export const TableQuestion = () => {
             ?
           <TableContainer elevation = {4} component={Paper} sx = {{
             height: 400,
-            borderRadius: '5px'
+            borderRadius: '5px',
+            backgroundColor: '#383c45',
           }}>
-            <TextField fullWidth name='buscador' value={buscadorSearch} onChange = {({target}) => setBuscadorSearch(target.value)} label = 'Buscador' type='search' variant='standard' sx={{
-              m: 1
-            }} />
-            <Button onClick={SearchQuestion}>Buscar</Button>
-            <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto' }}>
+            <Grid flexDirection='row' container item xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
+              <TextField name='buscador' value={buscadorSearch} onChange = {({target}) => setBuscadorSearch(target.value)} label = 'Buscador' type='search' variant='standard' sx={{
+                m: 1
+              }} />
+              <Button color='secondary' sx={{display: 'flex', alignItems: 'end'}} variant='text' onClick={SearchQuestion}>Buscar</Button>
+            </Grid>
+
+            {/* <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2}>
+            </Grid> */}
+            <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto', backgroundColor: '#383c45' }}>
               <TableHead>
                 <TableRow>
                   <TableCell>Pregunta</TableCell>
@@ -69,12 +75,14 @@ export const TableQuestion = () => {
             </Table>
             <TablePagination
               rowsPerPageOptions={[10, 20, 30]}
+              labelRowsPerPage = 'Filas por página'
               component="div"
               count={Number(paginacion?.total) || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              sx = {{color: 'white'}}
             />
           </TableContainer>
           :

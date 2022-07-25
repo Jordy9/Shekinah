@@ -18,7 +18,7 @@ export const Navbar = () => {
   return (
     <AppBar
         position='fixed'
-        sx={{backgroundImage: 'linear-gradient(-225deg, #18053e 0%, #562B7C 52%, #2B86C5 100%)', borderBottom: '1px solid gold'}}
+        sx={{backgroundColor: '#383c45', borderBottom: '1px solid gold'}}
     >
         <Toolbar>
             <Grid
