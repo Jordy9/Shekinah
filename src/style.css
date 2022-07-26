@@ -1,6 +1,7 @@
 body {
     background-color: gainsboro !important;
     height: auto;
+    overflow-x: hidden;
 }
 
 @media (max-width: 1400px) {
@@ -9,14 +10,20 @@ body {
     }
 }
 
-h4, thead, input {
+h4, input {
     color: white !important;
 }
 
-th, td, li {
+.borderless td, .borderless th {
+    border: none;
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* th, td, li {
     color: white !important;
     background-color: #383c45 !important;
-}
+} */
 
 li:hover {
     background-color: #464a54 !important;
@@ -49,4 +56,8 @@ label {
 
 .selectFocus:focus {
     background-color: rgb(16, 125, 197) !important;
+}
+
+.bg-danger {
+    background-color: red !important;
 }

@@ -1,28 +1,13 @@
-import { Button } from '@mui/material'
 import React from 'react'
-import { obtenerPreguntasJuego } from '../../store/preguntas/thunk';
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useEffect } from 'react';
-import { crearRecord } from '../../store/record/thunk';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Navb } from '../components/Navb';
+import { TablaPosiciones } from '../components/TablaPosiciones';
 
 export const Lobi = () => {
 
-  const dispatch = useDispatch();
-
-  const { preguntasGame } = useSelector(state => state.pg);
-
   const { record } = useSelector(state => state.rc);
-
-  const { uid } = useSelector(state => state.auth);
-
-  const juego = () => {
-    dispatch(obtenerPreguntasJuego())
-  }
-
-  const juegoAhora = () => {
-    dispatch(crearRecord(uid, 0, preguntasGame, 0))
-  }
 
   const {pathname} = useLocation()
 
@@ -40,8 +25,22 @@ export const Lobi = () => {
   
   return (
     <div>
-      <Button onClick={juego} variant='contained'>obtener</Button>
-      <Button onClick={juegoAhora} variant='contained'>Jugar</Button>
+      <Navb />
+      <div className="row p-4 mt-5">
+        <div className="col-12 d-flex justify-content-center">
+          <button className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Jugar partida personalizada</button>
+        </div>
+      </div>
+
+      <div className="row p-4">
+        <div className="col-12">
+          <TablaPosiciones />
+        </div>
+      </div>
+
+
+      {/* <Button onClick={juego} variant='contained'>obtener</Button>
+      <Button onClick={juegoAhora} variant='contained'>Jugar</Button> */}
     </div>
   )
 }

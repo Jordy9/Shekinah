@@ -9,7 +9,7 @@ import { InGame } from '../../dashBoardUser/pages/InGame'
 import { Lobi } from '../../dashBoardUser/pages/Lobi'
 import { obtenerRecord } from '../../store/record/thunk'
 
-export const UserRoute = () => {
+export const UserRoutes = () => {
 
   const dispatch = useDispatch()
 
@@ -21,7 +21,7 @@ export const UserRoute = () => {
   return (
     <Routes>
       {
-        (false)
+        (true)
           ?
         <>
           <Route path='/usuarios' element = { <UserList /> } />

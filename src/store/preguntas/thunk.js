@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { actualizarPreguntaActiva, crearPreguntaActiva, eliminarPreguntaActiva, getPreguntas, getPreguntasGame, paginacion } from './preguntasSlice'
 import Swal from "sweetalert2"
+import { crearRecord } from '../record/thunk';
 
 const point = process.env.REACT_APP_API_URL
 
@@ -22,13 +23,17 @@ export const obtenerPreguntas = (page, size) => {
 }
 
 export const obtenerPreguntasJuego = (page, size) => {
-    return async(dispatch) => {
+    return async(dispatch, getState) => {
+
+        const { uid } = getState().auth;
 
         try {
             const resp = await axios.get(`${point}/pregunta/juego`)
             // const resp = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
 
             dispatch(getPreguntasGame(resp.data.preguntas))
+
+            dispatch(crearRecord(uid, 0, resp.data.preguntas, 0))
             
             
         } catch (error) {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Container, Navbar } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { Antiguotestamento } from '../../Antiguotestamento'
 import { Nuevotestamento } from '../../Nuevotestamento'
@@ -26,11 +27,13 @@ export const Cuestionario = () => {
 
     const [showCorrect, setShowCorrect] = useState(false)
     
+    const [PuntosChange, setPuntosChange] = useState(record[0]?.puntos)
+    
     const onClick = (respuesta) => {
         if (respuesta[0]?.correcta === true) {
             dispatch(SiguientePregunta({
                 id: record[0]?._id,
-                puntos: record[0]?.puntos + 1 * record[0]?.racha,
+                puntos: record[0]?.puntos + PuntosChange,
                 aciertos: record[0]?.aciertos + 1,
                 racha: record[0]?.racha + 1,
                 preguntaNo: record[0]?.preguntaNo + 1,
@@ -90,6 +93,40 @@ export const Cuestionario = () => {
             setContentBible(librosBiblia[record[0]?.preguntas[change].idLibro][record[0]?.preguntas[change]?.capitulo]?.slice(record[0]?.preguntas[change]?.desdeVersiculo, Number(record[0]?.preguntas[change].hastaVersiculo) + 1))
         }
     }, [record[0]?.preguntas[change]?.hastaVersiculo, record[0]?.preguntas[change]?.desdeVersiculo])
+
+    const respuestasAleatorias = [...record[0]?.preguntas[change]?.respuesta].sort((a, b) => {
+        const nameA = a.texto.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.texto.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+      
+        // names must be equal
+        return 0;
+    })
+
+    const [colorChange, setColorChange] = useState()
+
+    useEffect(() => {
+      if (record[0]?.preguntas[change]?.dificultad === 'Tierno') {
+        setColorChange('info')
+        setPuntosChange(1 * record[0]?.racha)
+      }
+
+      if (record[0]?.preguntas[change]?.dificultad === 'Medio') {
+        setColorChange('warning')
+        setPuntosChange(2 * record[0]?.racha)
+      }
+
+      if (record[0]?.preguntas[change]?.dificultad === 'Avanzado') {
+        setColorChange('danger')
+        setPuntosChange(3 * record[0]?.racha)
+      }
+    }, [record[0]?.preguntas[change]?.dificultad])
+    
     
   return (
     <>
@@ -118,14 +155,14 @@ export const Cuestionario = () => {
 
             <div className='row' xs = {12}>
                 <div className="col-12" style={{maxHeight: '150px', overflowY: 'auto'}}>
-                    <h3 className='text-white' style={{textAlign: 'justify'}}>{record[0]?.preguntas[change]?.pregunta}</h3>
+                    <h3 className='text-white my-2' style={{textAlign: 'justify'}}>{record[0]?.preguntas[change]?.pregunta} <span style={{borderRadius: '20px', fontSize: '18px'}} className={`p-2 bg-${colorChange}`}>{record[0]?.preguntas[change]?.dificultad}</span> </h3>
                 </div>
             </div>
         </div>
 
         <div className = 'row'>
             {
-                record[0]?.preguntas[change]?.respuesta?.map((respuesta, index) => {
+                respuestasAleatorias?.map((respuesta, index) => {
                     return (
                         <div key={respuesta + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
                             <div className='p-4 d-flex align-items-center' style={{height: '150px', overflowY: 'auto'}}>
@@ -141,42 +178,43 @@ export const Cuestionario = () => {
                     )
                 })
             }
-            
-            {
-                (response)
-                    &&
-                <button hidden = {show} className='btn btn-transparent' onClick={() => onClick(response)} style={{right: '15px', position: 'fixed', zIndex: 1045, bottom: '50px', backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                    Responder
-                </button>
-            }
 
-            
-            {
-                (show)
-                    &&
-                <button className='btn btn-transparent' onClick={next} style={{right: '15px', position: 'fixed', zIndex: 1045, bottom: '50px', backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                    Siguiente
-                </button>
-            }
+            <Navbar fixed='bottom' expand="lg" bg = 'dark' variant="dark">
+                <Container>
+                    {
+                        (response)
+                            &&
+                        <button hidden = {show} className='btn btn-transparent ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            Responder
+                        </button>
+                    }
 
-            {
-                (show)
-                    &&
-                <div className='d-flex justify-content-center' style={{position: 'fixed', bottom: '50px'}}>
-                    <button onClick={() => setShowModalContent(true)} className='btn' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
-                        <div className='d-flex align-items-center justify-content-center'>
-                            {
-                                (record[0]?.preguntas[change]?.desdeVersiculo === record[0]?.preguntas[change]?.hastaVersiculo)
-                                    ?
-                                <span>Verificar cita: {record[0]?.preguntas[change]?.libro} {Number(record[0]?.preguntas[change]?.capitulo) + 1}:{Number(record[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
-                                    :
-                                <span>Verificar cita: {record[0]?.preguntas[change]?.libro} {Number(record[0]?.preguntas[change]?.capitulo) + 1}:{Number(record[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(record[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
-                            }
-                            <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
-                        </div>
-                    </button>
-                </div>
-            }
+                    {
+                        (show)
+                            &&
+                        <button onClick={() => setShowModalContent(true)} className='btn mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
+                            <div className='d-flex align-items-center justify-content-center'>
+                                {
+                                    (record[0]?.preguntas[change]?.desdeVersiculo === record[0]?.preguntas[change]?.hastaVersiculo)
+                                        ?
+                                    <span>Verificar cita: {record[0]?.preguntas[change]?.libro} {Number(record[0]?.preguntas[change]?.capitulo) + 1}:{Number(record[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
+                                        :
+                                    <span>Verificar cita: {record[0]?.preguntas[change]?.libro} {Number(record[0]?.preguntas[change]?.capitulo) + 1}:{Number(record[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(record[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
+                                }
+                                <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
+                            </div>
+                        </button>
+                    }
+
+                    {
+                        (show)
+                            &&
+                        <button className='btn btn-transparent ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            Siguiente
+                        </button>
+                    }
+                </Container>
+            </Navbar>
         </div>
 
         <ModalBibleContent 

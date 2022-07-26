@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { AuthRoutes } from '../auth/routes/AuthRoutes';
+import { UserRoutes } from '../dashBoard/routes/UserRoute';
 import { obtenerUsuarios } from '../store/auth/thunk';
 import { obtenerPreguntas } from '../store/preguntas/thunk';
 import { obtenerRecord } from '../store/record/thunk';
@@ -25,7 +26,7 @@ export const AppRouter = () => {
       {
         (authStatus === 'not-authenticated')
           &&
-        <Route path="/auth/*" element={ <AuthRoutes /> } />
+        <Route path="/*" element={ <UserRoutes /> } />
       }
 
       {
