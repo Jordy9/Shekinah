@@ -43,6 +43,27 @@ export const obtenerPreguntasJuego = (page, size) => {
     }
 }
 
+export const obtenerPreguntasJuegoPersonalizado = (categoria, dificultad, pregunta) => {
+    return async(dispatch, getState) => {
+
+        const { uid } = getState().auth;
+
+        try {
+            const resp = await axios.get(`${point}/pregunta/juegop?count=${pregunta || 15}&categ=${categoria || undefined}&dific=${dificultad || undefined}`)
+            // const resp = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
+
+            dispatch(getPreguntasGame(resp.data.preguntas))
+
+            dispatch(crearRecord(uid, 0, resp.data.preguntas, 0))
+            
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}
+
 export const obtenerPreguntaFiltrada = (buscadorSearch) => {
     return async(dispatch) => {
 

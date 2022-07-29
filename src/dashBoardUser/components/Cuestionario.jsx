@@ -165,7 +165,7 @@ export const Cuestionario = () => {
                 respuestasAleatorias?.map((respuesta, index) => {
                     return (
                         <div key={respuesta + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
-                            <div className='p-4 d-flex align-items-center' style={{height: '150px', overflowY: 'auto'}}>
+                            <div className='p-4 d-flex align-items-center' style={{maxHeight: '150px', overflowY: 'auto'}}>
                                 <button className='btn btn-transparent shadow selectFocus' style={{borderRadius: '50%', color: 'white', backgroundColor: 'rgba(33,93,59,255)'}} onClick={() => setResponse([respuesta, `${index + 1}`])}>
                                     {index + 1}
                                 </button>
