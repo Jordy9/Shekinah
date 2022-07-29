@@ -36,10 +36,6 @@ export const Navb = () => {
             <Nav className="ml-auto">
               <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Jugar</button>
             </Nav>
-
-            <Nav className="ml-auto">
-              <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Personalizada</button>
-            </Nav>
           </Container>
         </Navbar>
       }
