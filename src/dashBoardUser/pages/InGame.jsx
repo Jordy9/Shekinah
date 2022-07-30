@@ -7,21 +7,23 @@ export const InGame = () => {
 
   const { record } = useSelector(state => state.rc);
 
+  const { uid } = useSelector(state => state.auth);
+
   const {pathname} = useLocation()
 
   const navigate = useNavigate()
+
+  const recordFiltrado = record?.filter(record => record?.idJugador === uid)
   
   useEffect(() => {        
-    if (pathname === '/inGame' && record?.length === 0) {
+    if (pathname === '/inGame' && recordFiltrado?.length === 0) {
       navigate('/Lobi')
     }
-  }, [record, pathname])
+  }, [recordFiltrado, pathname])
 
   return (
-    // <DashBoardLayaout>
-    (record[0]?.preguntaNo + 1)
+    (recordFiltrado?.length !== 0)
       &&
     <Cuestionario />
-    // </DashBoardLayaout>
   )
 }

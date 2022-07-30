@@ -1,28 +1,9 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { Navb } from '../components/Navb';
 import { ModalPartidaPersonalizada } from '../components/ModalPartidaPersonalizada';
 import { Login } from '../components/Login';
 
 export const LoginScreen = () => {
-
-  const { record } = useSelector(state => state.rc);
-
-  const {pathname} = useLocation()
-
-  const navigate = useNavigate()
-  
-  useEffect(() => {
-    if (record?.length !== 0) {
-      navigate('/inGame')
-    }
-    
-    if (pathname === '/inGame' && record?.length === 0) {
-      navigate('/Lobi')
-    }
-  }, [record, pathname])
 
   const [ShowModalPartidaP, setShowModalPartidaP] = useState(false)
   

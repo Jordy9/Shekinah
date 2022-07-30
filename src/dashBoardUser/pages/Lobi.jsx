@@ -10,19 +10,23 @@ export const Lobi = () => {
 
   const { record } = useSelector(state => state.rc);
 
+  const { uid } = useSelector(state => state.auth);
+
   const {pathname} = useLocation()
 
   const navigate = useNavigate()
+
+  const recordFiltrado = record?.filter(record => record?.idJugador === uid)
   
   useEffect(() => {
-    if (record?.length !== 0) {
+    if (recordFiltrado?.length !== 0) {
       navigate('/inGame')
     }
     
-    if (pathname === '/inGame' && record?.length === 0) {
+    if (pathname === '/inGame' && recordFiltrado?.length === 0) {
       navigate('/Lobi')
     }
-  }, [record, pathname])
+  }, [recordFiltrado, pathname])
 
   const [ShowModalPartidaP, setShowModalPartidaP] = useState(false)
   
