@@ -15,20 +15,18 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
 
   const {handleSubmit, resetForm, getFieldProps, touched, errors} = useFormik({
     initialValues: {
-        categoria:  '',
-        dificultad: '',
-        pregunta:   ''
+        categoria:  false,
+        dificultad: false,
+        pregunta:   false
     },
     enableReinitialize: true,
     onSubmit: ({categoria, dificultad, pregunta}) => {
         dispatch(obtenerPreguntasJuegoPersonalizado(categoria, dificultad, pregunta))
 
-        console.log(categoria, dificultad, pregunta)
-
         resetForm({
-          categoria:  '',
-          dificultad: '',
-          pregunta:   ''
+          categoria:  false,
+          dificultad: false,
+          pregunta:   false
         })
     },
     validationSchema: Yup.object({
@@ -46,18 +44,30 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
               <div className="row p-4">
                   <div className="col-4 form-group">
                     <label className='text-black'>Categoría</label>
-                    <input {...getFieldProps('categoria')} style={{border: 'none', borderBottom: '2px solid'}} className='form-control text-black' placeholder='Todas' list='categoria' />
+                    <select {...getFieldProps('categoria')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
+                      <option value={undefined}>Seleccione una categoría</option>
+                      <option value="Pentateuco">Pentateuco</option>
+                      <option value="Histórico">Histórico</option>
+                      <option value="Sapienciales">Sapienciales</option>
+                      <option value="Proféticos">Proféticos</option>
+                      <option value="Epístola">Epístola</option>
+                    </select>
                   </div>
 
                   <div className="col-4 form-group">
                     <label className='text-black'>Dificultad</label>
-                    <input {...getFieldProps('dificultad')} style={{border: 'none', borderBottom: '2px solid'}} className='form-control text-black' list='dificultad' />
+                    <select {...getFieldProps('dificultad')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
+                      <option value={undefined}>Seleccione una cantidad</option>
+                      <option value="Tierno">Tierno</option>
+                      <option value="Medio">Medio</option>
+                      <option value="Avanzado">Avanzado</option>
+                    </select>
                   </div>
 
                   <div className="col-4 form-group">
                     <label className='text-black'>Preguntas</label>
                     <select {...getFieldProps('pregunta')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
-                      <option value="">Seleccione una cantidad</option>
+                      <option value={undefined}>Seleccione una cantidad</option>
                       <option value="5">5</option>
                       <option value="10">10</option>
                       <option value="15">15</option>
@@ -73,20 +83,6 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
                 </div>
               </div>
           </form>
-
-            <datalist id='categoria'>
-              <option value="Pentateuco"></option>
-              <option value="Histórico"></option>
-              <option value="Sapienciales"></option>
-              <option value="Proféticos"></option>
-              <option value="Epístola"></option>
-            </datalist>
-
-            <datalist id='dificultad'>
-              <option value="Tierno"></option>
-              <option value="Medio"></option>
-              <option value="Avanzado"></option>
-            </datalist>
         </Modal.Body>
         <Modal.Footer>
           <Button style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={handleClose}>

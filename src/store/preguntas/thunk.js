@@ -49,14 +49,33 @@ export const obtenerPreguntasJuegoPersonalizado = (categoria, dificultad, pregun
         const { uid } = getState().auth;
 
         try {
-            const resp = await axios.get(`${point}/pregunta/juegop?count=${pregunta || 15}&categ=${categoria || undefined}&dific=${dificultad || undefined}`)
+            const resp = await axios.post(`${point}/pregunta/juegop`, {categoria, dificultad, pregunta})
             // const resp = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
 
-            dispatch(getPreguntasGame(resp.data.preguntas))
+            if (resp.data.preguntas?.length !== 0) {
 
-            dispatch(crearRecord(uid, 0, resp.data.preguntas, 0))
-            
-            
+                dispatch(getPreguntasGame(resp.data.preguntas))
+    
+                dispatch(crearRecord(uid, 0, resp.data.preguntas, 0))
+            } else {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                  })
+                  
+                  return Toast.fire({
+                    icon: 'error',
+                    title: 'No existen preguntas con esta configuración'
+                  })         
+            }
+
         } catch (error) {
             console.log(error)
         }

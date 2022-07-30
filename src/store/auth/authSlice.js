@@ -2,22 +2,48 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
 name: 'auth',
 initialState: {
-    status: 'checking',
+    checking: true,
     usuarios: {},
-    errorMessage: null
+    uid: null,
+    name: null,
+    usuarioActivo: null
 },
 reducers: {
-    onChecking: (state, /* action */ ) => {
-        state.status = 'checking';
-        state.usuarios = {};
-        state.errorMessage = undefined;
+    onGetUsers: (state, action ) => {
+        state.usuarios = action.payload;
     },
 
-    onLogin: (state, {payload} ) => {
-        state.status = 'authenticated';
-        state.usuarios = payload;
-        state.errorMessage = undefined;
+    onRegister: (state, action ) => {
+        state.uid = action.payload.uid;
+        state.name = action.payload.name;
+    },
+
+    onUpdate: (state, action ) => {
+        state.usuarios = state.usuarios.map(
+            e => (e.id === action.payload.id) ? action.payload : e);
+        state.usuarioActivo = action.payload;
+    },
+
+    onActiveUser: (state, action ) => {
+        state.usuarioActivo = action.payload;
+    },
+
+    onLogout: (state) => {
+        state.checking = true;
+        state.uid = null;
+        state.name = null;
+        state.usuarioActivo = null;
+    },
+
+    onChecking: (state) => {
+        state.checking = false;
+    },
+
+    onLogin: (state, action ) => {
+        state.checking = false
+        state.uid = action.payload.uid;
+        state.name = action.payload.name;
     },
 }
 });
-export const { onChecking, onLogin } = authSlice.actions; 
+export const { onGetUsers, onRegister, onUpdate, onActiveUser, onLogout, onChecking, onLogin  } = authSlice.actions; 

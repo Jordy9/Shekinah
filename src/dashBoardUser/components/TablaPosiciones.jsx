@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import user from '../../heroes/user.webp'
+import { ModalPerfilUser } from './ModalPerfilUser'
 
 export const TablaPosiciones = () => {
+
+    const [ShowModal, setShowModal] = useState(false)
+
   return (
     <div className="row">
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-8 mx-auto">
@@ -9,7 +13,12 @@ export const TablaPosiciones = () => {
             <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px', backgroundColor: 'white'}}>
                 <div style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
                     <h4 className='text-center text-black'>Top 10</h4>
-                    <h4 className='text-center text-black'>Jordy</h4>
+                    <div onClick={() => setShowModal(true)} style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+                        <div className='d-flex justify-content-center mx-2' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                            <img src={user} className='img-fluid' alt="" />
+                        </div>
+                        <h4 className='text-center text-black my-auto'>Jordy</h4>
+                    </div>
                 </div>
                 <table className="table borderless">
                     <thead>
@@ -112,16 +121,10 @@ export const TablaPosiciones = () => {
                         </tr>
                     </tbody>
                 </table>
-                    {/* <div className="row">
-                        <div className="col-12" style={{bottom: 0}}>
-                            <button className='btn'>Hola</button>
-                            <button className='btn'>Hola</button>
-                            <button className='btn'>Hola</button>
-                            <button className='btn'>Hola</button>
-                        </div>
-                    </div> */}
             </div>
         </div>
+
+        <ModalPerfilUser ShowModal = {ShowModal} setShowModal = {setShowModal} />
     </div>
   )
 }
