@@ -29,14 +29,6 @@ export const SiguientePregunta = ({id, puntos, aciertos, racha, preguntaNo, erro
 export const BorrarPregunta = (id) => {
     return async(dispatch) => {
 
-        // const juego = {
-        //     aciertos: record?.aciertos,
-        //     puntos: record?.puntos,
-        //     errores: record?.errores,
-        //     reforzar: record?.reforzar,
-        //     racha: record?.racha
-        // }
-
         try {
             await axios.delete(`${point}/record/${id}`)
             dispatch(deleteRecord(id))

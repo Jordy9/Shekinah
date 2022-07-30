@@ -68,6 +68,7 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
                     <label className='text-black'>Preguntas</label>
                     <select {...getFieldProps('pregunta')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
                       <option value={undefined}>Seleccione una cantidad</option>
+                      <option value="1">1</option>
                       <option value="5">5</option>
                       <option value="10">10</option>
                       <option value="15">15</option>

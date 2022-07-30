@@ -293,3 +293,27 @@ export const iniciarAutenticacion = () => {
         }
     }
 }
+
+export const GuardarRecord = (record) => {
+    return async(dispatch, getState) => {
+
+        const { usuarioActivo } = getState().auth;
+
+        const juego = {
+            aciertos: (!usuarioActivo?.juego) ? record?.aciertos : usuarioActivo?.juego?.aciertos + record?.aciertos,
+            puntos: (!usuarioActivo?.juego) ? record?.puntos : usuarioActivo?.juego?.puntos + record?.puntos,
+            errores: (!usuarioActivo?.juego) ? record?.errores : usuarioActivo?.juego?.errores + record?.errores,
+            reforzar: (!usuarioActivo?.juego) ? record?.reforzar : [...usuarioActivo?.juego?.reforzar, ...record?.reforzar],
+            racha: (!usuarioActivo?.juego) ? record?.racha : (usuarioActivo?.juego?.racha < record?.racha) ? record?.racha : usuarioActivo?.juego?.racha
+        }
+
+        try {
+            const resp = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, juego}, {headers: {'x-token': token}})
+            dispatch(onUpdate(resp.data.usuario))
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}

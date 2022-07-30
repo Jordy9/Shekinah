@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import user from '../../heroes/user.webp'
 import { ModalPerfilUser } from './ModalPerfilUser'
+import { TablaSpreedList } from './TablaSpreedList'
 
 export const TablaPosiciones = () => {
 
@@ -29,96 +30,7 @@ export const TablaPosiciones = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style={{cursor: 'pointer'}}>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>90</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td className='d-flex justify-content-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={user} className='img-fluid' alt="" />
-                                </div>
-                            </td>
-                            <td>Jordy</td>
-                            <td>100</td>
-                        </tr>
+                        <TablaSpreedList />
                     </tbody>
                 </table>
             </div>

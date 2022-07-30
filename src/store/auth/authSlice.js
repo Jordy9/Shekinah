@@ -3,7 +3,7 @@ export const authSlice = createSlice({
 name: 'auth',
 initialState: {
     checking: true,
-    usuarios: {},
+    usuarios: [],
     uid: null,
     name: null,
     usuarioActivo: null

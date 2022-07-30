@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
 import { iniciarActualizacion } from '../../store/auth/thunk';
 import { ModalCambPass } from './ModalCambPass';
-// import { obtenerPreguntasJuegoPersonalizado } from '../../store/preguntas/thunk'
+import { crearRecord } from '../../store/record/thunk';
 
 export const ModalPerfilUser = ({ShowModal, setShowModal}) => {
 
@@ -107,7 +107,7 @@ export const ModalPerfilUser = ({ShowModal, setShowModal}) => {
                     </div>
 
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4">
-                      <h4 className='text-black'>Racha mas alta: {usuarioActivo?.juego?.racha || 0}</h4>
+                      <h4 className='text-black'>Racha mas alta: {usuarioActivo?.juego?.racha - 1 || 0}</h4>
                     </div>
 
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4">
@@ -118,12 +118,12 @@ export const ModalPerfilUser = ({ShowModal, setShowModal}) => {
                   <hr />
 
                   <div className="row">
-                    <h4 className='text-black text-center'><strong>Preguntas por reforzar</strong></h4>
+                    <h4 className='text-black text-center'><strong>Preguntas por reforzar: {usuarioActivo?.juego?.reforzar?.length}</strong></h4>
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 p-4" style={{borderRadius: '20px', maxHeight: '300px', overflow: 'auto'}}>
                       {
-                        usuarioActivo?.juego?.reforzar?.map(reforzar => {
+                        usuarioActivo?.juego?.reforzar?.map((reforzar, index) => {
                           return (
-                            <h5 className='text-black shadow p-4' style={{borderRadius: '20px', maxHeight: '150px', overflowY: 'auto'}}>{reforzar?.pregunta}</h5>
+                            <h5 key={reforzar + index} className='text-black shadow p-4' style={{borderRadius: '20px', maxHeight: '150px', overflowY: 'auto'}}>{index + 1}. {reforzar?.pregunta}</h5>
                           )
                         })
                       }
@@ -134,7 +134,7 @@ export const ModalPerfilUser = ({ShowModal, setShowModal}) => {
           </>
         </Modal.Body>
         <Modal.Footer>
-          <Button style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={handleClose}>
+          <Button style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={() => dispatch(crearRecord(usuarioActivo?.id, 0, usuarioActivo?.juego?.reforzar, 0))}>
             Jugar partida con preguntas por reforzar
           </Button>
         </Modal.Footer>

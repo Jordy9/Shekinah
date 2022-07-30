@@ -3,6 +3,7 @@ import { Container, Navbar } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { Antiguotestamento } from '../../Antiguotestamento'
 import { Nuevotestamento } from '../../Nuevotestamento'
+import { GuardarRecord } from '../../store/auth/thunk'
 import { BorrarPregunta, SiguientePregunta } from '../../store/record/thunk'
 import './Cuestionario.css'
 import { ModalBibleContent } from './ModalBibleContent'
@@ -15,7 +16,7 @@ export const Cuestionario = () => {
 
     const { record } = useSelector(state => state.rc);
 
-    const { uid } = useSelector(state => state.auth);
+    const { uid, usuarioActivo } = useSelector(state => state.auth);
 
     const recordFiltrado = record?.filter(record => record?.idJugador === uid)
 
@@ -33,6 +34,8 @@ export const Cuestionario = () => {
     
     const [PuntosChange, setPuntosChange] = useState(recordFiltrado[0]?.puntos)
     
+    let filtroPreguntas = usuarioActivo?.juego?.reforzar?.filter(reforzar => reforzar?._id === recordFiltrado[0]?.preguntas[change]?._id)
+
     const onClick = (respuesta) => {
         if (respuesta[0]?.correcta === true) {
             dispatch(SiguientePregunta({
@@ -57,7 +60,7 @@ export const Cuestionario = () => {
                 racha: recordFiltrado[0]?.racha - recordFiltrado[0]?.racha + 1,
                 preguntaNo: recordFiltrado[0]?.preguntaNo + 1,
                 errores: recordFiltrado[0]?.errores + 1,
-                reforzar: [...recordFiltrado[0]?.reforzar, recordFiltrado[0]?.preguntas[change]],
+                reforzar: (filtroPreguntas?.length === 0) && [...recordFiltrado[0]?.reforzar, recordFiltrado[0]?.preguntas[change]],
                 record: recordFiltrado[0]
             }))
             document.getElementById(`buttonbg${respuesta[1]}`).style.background = 'red'
@@ -78,6 +81,7 @@ export const Cuestionario = () => {
             setShowTrue(false)
         } else {
             dispatch(BorrarPregunta(recordFiltrado[0]?._id))
+            dispatch(GuardarRecord(recordFiltrado[0]))
         }
 
     }
@@ -129,7 +133,7 @@ export const Cuestionario = () => {
         setColorChange('danger')
         setPuntosChange(3 * recordFiltrado[0]?.racha)
       }
-    }, [recordFiltrado[0]?.preguntas[change]?.dificultad])
+    }, [recordFiltrado[0]?.preguntas[change]?.dificultad, recordFiltrado[0]?.preguntas[change]?.pregunta])
     
     
   return (
@@ -166,7 +170,7 @@ export const Cuestionario = () => {
 
         <div className = 'row'>
             {
-                respuestasAleatorias?.map((respuesta, index) => {
+                respuestasAleatorias.map((respuesta, index) => {
                     return (
                         <div key={respuesta + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
                             <div className='p-4 d-flex align-items-center' style={{maxHeight: '150px', overflowY: 'auto'}}>
