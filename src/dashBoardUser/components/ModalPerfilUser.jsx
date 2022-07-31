@@ -134,9 +134,13 @@ export const ModalPerfilUser = ({ShowModal, setShowModal}) => {
           </>
         </Modal.Body>
         <Modal.Footer>
-          <Button style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={() => dispatch(crearRecord(usuarioActivo?.id, 0, usuarioActivo?.juego?.reforzar, 0))}>
-            Jugar partida con preguntas por reforzar
-          </Button>
+          {
+            (usuarioActivo?.juego?.reforzar?.length > 15)
+              &&
+            <Button style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={() => dispatch(crearRecord(usuarioActivo?.id, 0, usuarioActivo?.juego?.reforzar, 0))}>
+              Jugar partida con preguntas por reforzar
+            </Button>
+          }
         </Modal.Footer>
 
         <ModalCambPass showModalPass = {showModalPass} setShowModalPass = {setShowModalPass} />
