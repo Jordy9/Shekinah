@@ -186,44 +186,44 @@ export const Cuestionario = () => {
                     )
                 })
             }
+
+            <Navbar fixed='bottom' className='mt-2' expand="lg" bg = 'dark' variant="dark">
+                <Container>
+                    {
+                        (response)
+                            &&
+                        <button hidden = {show} className='btn btn-transparent ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            Responder
+                        </button>
+                    }
+
+                    {
+                        (show)
+                            &&
+                        <button onClick={() => setShowModalContent(true)} className='btn mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
+                            <div className='d-flex align-items-center justify-content-center'>
+                                {
+                                    (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
+                                        ?
+                                    <span>Verificar cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
+                                        :
+                                    <span>Verificar cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
+                                }
+                                <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
+                            </div>
+                        </button>
+                    }
+
+                    {
+                        (show)
+                            &&
+                        <button className='btn btn-transparent ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            Siguiente
+                        </button>
+                    }
+                </Container>
+            </Navbar>
         </div>
-
-        <Navbar className='mt-2' expand="lg" bg = 'dark' variant="dark" style={{position: 'fixed', bottom: 0, zIndex: 1045, width: '100%'}}>
-            <Container>
-                {
-                    (response)
-                        &&
-                    <button hidden = {show} className='btn btn-transparent ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                        Responder
-                    </button>
-                }
-
-                {
-                    (show)
-                        &&
-                    <button onClick={() => setShowModalContent(true)} className='btn mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
-                        <div className='d-flex align-items-center justify-content-center'>
-                            {
-                                (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
-                                    ?
-                                <span>Verificar cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
-                                    :
-                                <span>Verificar cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
-                            }
-                            <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
-                        </div>
-                    </button>
-                }
-
-                {
-                    (show)
-                        &&
-                    <button className='btn btn-transparent ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                        Siguiente
-                    </button>
-                }
-            </Container>
-        </Navbar>
 
         <ModalBibleContent 
             ShowModalContent = {ShowModalContent}
