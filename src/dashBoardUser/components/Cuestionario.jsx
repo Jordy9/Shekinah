@@ -137,7 +137,7 @@ export const Cuestionario = () => {
     
     
   return (
-    <div style={{height: '100vh'}}>
+    <>
         <div className='p-4' style={{backgroundColor: 'rgba(33,93,59,255)', boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.5)'}}>
             <div className='d-flex align-items-center' style={{position: 'absolute', top: '100px', right: '30px', cursor: 'pointer'}}>
 
@@ -187,7 +187,9 @@ export const Cuestionario = () => {
                 })
             }
 
-            <Navbar fixed='bottom' className='mt-2' expand="lg" bg = 'dark' variant="dark">
+            <hr hidden className='mt-3' />
+
+            <Navbar fixed='bottom' className='mt-2' expand="lg" bg = 'dark' variant="dark" style={{zIndex: 1045}}>
                 <Container>
                     {
                         (response)
@@ -234,6 +236,6 @@ export const Cuestionario = () => {
             inicio = {recordFiltrado[0]?.preguntas[change]?.desdeVersiculo} 
             fin 
         />
-    </div>
+    </>
   )
 }
