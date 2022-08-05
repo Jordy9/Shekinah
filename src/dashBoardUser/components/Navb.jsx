@@ -27,11 +27,13 @@ export const Navb = () => {
             <Navbar.Brand style = {{cursor: 'pointer'}}>Shekinah</Navbar.Brand>
         
             <Nav className="ml-auto">
-              <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Jugar partida rapida</button>
               {
                 (uid)
                   &&
-                <button onClick={() => dispatch(iniciarLogout())} className='btn text-white ml-5' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
+                <>
+                  <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Jugar partida rapida</button>
+                  <button onClick={() => dispatch(iniciarLogout())} className='btn text-white ml-5' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
+                </>
               }
             </Nav>
           </Container>
@@ -42,11 +44,13 @@ export const Navb = () => {
             <Navbar.Brand style = {{cursor: 'pointer'}}>Shekinah</Navbar.Brand>
         
             <Nav className="ml-auto" style={{flexDirection: 'row'}}>
-              <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Jugar</button>
               {
                 (uid)
                   &&
-                <button onClick={() => dispatch(iniciarLogout())} className='btn text-white mx-4' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
+                <>
+                  <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Jugar</button>
+                  <button onClick={() => dispatch(iniciarLogout())} className='btn text-white mx-4' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
+                </>
               }
             </Nav>
           </Container>

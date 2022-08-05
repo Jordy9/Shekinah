@@ -27,7 +27,7 @@ export const AppRouter = () => {
   return (
     <>
       {
-        (!!token)
+        (token)
           ?
         (!uid)
           ?

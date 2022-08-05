@@ -54,7 +54,7 @@ export const Login = () => {
 
   return (
     <>
-        <div className="container">
+        <div className="container my-5">
             <div className="row">
                 <div className="col-12 d-flex justify-content-center">
                     <div className = 'shadow p-4 bg-white image-round flex-column text-black' style = {{width: '400px', height: 'auto', borderRadius: '20px'}}>

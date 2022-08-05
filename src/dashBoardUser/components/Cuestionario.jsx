@@ -137,7 +137,7 @@ export const Cuestionario = () => {
     
     
   return (
-    <>
+    <div style={{height: '100vh'}}>
         <div className='p-4' style={{backgroundColor: 'rgba(33,93,59,255)', boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.5)'}}>
             <div className='d-flex align-items-center' style={{position: 'absolute', top: '100px', right: '30px', cursor: 'pointer'}}>
 
@@ -234,6 +234,6 @@ export const Cuestionario = () => {
             inicio = {recordFiltrado[0]?.preguntas[change]?.desdeVersiculo} 
             fin 
         />
-    </>
+    </div>
   )
 }

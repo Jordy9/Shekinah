@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import user from '../../heroes/user.webp'
 import { ModalPerfilUser } from './ModalPerfilUser'
 import { TablaSpreedList } from './TablaSpreedList'
 
 export const TablaPosiciones = () => {
+
+    const { usuarioActivo } = useSelector(state => state.auth);
 
     const [ShowModal, setShowModal] = useState(false)
 
@@ -18,7 +21,7 @@ export const TablaPosiciones = () => {
                         <div className='d-flex justify-content-center mx-2' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                             <img src={user} className='img-fluid' alt="" />
                         </div>
-                        <h4 className='text-center text-black my-auto'>Jordy</h4>
+                        <h4 className='text-center text-black my-auto'>{usuarioActivo?.name} {usuarioActivo?.lastName}</h4>
                     </div>
                 </div>
                 <table className="table borderless">
