@@ -42,7 +42,7 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
         <Modal.Body>
           <form onSubmit={handleSubmit}>
               <div className="row p-4">
-                  <div className="col-5 form-group">
+                  <div className="col-4 form-group">
                     <label className='text-black'>Categoría</label>
                     <select {...getFieldProps('categoria')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
                       <option value={undefined}>Seleccione una categoría</option>
@@ -64,7 +64,7 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
                     </select>
                   </div>
 
-                  <div className="col-2 form-group">
+                  <div className="col-3 form-group">
                     <label className='text-black'>Preguntas</label>
                     <select {...getFieldProps('pregunta')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
                       <option value={undefined}>Cantidad</option>
