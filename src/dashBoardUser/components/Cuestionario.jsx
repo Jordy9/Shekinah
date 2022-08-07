@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Antiguotestamento } from '../../Antiguotestamento'
 import { useResponsive } from '../../hooks/useResponsive'
 import { Nuevotestamento } from '../../Nuevotestamento'
+import { ScrollToTop } from '../../scrollToTop/ScrollToTop'
 import { GuardarRecord } from '../../store/auth/thunk'
 import { BorrarPregunta, SiguientePregunta } from '../../store/record/thunk'
 import './Cuestionario.css'
@@ -142,9 +143,9 @@ export const Cuestionario = () => {
 
     const [respWidth] = useResponsive()
     
-    
   return (
-    <div style={{height: (respWidth) >= 600 ? '70vh' : '85vh'}}>
+    <div style={{height: (respWidth) >= 600 ? '70vh' : '90vh'}}>
+        <ScrollToTop change = {change} />
         <div className='p-4' style={{backgroundColor: 'rgba(33,93,59,255)', boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.5)', position: (respWidth <= 600) && 'fixed', zIndex: (respWidth <= 600) && 1045, top: (respWidth <= 600) && 0}}>
             <div className='d-flex align-items-center' style={{position: 'absolute', top: '100px', right: '30px', cursor: 'pointer'}}>
 
@@ -169,7 +170,7 @@ export const Cuestionario = () => {
                 <h4 className='text-white'>Puntos: {recordFiltrado[0]?.puntos}</h4>
             </div>
 
-            <h6 className='text-white mt-4 mb-4'>En Racha de: {enRachaDe}x</h6>
+            <h6 className='text-white mt-4 mb-4'>Racha de: {enRachaDe}x</h6>
 
             <div className='row' xs = {12}>
                 <div className="col-12" style={{maxHeight: '150px', overflowY: 'auto'}}>
