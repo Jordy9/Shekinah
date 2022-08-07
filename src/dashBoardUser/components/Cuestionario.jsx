@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Container, Navbar } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { Antiguotestamento } from '../../Antiguotestamento'
+import { useResponsive } from '../../hooks/useResponsive'
 import { Nuevotestamento } from '../../Nuevotestamento'
 import { GuardarRecord } from '../../store/auth/thunk'
 import { BorrarPregunta, SiguientePregunta } from '../../store/record/thunk'
@@ -33,6 +34,8 @@ export const Cuestionario = () => {
     const [showCorrect, setShowCorrect] = useState(false)
     
     const [PuntosChange, setPuntosChange] = useState(recordFiltrado[0]?.puntos)
+
+    const [enRachaDe, setEnRachaDe] = useState(recordFiltrado[0]?.racha)
     
     let filtroPreguntas = usuarioActivo?.juego?.reforzar?.filter(reforzar => reforzar?._id === recordFiltrado[0]?.preguntas[change]?._id)
 
@@ -76,6 +79,7 @@ export const Cuestionario = () => {
             document.getElementById(`buttonbg${response[1]}`).style.background = 'none'
             document.getElementById(`buttonbg${response[1]}`).style.color = ''
             setChange(change + 1)
+            setEnRachaDe(enRachaDe + 1)
             setResponse()
             setShow(false)
             setShowTrue(false)
@@ -134,11 +138,14 @@ export const Cuestionario = () => {
         setPuntosChange(3 * recordFiltrado[0]?.racha)
       }
     }, [recordFiltrado[0]?.preguntas[change]?.dificultad, recordFiltrado[0]?.preguntas[change]?.pregunta])
+
+
+    const [respWidth] = useResponsive()
     
     
   return (
-    <>
-        <div className='p-4' style={{backgroundColor: 'rgba(33,93,59,255)', boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.5)'}}>
+    <div style={{height: '70vh'}}>
+        <div className='p-4' style={{backgroundColor: 'rgba(33,93,59,255)', boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.5)', position: (respWidth <= 600) && 'fixed', zIndex: (respWidth <= 600) && 1045, top: (respWidth <= 600) && 0}}>
             <div className='d-flex align-items-center' style={{position: 'absolute', top: '100px', right: '30px', cursor: 'pointer'}}>
 
                 {
@@ -153,13 +160,16 @@ export const Cuestionario = () => {
                 }
 
             </div>
+
+            <span style={{position: 'absolute', top: '60px', right: '30px', fontSize: '23px', color: 'white'}}>{usuarioActivo?.name}</span>
+            
             <div style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
                 <i style={{fontSize: '25px', cursor: 'pointer'}} onClick={salir} className="text-white bi bi-arrow-left"></i>
                 <h4 className='text-white'>Pregunta {change + 1} / {recordFiltrado[0]?.preguntas?.length}</h4>
                 <h4 className='text-white'>Puntos: {recordFiltrado[0]?.puntos}</h4>
             </div>
 
-            <h6 className='text-white mt-5 mb-4'>En Racha de: {recordFiltrado[0]?.racha}x</h6>
+            <h6 className='text-white mt-4 mb-4'>En Racha de: {enRachaDe}x</h6>
 
             <div className='row' xs = {12}>
                 <div className="col-12" style={{maxHeight: '150px', overflowY: 'auto'}}>
@@ -168,7 +178,7 @@ export const Cuestionario = () => {
             </div>
         </div>
 
-        <div className = 'row'>
+        <div className = 'row' style={{marginTop: (respWidth <= 600) && '300px'}}>
             {
                 respuestasAleatorias.map((respuesta, index) => {
                     return (
@@ -187,42 +197,84 @@ export const Cuestionario = () => {
                 })
             }
 
-            <Navbar fixed='bottom' className='mt-2' expand="lg" bg = 'dark' variant="dark">
-                <Container>
-                    {
-                        (response)
-                            &&
-                        <button hidden = {show} className='btn btn-transparent ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                            Responder
-                        </button>
-                    }
+            {
+                (respWidth >= 600)
+                    ?
+                <Navbar fixed='bottom' className='mt-2' expand="lg" bg = 'dark' variant="dark">
+                    <Container>
+                        {
+                            (response)
+                                &&
+                            <button hidden = {show} className='btn btn-transparent ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                                Responder
+                            </button>
+                        }
 
-                    {
-                        (show)
-                            &&
-                        <button onClick={() => setShowModalContent(true)} className='btn mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
-                            <div className='d-flex align-items-center justify-content-center'>
-                                {
-                                    (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
-                                        ?
-                                    <span>Verificar cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
-                                        :
-                                    <span>Verificar cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
-                                }
-                                <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
-                            </div>
-                        </button>
-                    }
+                        {
+                            (show)
+                                &&
+                            <button onClick={() => setShowModalContent(true)} className='btn mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
+                                <div className='d-flex align-items-center justify-content-center'>
+                                    {
+                                        (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
+                                            ?
+                                        <span>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
+                                            :
+                                        <span>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
+                                    }
+                                    <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
+                                </div>
+                            </button>
+                        }
 
-                    {
-                        (show)
-                            &&
-                        <button className='btn btn-transparent ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                            Siguiente
-                        </button>
-                    }
-                </Container>
-            </Navbar>
+                        {
+                            (show)
+                                &&
+                            <button className='btn btn-transparent ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                                Siguiente
+                            </button>
+                        }
+                    </Container>
+                </Navbar>
+                    :
+                <Navbar fixed='bottom' className='mt-2' expand="lg" bg = 'dark' variant="dark">
+                    <Container>
+                        {
+                            (response)
+                                &&
+                            <button hidden = {show} className='btn btn-transparent ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                                Responder
+                            </button>
+                        }
+
+                        {
+                            (show)
+                                &&
+                            <button onClick={() => setShowModalContent(true)} className='btn mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
+                                <div className='d-flex align-items-center justify-content-center'>
+                                    {
+                                        (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
+                                            ?
+                                        <span>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
+                                            :
+                                        <span>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
+                                    }
+                                    <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
+                                </div>
+                            </button>
+                        }
+
+                        {
+                            (show)
+                                &&
+                            <button className='btn btn-transparent ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                                Siguiente
+                            </button>
+                        }
+                    </Container>
+                </Navbar>
+            }
+
         </div>
 
         <ModalBibleContent 
@@ -234,6 +286,6 @@ export const Cuestionario = () => {
             inicio = {recordFiltrado[0]?.preguntas[change]?.desdeVersiculo} 
             fin 
         />
-    </>
+    </div>
   )
 }

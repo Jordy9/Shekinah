@@ -42,7 +42,7 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
         <Modal.Body>
           <form onSubmit={handleSubmit}>
               <div className="row p-4">
-                  <div className="col-4 form-group">
+                  <div className="col-5 form-group">
                     <label className='text-black'>Categoría</label>
                     <select {...getFieldProps('categoria')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
                       <option value={undefined}>Seleccione una categoría</option>
@@ -54,20 +54,20 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
                     </select>
                   </div>
 
-                  <div className="col-4 form-group">
+                  <div className="col-5 form-group">
                     <label className='text-black'>Dificultad</label>
                     <select {...getFieldProps('dificultad')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
-                      <option value={undefined}>Seleccione una cantidad</option>
+                      <option value={undefined}>Seleccione la dificultad</option>
                       <option value="Tierno">Tierno</option>
                       <option value="Medio">Medio</option>
                       <option value="Avanzado">Avanzado</option>
                     </select>
                   </div>
 
-                  <div className="col-4 form-group">
+                  <div className="col-2 form-group">
                     <label className='text-black'>Preguntas</label>
                     <select {...getFieldProps('pregunta')} style={{border: 'none', borderBottom: '2px solid'}} className = 'form-control'>
-                      <option value={undefined}>Seleccione una cantidad</option>
+                      <option value={undefined}>Cantidad</option>
                       <option value="1">1</option>
                       <option value="5">5</option>
                       <option value="10">10</option>

@@ -1,16 +1,11 @@
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useResponsive } from '../../hooks/useResponsive';
-import { obtenerPreguntasJuego } from '../../store/preguntas/thunk';
 import { iniciarLogout } from '../../store/auth/thunk'
 
 export const Navb = () => {
 
   const dispatch = useDispatch();
-
-  const comenzarJuegoRapido = () => {
-    dispatch(obtenerPreguntasJuego())
-  }
 
   const { uid } = useSelector(state => state.auth);
 
@@ -30,10 +25,7 @@ export const Navb = () => {
               {
                 (uid)
                   &&
-                <>
-                  <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Jugar partida rapida</button>
-                  <button onClick={() => dispatch(iniciarLogout())} className='btn text-white ml-5' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
-                </>
+                <button onClick={() => dispatch(iniciarLogout())} className='btn text-white ml-5' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
               }
             </Nav>
           </Container>
@@ -47,10 +39,7 @@ export const Navb = () => {
               {
                 (uid)
                   &&
-                <>
-                  <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Jugar</button>
-                  <button onClick={() => dispatch(iniciarLogout())} className='btn text-white mx-4' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
-                </>
+                <button onClick={() => dispatch(iniciarLogout())} className='btn text-white mx-4' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
               }
             </Nav>
           </Container>
