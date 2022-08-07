@@ -144,14 +144,12 @@ export const Cuestionario = () => {
       }
     }, [recordFiltrado[0]?.preguntas[change]?.dificultad, recordFiltrado[0]?.preguntas[change]?.pregunta])
 
-
     const [respWidth] = useResponsive()
 
     useEffect(() => {
       const elementoScroll = document?.getElementById('preguntaScroll')
       elementoScroll.scrollIntoView({block: 'start'})
     }, [change])
-    
     
   return (
     <div style={{height: (respWidth) >= 600 ? '70vh' : '95vh'}}>

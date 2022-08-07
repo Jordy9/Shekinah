@@ -34,7 +34,7 @@ export const TablaPosiciones = () => {
                         <div className='d-flex justify-content-center mx-2' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                             <img src={user} className='img-fluid' alt="" />
                         </div>
-                        <h4 className='text-center text-black my-auto'>{usuarioActivo?.name} {usuarioActivo?.lastName}</h4>
+                        <h4 className='text-center text-black my-auto'>{usuarioActivo?.name}</h4>
                     </div>
                 </div>
                 <table className="table borderless">
