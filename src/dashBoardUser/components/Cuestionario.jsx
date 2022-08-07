@@ -80,7 +80,11 @@ export const Cuestionario = () => {
             document.getElementById(`buttonbg${response[1]}`).style.background = 'none'
             document.getElementById(`buttonbg${response[1]}`).style.color = ''
             setChange(change + 1)
-            setEnRachaDe(enRachaDe + 1)
+            if (showCorrect) {
+                setEnRachaDe(enRachaDe + 1)
+            } else {
+                setEnRachaDe(recordFiltrado[0]?.racha - recordFiltrado[0]?.racha + 1)
+            }
             setResponse()
             setShow(false)
             setShowTrue(false)
@@ -142,6 +146,12 @@ export const Cuestionario = () => {
 
 
     const [respWidth] = useResponsive()
+
+    useEffect(() => {
+      const elementoScroll = document?.getElementById('preguntaScroll')
+      elementoScroll.scrollIntoView({block: 'start'})
+    }, [change])
+    
     
   return (
     <div style={{height: (respWidth) >= 600 ? '70vh' : '90vh'}}>
@@ -174,7 +184,7 @@ export const Cuestionario = () => {
 
             <div className='row' xs = {12}>
                 <div className="col-12" style={{maxHeight: '150px', overflowY: 'auto'}}>
-                    <h3 className='text-white my-2' style={{textAlign: 'justify'}}>{recordFiltrado[0]?.preguntas[change]?.pregunta} <span style={{borderRadius: '20px', fontSize: '18px'}} className={`p-2 bg-${colorChange}`}>{recordFiltrado[0]?.preguntas[change]?.dificultad}</span> </h3>
+                    <h3 id='preguntaScroll' className='text-white my-2' style={{textAlign: 'justify'}}>{recordFiltrado[0]?.preguntas[change]?.pregunta} <span style={{borderRadius: '20px', fontSize: '18px'}} className={`p-2 bg-${colorChange}`}>{recordFiltrado[0]?.preguntas[change]?.dificultad}</span> </h3>
                 </div>
             </div>
         </div>
