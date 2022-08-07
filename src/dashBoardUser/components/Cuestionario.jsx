@@ -144,7 +144,7 @@ export const Cuestionario = () => {
     
     
   return (
-    <div style={{height: (respWidth) >= 600 ? '70vh' : '100vh'}}>
+    <div style={{height: (respWidth) >= 600 ? '70vh' : '85vh'}}>
         <div className='p-4' style={{backgroundColor: 'rgba(33,93,59,255)', boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.5)', position: (respWidth <= 600) && 'fixed', zIndex: (respWidth <= 600) && 1045, top: (respWidth <= 600) && 0}}>
             <div className='d-flex align-items-center' style={{position: 'absolute', top: '100px', right: '30px', cursor: 'pointer'}}>
 

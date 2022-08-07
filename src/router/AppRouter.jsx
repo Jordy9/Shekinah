@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { LoginScreen } from '../dashBoardUser/pages/LoginScreen';
 import { Registro } from '../dashBoardUser/pages/Registro';
+import { ScrollToTop } from '../scrollToTop/ScrollToTop';
 import { Spinner } from '../Spinner';
 import { iniciarAutenticacion, obtenerUsuarios } from '../store/auth/thunk';
 import { obtenerPreguntas } from '../store/preguntas/thunk';
@@ -26,6 +27,7 @@ export const AppRouter = () => {
   
   return (
     <>
+    <ScrollToTop />
       {
         (token)
           ?
