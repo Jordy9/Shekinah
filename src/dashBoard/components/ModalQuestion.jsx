@@ -22,8 +22,8 @@ const style = {
     borderRadius: '12px',
     boxShadow: 24,
     // backgroundImage: 'linear-gradient(-20deg, #2b5876 0%, #4e4376 100%)',
-    backgroundColor: '#383c45',
-    // color: 'white',
+    backgroundColor: 'white',
+    color: 'white',
     p: 4,
     overflowY: 'auto',
     height: '500px'
@@ -102,12 +102,15 @@ export const ModalQuestion = ({Show, setShow}) => {
 
     const handleChange = (i, e) => {
         let newFormValues = [...formValues];
-        newFormValues[i][e.target.name] = e.target.value;
+        newFormValues[i] = {
+            ...newFormValues[i],
+            [e.target.name]: e.target.value
+        }
         setFormValues(newFormValues);
      }
         
-    const agregar = () => {
-        setFormValues([...formValues, { respuesta: '', accion: '' }])
+     const agregar = () => {
+        setFormValues([...formValues, { texto: '', correcta: '' }])
      }
     
     const eliminar = (i) => {
@@ -274,14 +277,14 @@ export const ModalQuestion = ({Show, setShow}) => {
                                     return (
                                         <Fragment key={element + index}>
                                             <Grid flexDirection='column' container xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
-                                                <TextField error = {errors.respuesta} multiline maxRows={2} name='respuesta' value = {element.texto} onChange={e => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
+                                                <TextField error = {errors.respuesta} multiline maxRows={2} name='texto' value = {element.texto} onChange={(e) => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
                                                 {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
                                             </Grid>
 
                                             <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
-                                                <TextField error = {errors.respuesta} value = {element.correcta} onChange={e => handleChange(index, e)} variant='standard' id="select9" label="Acción" select>
-                                                    <MenuItem value="true">Correcta</MenuItem>
-                                                    <MenuItem value="false">Incorrecta</MenuItem>
+                                                <TextField error = {errors.respuesta} name='correcta' value = {element.correcta} onChange={(e) => handleChange(index, e)} variant='standard' id="select9" label="Acción" select>
+                                                    <MenuItem value={true}>Correcta</MenuItem>
+                                                    <MenuItem value={false}>Incorrecta</MenuItem>
                                                 </TextField>
                                                 {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
                                             </Grid>

@@ -242,8 +242,8 @@ export const Form = () => {
 
                                 <Grid flexDirection='column' container item xs = {9} sm = {9} md = {9} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                     <TextField error = {errors.respuesta} name='correcta' value = {element.correcta} onChange={e => handleChange(index, e)} variant='standard' id="select9" label="Acción" select>
-                                        <MenuItem value="true">Correcta</MenuItem>
-                                        <MenuItem value="false">Incorrecta</MenuItem>
+                                        <MenuItem value={true}>Correcta</MenuItem>
+                                        <MenuItem value={false}>Incorrecta</MenuItem>
                                     </TextField>
                                     {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
                                 </Grid>

@@ -53,7 +53,7 @@ export const TableQuestion = () => {
 
             {/* <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2}>
             </Grid> */}
-            <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto', backgroundColor: '#383c45' }}>
+            <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto', backgroundColor: 'white' }}>
               <TableHead>
                 <TableRow>
                   <TableCell>Pregunta</TableCell>
