@@ -310,6 +310,7 @@ export const GuardarRecord = (record) => {
         try {
             const resp = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, juego}, {headers: {'x-token': token}})
             dispatch(onUpdate(resp.data.usuario))
+            dispatch(obtenerUsuarios())
             
         } catch (error) {
             console.log(error)

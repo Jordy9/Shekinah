@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Navbar } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
+import Swal from 'sweetalert2'
 import { Antiguotestamento } from '../../Antiguotestamento'
 import { useResponsive } from '../../hooks/useResponsive'
 import { Nuevotestamento } from '../../Nuevotestamento'
@@ -96,7 +97,22 @@ export const Cuestionario = () => {
     }
 
     const salir = () => {
-        dispatch(BorrarPregunta(recordFiltrado[0]?._id))
+        Swal.fire({
+            title: '¿Antes de salir te gustaría guardar la puntuación de esta ronda?',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'No',
+            confirmButtonColor: 'rgba(33,93,59,255)',
+            cancelButtonColor: 'rgba(33,93,59,255)',
+            confirmButtonText: 'Si'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(BorrarPregunta(recordFiltrado[0]?._id))
+                dispatch(GuardarRecord(recordFiltrado[0]))
+            } else {
+                dispatch(BorrarPregunta(recordFiltrado[0]?._id))
+            }
+          })
     }
 
     const [contentBible, setContentBible] = useState()
@@ -155,39 +171,43 @@ export const Cuestionario = () => {
     <div style={{height: (respWidth) >= 600 ? '70vh' : '95vh'}}>
         <ScrollToTop change = {change} />
         <div className='p-4' style={{backgroundColor: 'rgba(33,93,59,255)', boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.5)', position: (respWidth <= 600) && 'fixed', zIndex: (respWidth <= 600) && 1045, top: (respWidth <= 600) && 0}}>
-            <div className='d-flex align-items-center' style={{position: 'absolute', top: '100px', right: '30px', cursor: 'pointer'}}>
-
-                {
-                    (show)
-                        ?
-                    <>
-                        <span className={`${(showCorrect) ? 'text-success' : 'text-danger'} mr-2`} style={{fontSize: '25px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</span>
-                        <i style={{fontSize: '30px'}} className={`${(showCorrect) ? 'text-success bi-check-circle-fill' : 'text-danger bi bi-x-circle-fill'}`}></i>
-                    </>
-                        :
-                    <i style={{fontSize: '30px'}} className="text-white bi bi-question-circle-fill"></i>
-                }
-
-            </div>
-
-            <span style={{position: 'absolute', top: '60px', right: '30px', fontSize: '23px', color: 'white'}}>{usuarioActivo?.name}</span>
             
             <div style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
                 <i style={{fontSize: '25px', cursor: 'pointer'}} onClick={salir} className="text-white bi bi-arrow-left"></i>
-                <h4 className='text-white'>Pregunta {change + 1} / {recordFiltrado[0]?.preguntas?.length}</h4>
+                <h4 className='text-white'>{change + 1} / {recordFiltrado[0]?.preguntas?.length}</h4>
+                <h4 className='text-white'>{usuarioActivo?.name}</h4>
                 <h4 className='text-white'>Puntos: {recordFiltrado[0]?.puntos}</h4>
             </div>
 
-            <h6 className='text-white mt-4 mb-4'>Racha de: {enRachaDe}x</h6>
+            <div className="row">
+                <div className="col-5 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+                    <h6 className='text-white mt-4 mb-4'>Racha de: {enRachaDe}x</h6>
+                </div>
+
+                <div className="col-7 col-sm-8 col-md-8 col-lg-9 col-xl-9 col-xxl-9 my-auto d-flex justify-content-end">
+                    {
+                        (show)
+                            ?
+                        <>
+                            <h6 className={`${(showCorrect) ? 'text-success' : 'text-danger'} mr-2 my-auto`} style={{fontSize: '25px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</h6>
+                            <i style={{fontSize: '30px'}} className={`${(showCorrect) ? 'text-success bi-check-circle-fill' : 'text-danger bi bi-x-circle-fill'}`}></i>
+                        </>
+                            :
+                        <i style={{fontSize: '30px'}} className="text-white bi bi-question-circle-fill"></i>
+                    }
+                </div>
+            </div>
+
+            <hr style={{color: 'white'}} />
 
             <div className='row' xs = {12}>
                 <div className="col-12" style={{maxHeight: '150px', overflowY: 'auto'}}>
-                    <h3 id='preguntaScroll' className='text-white my-2' style={{textAlign: 'justify'}}>{recordFiltrado[0]?.preguntas[change]?.pregunta} <span style={{borderRadius: '20px', fontSize: '18px'}} className={`p-2 bg-${colorChange}`}>{recordFiltrado[0]?.preguntas[change]?.dificultad}</span> </h3>
+                    <h3 id='preguntaScroll' className='text-white my-2' style={{textAlign: 'justify'}}>{recordFiltrado[0]?.preguntas[change]?.pregunta} <span style={{borderRadius: '20px', fontSize: '18px'}} className={`${(respWidth <= 600) ? 'p-1': 'p-2'} bg-${colorChange}`}>{recordFiltrado[0]?.preguntas[change]?.dificultad}</span> </h3>
                 </div>
             </div>
         </div>
 
-        <div className = 'row' style={{marginTop: (respWidth <= 600) && '300px'}}>
+        <div className = 'row' style={{marginTop: (respWidth <= 600) && '320px'}}>
             {
                 respuestasAleatorias.map((respuesta, index) => {
                     return (

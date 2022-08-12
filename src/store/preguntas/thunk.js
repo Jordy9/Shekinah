@@ -83,6 +83,45 @@ export const obtenerPreguntasJuegoPersonalizado = (categoria, dificultad, pregun
     }
 }
 
+export const obtenerPreguntasPorId = (ids) => {
+    return async(dispatch, getState) => {
+
+        const { uid } = getState().auth;
+
+        try {
+            const resp = await axios.post(`${point}/pregunta/juegoId`, {ids})
+
+            if (resp.data.preguntas?.length !== 0) {
+
+                dispatch(getPreguntasGame(resp.data.preguntas))
+    
+                dispatch(crearRecord(uid, 0, resp.data.preguntas, 0))
+            } else {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                  })
+                  
+                  return Toast.fire({
+                    icon: 'error',
+                    title: 'No existen preguntas con esta configuración'
+                  })         
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}
+
 export const obtenerPreguntaFiltrada = (buscadorSearch) => {
     return async(dispatch) => {
 
