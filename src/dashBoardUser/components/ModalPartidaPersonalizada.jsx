@@ -51,7 +51,7 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
-            <button type='button' className='btn btn-primary' style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={() => setShowPregunta(!showPregunta)}>
+            <button type='button' className='button-74' style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={() => setShowPregunta(!showPregunta)}>
               {(!showPregunta) ? 'Partida por Rango o Id' : 'Partida personalizada'}
             </button>
             {
@@ -95,7 +95,7 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
 
                 <div className="row p-4">
                   <div className="col-12 form-group">
-                    <button type='submit' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}} className='btn form-control'>
+                    <button type='submit' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}} className='button-76'>
                       Jugar partida personalizada
                     </button>
                   </div>
@@ -117,7 +117,7 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
 
                 <div className="row p-4">
                   <div className="col-12 form-group">
-                    <button type='button' onClick={submitt} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}} className='btn form-control'>
+                    <button type='button' onClick={submitt} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}} className='button-76'>
                       Jugar partida con id
                     </button>
                   </div>
@@ -128,9 +128,9 @@ export const ModalPartidaPersonalizada = ({ShowModalPartidaP, setShowModalPartid
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={handleClose}>
+          <button type='button' className='button-74' style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={handleClose}>
             Cerrar
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
   )

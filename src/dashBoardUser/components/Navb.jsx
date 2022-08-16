@@ -18,7 +18,7 @@ export const Navb = () => {
             {
               (uid)
                 &&
-              <button onClick={() => dispatch(iniciarLogout())} className='btn text-white ml-5' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
+              <button onClick={() => dispatch(iniciarLogout())} className='button-75 text-white ml-5' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
             }
           </Nav>
         </Container>

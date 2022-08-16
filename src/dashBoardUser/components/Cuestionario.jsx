@@ -100,6 +100,10 @@ export const Cuestionario = () => {
             title: '¿Antes de salir te gustaría guardar la puntuación de esta ronda?',
             icon: 'warning',
             showCancelButton: true,
+            customClass: {
+                cancelButton: 'button-78',
+                confirmButton: 'button-78'
+            },  
             cancelButtonText: 'No',
             confirmButtonColor: 'rgba(33,93,59,255)',
             cancelButtonColor: 'rgba(33,93,59,255)',
@@ -206,13 +210,13 @@ export const Cuestionario = () => {
             </div>
         </div>
 
-        <div className = 'row' style={{marginTop: (respWidth <= 600) && '320px'}}>
+        <div className = 'row' style={{marginTop: (respWidth <= 600) ? (recordFiltrado[0]?.preguntas[change]?.pregunta?.length > 110) ? '350px' : '310px' : null}}>
             {
                 respuestasAleatorias.map((respuesta, index) => {
                     return (
                         <div key={respuesta + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
                             <div onClick={() => setResponse([respuesta, `${index + 1}`])} className='p-4 d-flex align-items-center my-1' style={{cursor: 'pointer', maxHeight: '150px', overflowY: 'auto', backgroundColor: (response) && (Number(response[1]) === index + 1 && !show) && 'rgb(16, 125, 197)', borderRadius: '20px', padding: 0, margin: 0}}>
-                                <button className='btn btn-transparent shadow' style={{borderRadius: '50%', color: 'white', backgroundColor: 'rgba(33,93,59,255)'}}>
+                                <button className='button-77 shadow' style={{borderRadius: '50%', color: 'white', backgroundColor: 'rgba(33,93,59,255)'}}>
                                     {index + 1}
                                 </button>
                                 
@@ -233,7 +237,7 @@ export const Cuestionario = () => {
                         {
                             (response)
                                 &&
-                            <button hidden = {show} className='btn btn-transparent ml-auto shadow' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            <button hidden = {show} className='button-77 ml-auto shadow' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
                                 Responder
                             </button>
                         }
@@ -241,7 +245,7 @@ export const Cuestionario = () => {
                         {
                             (show)
                                 &&
-                            <button onClick={() => setShowModalContent(true)} className='btn mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
+                            <button onClick={() => setShowModalContent(true)} className='button-78 mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
                                 <div className='d-flex align-items-center justify-content-center'>
                                     {
                                         (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
@@ -258,7 +262,7 @@ export const Cuestionario = () => {
                         {
                             (show)
                                 &&
-                            <button className='btn btn-transparent ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            <button className='button-78 ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
                                 Siguiente
                             </button>
                         }
@@ -270,7 +274,7 @@ export const Cuestionario = () => {
                         {
                             (response)
                                 &&
-                            <button hidden = {show} className='btn btn-transparent ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            <button hidden = {show} className='button-78 ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
                                 Responder
                             </button>
                         }
@@ -278,7 +282,7 @@ export const Cuestionario = () => {
                         {
                             (show)
                                 &&
-                            <button onClick={() => setShowModalContent(true)} className='btn mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
+                            <button onClick={() => setShowModalContent(true)} className='button-78 mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
                                 <div className='d-flex align-items-center justify-content-center'>
                                     {
                                         (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
@@ -295,7 +299,7 @@ export const Cuestionario = () => {
                         {
                             (show)
                                 &&
-                            <button className='btn btn-transparent ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            <button className='button-78 ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
                                 Siguiente
                             </button>
                         }

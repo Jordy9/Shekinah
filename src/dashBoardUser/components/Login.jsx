@@ -85,7 +85,7 @@ export const Login = () => {
                                     <input {...getFieldProps('rememberme')} defaultChecked = {(email) && true} type="checkbox" className="form-check-input" id="exampleCheck1" />
                                     <label className="form-check-label text-black">Recuerdame</label>
                                 </div>
-                                <button type='submit' className = 'btn form-control mt-4' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>Iniciar sesión</button>
+                                <button type='submit' className = 'button-76 mt-4' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>Iniciar sesión</button>
 
                                 <div className='text-center my-4'>Inicia sesión con las redes sociales</div>
 

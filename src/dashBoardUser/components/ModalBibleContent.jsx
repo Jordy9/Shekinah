@@ -24,9 +24,9 @@ export const ModalBibleContent = ({ShowModalContent, setShowModalContent, conten
             }
         </Modal.Body>
         <Modal.Footer>
-          <Button style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={handleClose}>
+          <button type='button' className='button-74' style={{backgroundColor: 'rgba(33,93,59,255)'}} onClick={handleClose}>
             Cerrar
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
   )
