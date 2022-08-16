@@ -237,7 +237,7 @@ export const Cuestionario = () => {
                         {
                             (response)
                                 &&
-                            <button hidden = {show} className='button-77 ml-auto shadow' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
+                            <button hidden = {show} className='button-78 ml-auto shadow' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
                                 Responder
                             </button>
                         }
