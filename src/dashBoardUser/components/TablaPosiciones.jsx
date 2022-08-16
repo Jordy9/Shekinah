@@ -52,8 +52,8 @@ export const TablaPosiciones = () => {
 
             </div>
             <div className="p-4" style={{borderBottomLeftRadius: '35px', borderBottomRightRadius: '35px', backgroundColor: 'white', justifyContent: 'space-between', display: 'flex'}}>
-                <button onClick={() => setShowModalPartidaP(true)} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>{(respWidth >= 992) ? 'Configurar partida personalizada' : 'Personalizada'}</button>
-                <button onClick={comenzarJuegoRapido} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>{(respWidth >= 992) ? 'Jugar partida rapida' : 'Jugar'}</button>
+                <button onClick={() => setShowModalPartidaP(true)} className='text-white button-74' style={{backgroundColor: 'rgba(33,93,59,255)'}}>{(respWidth >= 992) ? 'Configurar partida personalizada' : 'Personalizada'}</button>
+                <button onClick={comenzarJuegoRapido} className='text-white button-74' style={{backgroundColor: 'rgba(33,93,59,255)'}}>{(respWidth >= 992) ? 'Jugar partida rapida' : 'Jugar'}</button>
             </div>
         </div>
 
