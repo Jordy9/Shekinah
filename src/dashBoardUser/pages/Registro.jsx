@@ -87,7 +87,7 @@ export const Registro = () => {
                                             {touched.confirmPassword && errors.confirmPassword && <span style={{color: 'red'}}>{errors.confirmPassword}</span>}
                                         </div>
                                     </div>
-                                    <button type='submit' className = 'btn form-control mt-4' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>Registrarse</button>
+                                    <button type='submit' className = 'button-76 mt-4' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>Registrarse</button>
                                 </form>
 
                                 <div className = 'text-center my-4'>
