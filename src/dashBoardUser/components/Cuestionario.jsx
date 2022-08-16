@@ -216,7 +216,7 @@ export const Cuestionario = () => {
                     return (
                         <div key={respuesta + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
                             <div onClick={() => setResponse([respuesta, `${index + 1}`])} className='p-4 d-flex align-items-center my-1' style={{cursor: 'pointer', maxHeight: '150px', overflowY: 'auto', backgroundColor: (response) && (Number(response[1]) === index + 1 && !show) && 'rgb(16, 125, 197)', borderRadius: '20px', padding: 0, margin: 0}}>
-                                <button className='button-77 shadow' style={{borderRadius: '50%', color: 'white', backgroundColor: 'rgba(33,93,59,255)'}}>
+                                <button className='btn shadow' style={{borderRadius: '50%', color: 'white', backgroundColor: 'rgba(33,93,59,255)'}}>
                                     {index + 1}
                                 </button>
                                 
