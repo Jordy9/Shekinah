@@ -6,6 +6,7 @@ import { useFormik } from 'formik'
 import { GoogleLogin } from '@react-oauth/google';
 import FacebookLogin from 'react-facebook-login';
 import { iniciarLogin, startLoginFacebook, startLoginGoogle } from '../../store/auth/thunk';
+import { Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField, Typography } from '@mui/material';
 
 export const Login = () => {
 
@@ -54,80 +55,80 @@ export const Login = () => {
 
   return (
     <>
-        <div className="container my-5">
-            <div className="row">
-                <div className="col-12 d-flex justify-content-center">
-                    <div className = 'shadow p-4 bg-white image-round flex-column text-black' style = {{width: '400px', height: 'auto', borderRadius: '20px'}}>
-                        <h4 className = 'text-center text-black my-2'>Iniciar sesión</h4>
-                        <div className="container card-body">
-                            <form onSubmit={handleSubmit} className = 'my-4'>
-                                <div className="row">
+        <Grid display = {'flex'} justifyContent = {'center'} container my = {2}>
+            <Grid>
+                <Grid xs = {12}>
+                    <Grid p = {2}>
+                        <Paper sx = {{p: 4}} elevation={10} style = {{width: '400px', height: 'auto', borderRadius: '20px'}}>
+                            <Typography variant = 'h5' textAlign={'center'}>Iniciar sesión</Typography>
+                            <Grid contained>
+                                <form onSubmit={handleSubmit} style = {{marginTop: '1.5rem', marginBottom: '1.5rem'}}>
+                                    <Grid contained>
 
-                                    <div className="col form-group">
-                                        <label className='text-black'>Correo electrónico</label>
-                                        <input autoComplete='off' type="text" style={{border: 'none', borderBottom: '2px solid'}} {...getFieldProps('email')} placeholder = 'Ejemplo@hotmail.com' className = 'form-control text-black' />
-                                        {touched.email && errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
-                                    </div>
+                                        <Grid xs = {12} mb = {1}>
+                                            <TextField sx={{color: 'black'}} fullWidth autoComplete='off' {...getFieldProps('email')} id="filled-basic" label="Correo electrónico" variant="standard" />
+                                            {touched.email && errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
+                                        </Grid>
 
-                                </div>
+                                    </Grid>
 
-                                <div className="row">
+                                    <Grid container>
 
-                                    <div className="col form-group">
-                                        <label className='text-black'>Contraseña</label>
-                                        <input type="password" {...getFieldProps('password')} style={{border: 'none', borderBottom: '2px solid'}} placeholder = '********' className = 'form-control bg-transparent text-black' />
-                                        {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
-                                    </div>
+                                        <Grid xs = {12} mt = {1}>
+                                            <TextField fullWidth autoComplete='off' {...getFieldProps('password')} id="filled-basic" label="Contraseña" variant="standard" />
+                                            {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
+                                        </Grid>
 
-                                </div>
+                                    </Grid>
 
-                                <div className="form-check">
-                                    <input {...getFieldProps('rememberme')} defaultChecked = {(email) && true} type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                    <label className="form-check-label text-black">Recuerdame</label>
-                                </div>
-                                <button type='submit' className = 'button-76 mt-4' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>Iniciar sesión</button>
+                                    <FormGroup>
+                                        <FormControlLabel control={<Checkbox {...getFieldProps('rememberme')} defaultChecked = {(email) && true} />} label="Recuerdame" />
+                                    </FormGroup>
 
-                                <div className='text-center my-4'>Inicia sesión con las redes sociales</div>
+                                    <Button fullWidth type='submit' variant = 'contained'>Iniciar sesión</Button>
 
-                                <div className="row">
-                                    <div className="col-12 mb-4 d-flex justify-content-center">
-                                        <GoogleLogin
-                                            onSuccess={onSuccessLogin}
-                                            onError={onErrorLogin}
-                                            theme = 'filled_black'
-                                            size='medium'
-                                            useOneTap = {false}
-                                        />
-                                    </div>
+                                    <Grid textAlign={'center'} my = {2}>Inicia sesión con las redes sociales</Grid>
 
-                                    <div className="col-12 d-flex justify-content-center">
-                                        <FacebookLogin
-                                            appId="587079659439993"
-                                            autoLoad={false}
-                                            callback={responseFacebook}
-                                            size = 'small'
-                                            icon = {<i style={{fontSize: '20px'}} className="bi bi-facebook mr-1"></i>}
-                                            buttonStyle = {{width: 'auto', height: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '50px'}}
-                                            textButton = 'Iniciar sesión con Facebook'
-                                            disableMobileRedirect
-                                        />
-                                    </div>
-                                </div>
-                            </form>
+                                    <Grid container>
+                                        <Grid xs = {12} mb = {3} display = 'flex' justifyContent={'center'}>
+                                            <GoogleLogin
+                                                onSuccess={onSuccessLogin}
+                                                onError={onErrorLogin}
+                                                theme = 'filled_black'
+                                                size='medium'
+                                                useOneTap = {false}
+                                            />
+                                        </Grid>
 
-                            <div className = 'text-center my-4'>
-                                <NavLink to = '/Registro' style = {{borderRadius: '50px', textDecoration: 'none', color: 'black'}}>¿Aun no tienes una cuenta? Registrate</NavLink>
-                            </div>
-                            
-                            <div className = 'text-center'>
-                                <NavLink to = '/ForgotPassword' style = {{borderRadius: '50px', textDecoration: 'none', color: 'black'}}>¿Olvidaste tu contraseña?</NavLink>
-                            </div>
+                                        <Grid xs = {12} display = 'flex' justifyContent={'center'}>
+                                            <FacebookLogin
+                                                appId="587079659439993"
+                                                autoLoad={false}
+                                                callback={responseFacebook}
+                                                size = 'small'
+                                                icon = {<i style={{fontSize: '20px'}} className="bi bi-facebook mr-1"></i>}
+                                                buttonStyle = {{width: 'auto', height: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '50px'}}
+                                                textButton = 'Iniciar sesión con Facebook'
+                                                disableMobileRedirect
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </form>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>   
+                                <Grid mb={2} textAlign={'center'}>
+                                    <NavLink to = '/Registro' style = {{borderRadius: '50px', color: 'black'}}>¿Aun no tienes una cuenta? Registrate</NavLink>
+                                </Grid>
+                                
+                                {/* <Grid textAlign={'center'} className = 'text-center'>
+                                    <NavLink to = '/ForgotPassword' style = {{borderRadius: '50px', color: 'black'}}>¿Olvidaste tu contraseña?</NavLink>
+                                </Grid> */}
+
+                            </Grid>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>   
     </>
   )
 }

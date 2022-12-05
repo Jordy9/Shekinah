@@ -1,5 +1,7 @@
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { ArrowBackIos, Logout } from '@mui/icons-material';
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { iniciarLogout } from '../../store/auth/thunk'
 
 export const Navb = () => {
@@ -8,21 +10,39 @@ export const Navb = () => {
 
   const { uid } = useSelector(state => state.auth);
 
+  const navigate = useNavigate()
+
+  const { pathname } = useLocation()
+
   return (
     <>
-      <Navbar fixed='top' expand="lg" bg = 'dark' variant="dark">
-        <Container>
-          <Navbar.Brand style = {{cursor: 'pointer'}}>Shekinah</Navbar.Brand>
-      
-          <Nav className="ml-auto">
+      <AppBar color='primary' component="nav">
+        <Toolbar>
+          {
+            (pathname === '/Perfil')
+              &&
+            <IconButton onClick={() => navigate('/lobi')}>
+              <ArrowBackIos />
+            </IconButton>
+          }
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1}}
+          >
+            Shekinah
+          </Typography>
+          <Box>
             {
               (uid)
                 &&
-              <button onClick={() => dispatch(iniciarLogout())} className='button-75 text-white ml-5' style={{backgroundColor: 'red'}}><i className="bi bi-box-arrow-right"></i></button>
+              <IconButton color='error' onClick={() => dispatch(iniciarLogout())}>
+                <Logout />
+              </IconButton>
             }
-          </Nav>
-        </Container>
-      </Navbar>
+          </Box>
+        </Toolbar>
+      </AppBar>
     </>
   );
 }

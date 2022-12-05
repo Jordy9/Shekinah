@@ -1,11 +1,11 @@
 import React from 'react'
-import { Modal } from 'react-bootstrap'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
 import { iniciarActualizacionPass } from '../../store/auth/thunk'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material'
 
-export const ModalCambPass = ({showModalPass, setShowModalPass}) => {
+export const DialogCambPass = ({showDialogPass, setShowDialogPass}) => {
 
     const dispatch = useDispatch();
 
@@ -34,7 +34,7 @@ export const ModalCambPass = ({showModalPass, setShowModalPass}) => {
     })
 
     const handleClose = () => {
-        setShowModalPass(false)
+        setShowDialogPass(false)
     }
 
     const handledButton = () => {
@@ -42,30 +42,28 @@ export const ModalCambPass = ({showModalPass, setShowModalPass}) => {
     }
 
   return (
-    <Modal size='md' show={showModalPass} onHide={handleClose}>
-        <Modal.Header style={{border: 'none'}} closeButton>
-          <Modal.Title><h1>Cambiar contraseña</h1></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+    <Dialog
+        open={showDialogPass}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        scroll={'paper'}
+    >
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant = 'h3' textAlign={'center'} color={'black'}>Cambiar contraseña</Typography>
+        </DialogTitle>
+        <DialogContent>
             <form onSubmit={handleSubmit}>
-                <label>Contraseña</label>
-                <input type="text" {...getFieldProps('passwordActual')} placeholder = 'Contraseña actual' className = 'form-control bg-transparent text-black my-2' />
-                <input type="text" {...getFieldProps('password')} placeholder = 'Contraseña nueva' className = 'form-control bg-transparent text-black my-2' />
-                {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
-                <input type="text" {...getFieldProps('confirmPassword')} placeholder = 'Escribe de nuevo la nueva contraseña' className = 'form-control bg-transparent text-black my-2' />
-                {touched.confirmPassword && errors.confirmPassword && <span style={{color: 'red'}}>{errors.confirmPassword}</span>}
+                <TextField fullWidth sx = {{my: 1}} {...getFieldProps('passwordActual')} id="filled-basic" label="Contraseña" variant="standard" />
+                <TextField fullWidth sx = {{my: 1}} {...getFieldProps('password')} id="filled-basic" label="Contraseña nueva" variant="standard" />
+                <TextField fullWidth sx = {{my: 1}} {...getFieldProps('confirmPassword')} id="filled-basic" label="Escribe de nuevo la nueva contraseña" variant="standard" />
                 <button type='submit' id='idButton' hidden></button>
             </form>
-        </Modal.Body>
-        <Modal.Footer onSubmit={handleSubmit}>
-            <button type='submit' onClick={handledButton} className='btn btn-primary'>
-                Guardar
-            </button>
-
-            <button onClick={handleClose} className='btn btn-primary'>
-                Cancelar
-            </button>
-        </Modal.Footer>
-      </Modal>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleClose} variant='contained'>Cancelar</Button>
+            <Button type='submit' onClick={handledButton} variant='contained'>Guardar</Button>
+        </DialogActions>
+      </Dialog>
   )
 }

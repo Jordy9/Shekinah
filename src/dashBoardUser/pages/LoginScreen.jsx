@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Navb } from '../components/Navb';
-import { ModalPartidaPersonalizada } from '../components/ModalPartidaPersonalizada';
 import { Login } from '../components/Login';
 import { useSelector } from 'react-redux';
+import { DialogPartidaPersonalizada } from '../components/DialogPartidaPersonalizada';
+import { Button, Grid } from '@mui/material';
+import { DashBoardLayaout } from '../layaout/DashBoardLayaout';
 
 export const LoginScreen = () => {
 
@@ -11,25 +12,24 @@ export const LoginScreen = () => {
   const { uid } = useSelector(state => state.auth);
   
   return (
-    <div>
-      <Navb />
+    <DashBoardLayaout>
       {
         (uid)
           &&
-        <div className="row p-4 mt-5">
-          <div className="col-12 d-flex justify-content-center">
-            <button onClick={() => setShowModalPartidaP(true)} className='btn text-white' style={{backgroundColor: 'rgba(33,93,59,255)'}}>Configurar partida personalizada</button>
-          </div>
-        </div>
+        <Grid container mt={2} p = {2}>
+          <Grid display={'flex'} justifyContent = {'center'} xs = {12}>
+            <Button variant = 'contained' onClick={() => setShowModalPartidaP(true)}>Configurar partida personalizada</Button>
+          </Grid>
+        </Grid>
       }
 
-      <div className="row p-4 my-5">
-        <div className="col-12">
+      <Grid container>
+        <Grid xs = {12}>
           <Login />
-        </div>
-      </div>
+        </Grid>
+      </Grid>
 
-      <ModalPartidaPersonalizada ShowModalPartidaP = {ShowModalPartidaP} setShowModalPartidaP = {setShowModalPartidaP} />
-    </div>
+      <DialogPartidaPersonalizada ShowDialogPartidaP = {ShowModalPartidaP} setShowDialogPartidaP = {setShowModalPartidaP} />
+    </DashBoardLayaout>
   )
 }

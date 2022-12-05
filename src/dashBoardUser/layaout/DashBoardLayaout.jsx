@@ -1,16 +1,16 @@
 import { Toolbar } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import { Navbar } from '../components/Navbar'
+import { Navb } from '../components/Navb'
 
 export const DashBoardLayaout = ({children}) => {
   return (
     <Box sx={{display: 'flex'}}>
-        {/* <Navbar /> */}
+        <Navb />
 
         <Box
             component = 'main'
-            sx={{flexGrow: 1, p: 3}}
+            sx={{flexGrow: 1}}
         >
 
             <Toolbar />

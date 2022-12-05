@@ -1,5 +1,6 @@
+import { ArrowBackIos, Book } from '@mui/icons-material'
+import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Container, Navbar } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 import { Antiguotestamento } from '../../Antiguotestamento'
@@ -9,7 +10,7 @@ import { ScrollToTop } from '../../scrollToTop/ScrollToTop'
 import { GuardarRecord } from '../../store/auth/thunk'
 import { BorrarPregunta, SiguientePregunta } from '../../store/record/thunk'
 import './Cuestionario.css'
-import { ModalBibleContent } from './ModalBibleContent'
+import { DialogContentCita } from './DialogContentCita'
 
 const librosBiblia = [...Antiguotestamento(), ...Nuevotestamento()]
 
@@ -171,60 +172,67 @@ export const Cuestionario = () => {
     }, [change])
     
   return (
-    <div style={{height: (respWidth) >= 600 ? '70vh' : '95vh'}}>
+    <>
         <ScrollToTop change = {change} />
-        <div className='p-4' style={{backgroundColor: 'rgba(33,93,59,255)', boxShadow: '10px 10px 20px 2px rgba(0,0,0,0.5)', position: (respWidth <= 600) && 'fixed', zIndex: (respWidth <= 600) && 1045, top: (respWidth <= 600) && 0}}>
-            
-            <div style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
-                <i style={{fontSize: '25px', cursor: 'pointer'}} onClick={salir} className="text-white bi bi-arrow-left"></i>
-                <h4 className='text-white'>{change + 1} / {recordFiltrado[0]?.preguntas?.length}</h4>
-                <h4 className='text-white'>{usuarioActivo?.name}</h4>
-                <h4 className='text-white'>Puntos: {recordFiltrado[0]?.puntos}</h4>
-            </div>
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+                {/* <Toolbar> */}
+                    <Grid p={4}>
+                        <Grid style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
+                            <IconButton onClick={salir}>
+                                <ArrowBackIos />
+                            </IconButton>
+                            <Typography variant='h5' color = 'white'>{change + 1} / {recordFiltrado[0]?.preguntas?.length}</Typography>
+                            <Typography variant='h5' color = 'white'>{usuarioActivo?.name}</Typography>
+                            <Typography variant='h5' color = 'white'>Puntos: {recordFiltrado[0]?.puntos}</Typography>
+                        </Grid>
 
-            <div className="row">
-                <div className="col-5 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
-                    <h6 className='text-white mt-4 mb-4'>Racha de: {enRachaDe}x</h6>
-                </div>
+                        <Grid container spacing={2}>
+                            <Grid xs = {5} sm = {4} md = {4} lg = {3} xl = {3}>
+                                <Typography variant='h6' mt = {4} mb = {4} color = {'white'}>Racha de: {enRachaDe}x</Typography>
+                            </Grid>
 
-                <div className="col-7 col-sm-8 col-md-8 col-lg-9 col-xl-9 col-xxl-9 my-auto d-flex justify-content-end">
-                    {
-                        (show)
-                            ?
-                        <>
-                            <h6 className={`${(showCorrect) ? 'text-success' : 'text-danger'} mr-2 my-auto`} style={{fontSize: '25px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</h6>
-                            <i style={{fontSize: '30px'}} className={`${(showCorrect) ? 'text-success bi-check-circle-fill' : 'text-danger bi bi-x-circle-fill'}`}></i>
-                        </>
-                            :
-                        <i style={{fontSize: '30px'}} className="text-white bi bi-question-circle-fill"></i>
-                    }
-                </div>
-            </div>
+                            <Grid xs = {7} sm = {8} md = {8} lg = {9} xl = {9} display = {'flex'} justifyContent = {'end'} my = {'auto'}>
+                                {
+                                    (show)
+                                        ?
+                                    <>
+                                        <Typography variant='h6' className={`${(showCorrect) ? 'text-success' : 'text-danger'} mr-2 my-auto`} style={{fontSize: '25px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</Typography>
+                                        <i style={{fontSize: '30px'}} className={`${(showCorrect) ? 'text-success bi-check-circle-fill' : 'text-danger bi bi-x-circle-fill'}`}></i>
+                                    </>
+                                        :
+                                    <i style={{fontSize: '30px'}} className="text-white bi bi-question-circle-fill"></i>
+                                }
+                            </Grid>
+                        </Grid>
 
-            <hr style={{color: 'white'}} />
+                        <hr style = {{color: 'white'}} />
 
-            <div className='row' xs = {12}>
-                <div className="col-12" style={{maxHeight: '150px', overflowY: 'auto'}}>
-                    <h3 id='preguntaScroll' className='text-white my-2' style={{textAlign: 'justify'}}>{recordFiltrado[0]?.preguntas[change]?.pregunta} <span style={{borderRadius: '20px', fontSize: '18px'}} className={`${(respWidth <= 600) ? 'p-1': 'p-2'} bg-${colorChange}`}>{recordFiltrado[0]?.preguntas[change]?.dificultad}</span> </h3>
-                </div>
-            </div>
-        </div>
+                        <Grid container>
+                            <Grid xs = {12} style={{maxHeight: '150px', overflowY: 'auto'}}>
+                                <Typography variant = 'h5' id='preguntaScroll' my={2} color={'white'} style={{textAlign: 'justify'}}>{recordFiltrado[0]?.preguntas[change]?.pregunta} <span style={{borderRadius: '20px', fontSize: '18px'}} className={`${(respWidth <= 600) ? 'p-1': 'p-2'} bg-${colorChange}`}>{recordFiltrado[0]?.preguntas[change]?.dificultad}</span> </Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                {/* </Toolbar> */}
+            </AppBar>
+        </Box>
 
-        <div className = 'row' style={{marginTop: (respWidth <= 600) ? (recordFiltrado[0]?.preguntas[change]?.pregunta?.length > 110) ? '350px' : '310px' : null}}>
+        <Grid container>
             {
                 respuestasAleatorias.map((respuesta, index) => {
                     return (
-                        <div key={respuesta + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
-                            <div onClick={() => setResponse([respuesta, `${index + 1}`])} className='p-4 d-flex align-items-center my-1' style={{cursor: 'pointer', maxHeight: '150px', overflowY: 'auto', backgroundColor: (response) && (Number(response[1]) === index + 1 && !show) && 'rgb(16, 125, 197)', borderRadius: '20px', padding: 0, margin: 0}}>
-                                <button className='btn shadow' style={{borderRadius: '50%', color: 'white', backgroundColor: 'rgba(33,93,59,255)'}}>
+                        <Grid p={2} xs = {12} sm = {12} md = {12} lg = {6} xl = {6} key={respuesta + index}>
+                            <Grid p={1} display = {'flex'} alignItems = 'center' onClick={() => setResponse([respuesta, `${index + 1}`])} style={{cursor: 'pointer', maxHeight: '150px', overflowY: 'auto', backgroundColor: (response) && (Number(response[1]) === index + 1 && !show) && 'rgb(16, 125, 197)', borderRadius: '20px', margin: 0}}>
+                                <Button variant='contained'>
                                     {index + 1}
-                                </button>
+                                </Button>
                                 
-                                <h5 id = {`buttonbg${index + 1}`} className={`${(showTrue && respuesta?.correcta === true) && 'bg-success'} ml-2 my-auto p-2`} style={{borderRadius: '20px'}}>
+                                <Typography variant = 'h6' id = {`buttonbg${index + 1}`} className={`${(showTrue && respuesta?.correcta === true) && 'bg-success'} ml-2 my-auto p-2`} style={{borderRadius: '20px'}}>
                                     {respuesta.texto}
-                                </h5>
-                            </div>
-                        </div>
+                                </Typography>
+                            </Grid>
+                        </Grid>
                     )
                 })
             }
@@ -232,92 +240,104 @@ export const Cuestionario = () => {
             {
                 (respWidth >= 600)
                     ?
-                <Navbar fixed='bottom' className='mt-2' expand="lg" bg = 'dark' variant="dark">
-                    <Container>
-                        {
-                            (response)
-                                &&
-                            <button hidden = {show} className='button-78 ml-auto shadow' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                                Responder
-                            </button>
-                        }
+                <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+                    <Toolbar>
+                        <Box p={3} sx={{ flexGrow: 1 }} component = {'div'}>
 
-                        {
-                            (show)
-                                &&
-                            <button onClick={() => setShowModalContent(true)} className='button-78 mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
-                                <div className='d-flex align-items-center justify-content-center'>
-                                    {
-                                        (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
-                                            ?
-                                        <span>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
-                                            :
-                                        <span>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
-                                    }
-                                    <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
-                                </div>
-                            </button>
-                        }
+                            <Grid container display={'flex'} justifyContent = {'end'}>
+                                {
+                                    (response)
+                                        &&
+                                    <Button hidden = {show} onClick={() => onClick(response)} variant='contained'>Responder</Button>
+                                }
+                            </Grid>
 
-                        {
-                            (show)
-                                &&
-                            <button className='button-78 ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                                Siguiente
-                            </button>
-                        }
-                    </Container>
-                </Navbar>
+                            <Grid display={'flex'} justifyContent = {'space-between'}>
+                                {
+                                    (show)
+                                        &&
+                                    <Button variant='contained' endIcon = {<Book />} onClick={() => setShowModalContent(true)}>
+                                        {
+                                            (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
+                                                ?
+                                            <Typography className='textCard1' variant='subtitle2' color={'white'} component={'span'}>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</Typography>
+                                                :
+                                            <Typography className='textCard1' variant='subtitle2' color={'white'} component={'span'}>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</Typography>
+                                        }
+                                    </Button>
+                                }
+
+                                {
+                                    (show)
+                                        &&
+                                    <Button variant='contained' onClick={next}>
+                                        Siguiente
+                                    </Button>
+                                }
+                            </Grid>
+
+                        </Box>
+                    </Toolbar>
+                </AppBar>
                     :
-                <Navbar fixed='bottom' className='mt-2' expand="lg" bg = 'dark' variant="dark">
-                    <Container>
-                        {
-                            (response)
-                                &&
-                            <button hidden = {show} className='button-78 ml-auto' onClick={() => onClick(response)} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                                Responder
-                            </button>
-                        }
+                <Box mt={35}>
+                    {
+                        (response)
+                            &&
+                        <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+                            <Toolbar>
+                                <Box p={3} sx={{ flexGrow: 1 }} component = {'div'}>
 
-                        {
-                            (show)
-                                &&
-                            <button onClick={() => setShowModalContent(true)} className='button-78 mr-auto' style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white'}}>
-                                <div className='d-flex align-items-center justify-content-center'>
-                                    {
-                                        (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
-                                            ?
-                                        <span>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</span>
-                                            :
-                                        <span>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</span>
-                                    }
-                                    <i style={{fontSize: '30px', color: 'white', fontStyle: 'normal'}} className="bi bi-book-half ml-2 mt-1"></i>
-                                </div>
-                            </button>
-                        }
+                                    <Grid container display={'flex'} justifyContent = {'end'}>
+                                        {
+                                            (response)
+                                                &&
+                                            <Button hidden = {show} onClick={() => onClick(response)} variant='contained'>Responder</Button>
+                                        }
+                                    </Grid>
 
-                        {
-                            (show)
-                                &&
-                            <button className='button-78 ml-auto' onClick={next} style={{backgroundColor: 'rgba(33,93,59,255)', color: 'white', width: 'auto'}}>
-                                Siguiente
-                            </button>
-                        }
-                    </Container>
-                </Navbar>
+                                    <Grid display={'flex'} justifyContent = {'space-between'}>
+                                        {
+                                            (show)
+                                                &&
+                                            <Button variant='contained' endIcon = {<Book />} onClick={() => setShowModalContent(true)}>
+                                                {
+                                                    (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
+                                                        ?
+                                                    <Typography className='textCard1' variant='subtitle2' color={'white'} component={'span'}>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</Typography>
+                                                        :
+                                                    <Typography className='textCard1' variant='subtitle2' color={'white'} component={'span'}>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</Typography>
+                                                }
+                                            </Button>
+                                        }
+
+                                        {
+                                            (show)
+                                                &&
+                                            <Button variant='contained' onClick={next}>
+                                                Siguiente
+                                            </Button>
+                                        }
+                                    </Grid>
+
+                                </Box>
+                            </Toolbar>
+                        </AppBar>
+                    }
+                </Box>
             }
 
-        </div>
+        </Grid>
 
-        <ModalBibleContent 
-            ShowModalContent = {ShowModalContent}
-            setShowModalContent = {setShowModalContent} 
+        <DialogContentCita
+            ShowDialog = {ShowModalContent}
+            setShowDialog = {setShowModalContent}
             content = {contentBible} 
             capitulo = {recordFiltrado[0]?.preguntas[change]?.capitulo} 
             libro = {recordFiltrado[0]?.preguntas[change]?.libro} 
             inicio = {recordFiltrado[0]?.preguntas[change]?.desdeVersiculo} 
             fin 
         />
-    </div>
+    </>
   )
 }

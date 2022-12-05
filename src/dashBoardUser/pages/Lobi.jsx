@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Navb } from '../components/Navb';
 import { TablaPosiciones } from '../components/TablaPosiciones';
+import { Grid } from '@mui/material';
 
 export const Lobi = () => {
 
@@ -28,14 +29,14 @@ export const Lobi = () => {
   }, [recordFiltrado, pathname])
   
   return (
-    <div>
+    <>
       <Navb />
 
-      <div className="row p-4 mt-5">
-        <div className="col-12">
+      <Grid container display={'flex'}>
+        <Grid xs = {12} sx = {{mt: '9vh'}}>
           <TablaPosiciones />
-        </div>
-      </div>
-    </div>
+        </Grid>
+      </Grid>
+    </>
   )
 }
