@@ -22,7 +22,7 @@ export const Navb = () => {
             (pathname === '/Perfil')
               &&
             <IconButton onClick={() => navigate('/lobi')}>
-              <ArrowBackIos />
+              <ArrowBackIos sx = {{color: 'secondary.main'}} />
             </IconButton>
           }
           <Typography

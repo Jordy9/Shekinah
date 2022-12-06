@@ -51,8 +51,8 @@ export const Registro = () => {
         <DashBoardLayaout>
             <Grid container display = {'flex'} justifyContent = {'center'} alignItems = {'center'} sx = {{height: '100%'}}>
                 <Grid sx = {12} mt={2}>
-                    <Grid>
-                        <Paper sx = {{p: 4}} elevation={10} style = {{width: '400px', height: 'auto', borderRadius: '20px'}}>
+                    <Grid p = {2}>
+                        <Paper sx = {{p: 4}} elevation={10} style = {{maxWidth: '400px', height: 'auto', borderRadius: '20px'}}>
                             <Typography variant = 'h6' textAlign={'center'}>Formulario de Registro</Typography>
                             <Grid>
                                 <form onSubmit={handleSubmit} style = {{marginTop: '1.5rem', marginBottom: '1.5rem'}}>

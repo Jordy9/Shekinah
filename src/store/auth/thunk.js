@@ -201,6 +201,56 @@ export const iniciarActualizacion = (id, name, lastName, email, password, role) 
     }
 }
 
+export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
+    return async(dispatch) => {
+
+        try {
+            const resp = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, tema, selected}, {headers: {'x-token': token}})
+    
+            if (resp.data.ok) {
+
+                dispatch(onUpdate(resp.data.usuario))
+    
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                return Toast.fire({
+                    icon: 'success',
+                    title: 'Tema actualizado correctamente'
+                })
+            }
+        } catch ({response}) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'error',
+                title: response.data.msg
+            })
+        }
+        
+
+    }
+}
+
 export const iniciarActualizacionPass = (id, name, lastName, email, passwordActual, password, role) => {
     return async(dispatch) => {
 

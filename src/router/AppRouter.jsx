@@ -13,7 +13,7 @@ export const AppRouter = () => {
 
   const dispatch = useDispatch()
 
-  const { uid } = useSelector(state => state.auth);
+  const { uid, usuarioActivo } = useSelector(state => state.auth);
 
   const token = localStorage.getItem('token')
 
@@ -23,11 +23,15 @@ export const AppRouter = () => {
     dispatch(obtenerPreguntas())
     dispatch(obtenerRecord())
   }, [dispatch])
+
+  if (!!uid && !usuarioActivo) {
+    return <Spinner />
+  }
   
   return (
     <>
       {
-        (token)
+        (!!token)
           ?
         (!uid)
           ?

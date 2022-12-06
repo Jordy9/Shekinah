@@ -59,7 +59,7 @@ export const Login = () => {
             <Grid>
                 <Grid xs = {12}>
                     <Grid p = {2}>
-                        <Paper sx = {{p: 4}} elevation={10} style = {{width: '400px', height: 'auto', borderRadius: '20px'}}>
+                        <Paper sx = {{p: 4}} elevation={10} style = {{maxWidth: '400px', height: 'auto', borderRadius: '20px'}}>
                             <Typography variant = 'h5' textAlign={'center'}>Iniciar sesión</Typography>
                             <Grid contained>
                                 <form onSubmit={handleSubmit} style = {{marginTop: '1.5rem', marginBottom: '1.5rem'}}>

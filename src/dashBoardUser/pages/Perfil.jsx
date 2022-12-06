@@ -4,10 +4,11 @@ import user from '../../heroes/user.webp'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
-import { iniciarActualizacion } from '../../store/auth/thunk';
+import { iniciarActualizacion, iniciarActualizacionTema } from '../../store/auth/thunk';
 import { DashBoardLayaout } from '../layaout/DashBoardLayaout';
-import { Box, Button, Divider, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
 import { DialogCambPass } from '../components/DialogCambPass';
+import { Check } from '@mui/icons-material';
 // import { ModalCambPass } from './ModalCambPass';
 // import { crearRecord } from '../../store/record/thunk';
 
@@ -49,6 +50,69 @@ export const Perfil = () => {
   })
 
   const [showModalPass, setShowModalPass] = useState(false)
+
+  const temasDisponibles = [
+    {
+        color: '#4a148c',
+        label: 'Indigo',
+        selected: '#4a148c'
+    },
+    {
+        color: '#008080',
+        label: 'Turquesa',
+        selected: '#008080'
+    },
+    {
+        color: '#000080',
+        label: 'Azul marino',
+        selected: '#000080'
+    },
+    {
+        color: '#1B2631',
+        label: 'Azul oscuro',
+        selected: '#1B2631'
+    },
+    {
+        color: '#E74C3C',
+        label: 'Naranja claro',
+        selected: '#E74C3C'
+    },
+  ]
+
+//   const temasDisponibles = [
+//     {
+//         color: '#4a148c',
+//         label: 'Indigo',
+//         selected: '#4a148c'
+//     },
+//     {
+//         color: '#008080',
+//         label: 'Turquesa',
+//         selected: '#008080'
+//     },
+//     {
+//         color: '#000080',
+//         label: 'Azul marino',
+//         selected: '#0000ce'
+//     },
+//     {
+//         color: '#1B2631',
+//         label: 'Azul oscuro',
+//         selected: '#304357'
+//     },
+//     {
+//         color: '#E74C3C',
+//         label: 'Naranja claro',
+//         selected: '#e43725'
+//     },
+//   ]
+
+  const handleTheme = (tema, selected) => {
+    if (localStorage.getItem('tema') === tema) return
+    localStorage.setItem('tema', tema)
+    localStorage.setItem('selected', selected)
+    dispatch(iniciarActualizacionTema(tema, usuarioActivo, selected))
+  }
 
   return (
         <DashBoardLayaout>
@@ -96,6 +160,30 @@ export const Perfil = () => {
                 </Grid>
 
                 <Grid py = {4} px = {2} xs = {12} sm = {12} md = {12} lg = {8} xl = {8}>
+                    <Paper elevation={10} sx = {{borderRadius: '20px', pt: 2}}>
+                        <Typography variant = 'h5' textAlign={'center'} ><strong>Temas</strong></Typography>
+                        <Grid display={'flex'} justifyContent = {'space-around'} alignItems = {'center'} container my={2} p = {2}>
+                            {
+                                temasDisponibles.map(({color, label, selected}) => {
+                                    return (
+                                        <>
+                                            <Grid display = 'flex' justifyContent={'center'} onClick = {() => handleTheme(color, selected)} sx = {{height: '50px', width: '50px', clipPath: 'circle()', backgroundColor: color, cursor: 'pointer'}}>
+                                                <IconButton>
+                                                    {
+                                                        (usuarioActivo?.tema === color)
+                                                            &&
+                                                        <Check color='secondary'/>
+                                                    }
+                                                </IconButton>
+                                            </Grid>
+                                            <Typography variant = 'h5' textAlign={'center'}>{label}</Typography>
+                                        </>
+                                    )
+                                })
+                            }
+                        </Grid>
+                    </Paper>
+
                     <Paper elevation={10} sx = {{borderRadius: '20px', pt: 2}}>
                         <Typography variant = 'h5' textAlign={'center'} ><strong>Información de las partidas</strong></Typography>
 

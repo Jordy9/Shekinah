@@ -1,15 +1,12 @@
 import { createTheme } from "@mui/material";
-import { red, purple, indigo,   } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 
-// FF0000
-// 00FF00
-// 0000FF
-// 4a148c
+const tema = localStorage.getItem('tema') || '#4a148c'
 
 export const themeTheme = createTheme({
     palette: {
         primary: {
-            main: '#4a148c'
+            main: tema
         },
         secondary: {
             main: '#FFFFFF'
