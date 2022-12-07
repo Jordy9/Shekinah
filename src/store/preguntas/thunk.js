@@ -62,7 +62,7 @@ export const obtenerPreguntasJuegoPersonalizado = (categoria, dificultad, pregun
                     toast: true,
                     position: 'bottom-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                       toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -101,7 +101,7 @@ export const obtenerPreguntasPorId = (ids) => {
                     toast: true,
                     position: 'bottom-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                       toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -154,7 +154,7 @@ export const crearPregunta = (pregunta, respuesta, dificultad, categoria, testam
                     toast: true,
                     position: 'bottom-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                       toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -173,7 +173,7 @@ export const crearPregunta = (pregunta, respuesta, dificultad, categoria, testam
                 toast: true,
                 position: 'bottom-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                   toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -204,7 +204,7 @@ export const actualizarPregunta = (pregunta, idPregunta, respuesta, dificultad, 
                     toast: true,
                     position: 'bottom-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                       toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -236,7 +236,7 @@ export const eliminarPregunta = (props) => {
                     toast: true,
                     position: 'bottom-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                       toast.addEventListener('mouseenter', Swal.stopTimer)

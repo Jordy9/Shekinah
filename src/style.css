@@ -50,6 +50,10 @@ li:hover {
     color: white !important;
 }
 
+.swal2-container {
+  z-index: 10000;
+}
+
 .selectFocus:focus {
     background-color: rgb(16, 125, 197) !important;
 }

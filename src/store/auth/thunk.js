@@ -39,7 +39,7 @@ export const iniciarLogin = (email, password) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -77,7 +77,7 @@ export const startLoginGoogle = (response) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                   toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -113,7 +113,7 @@ export const startLoginFacebook = (response) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                   toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -165,7 +165,7 @@ export const iniciarActualizacion = (id, name, lastName, email, password, role) 
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -183,7 +183,7 @@ export const iniciarActualizacion = (id, name, lastName, email, password, role) 
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -215,7 +215,7 @@ export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -233,7 +233,7 @@ export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -265,7 +265,7 @@ export const iniciarActualizacionPass = (id, name, lastName, email, passwordActu
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -283,7 +283,7 @@ export const iniciarActualizacionPass = (id, name, lastName, email, passwordActu
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
