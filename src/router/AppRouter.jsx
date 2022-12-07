@@ -24,6 +24,15 @@ export const AppRouter = () => {
     dispatch(obtenerRecord())
   }, [dispatch])
 
+  useEffect(() => {
+    if (usuarioActivo?.tema) {
+      if (!localStorage.getItem('tema')) {
+        localStorage.setItem('tema', usuarioActivo?.tema)
+        localStorage.setItem('selected', usuarioActivo?.selected)
+      }
+    }
+  }, [usuarioActivo])
+
   if (!!uid && !usuarioActivo) {
     return <Spinner />
   }

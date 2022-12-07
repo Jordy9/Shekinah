@@ -353,7 +353,7 @@ export const GuardarRecord = (record) => {
             aciertos: (!usuarioActivo?.juego) ? record?.aciertos : usuarioActivo?.juego?.aciertos + record?.aciertos,
             puntos: (!usuarioActivo?.juego) ? record?.puntos : usuarioActivo?.juego?.puntos + record?.puntos,
             errores: (!usuarioActivo?.juego) ? record?.errores : usuarioActivo?.juego?.errores + record?.errores,
-            reforzar: (!usuarioActivo?.juego) ? record?.reforzar : [...usuarioActivo?.juego?.reforzar, ...record?.reforzar],
+            // reforzar: (!usuarioActivo?.juego) ? record?.reforzar : [...usuarioActivo?.juego?.reforzar, ...record?.reforzar],
             racha: (!usuarioActivo?.juego) ? record?.racha : (usuarioActivo?.juego?.racha < record?.racha) ? record?.racha : usuarioActivo?.juego?.racha
         }
 

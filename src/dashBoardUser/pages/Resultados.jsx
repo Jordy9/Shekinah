@@ -32,8 +32,6 @@ export const Resultados = () => {
 
     }, [recordUsuario, navigate])
     
-
-    
   return (
     <DashBoardLayaout>
         <Grid container display = {'flex'} justifyContent = {'center'} alignItems = {'center'} sx = {{height: '100%'}}>

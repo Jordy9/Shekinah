@@ -19,9 +19,10 @@ export const crearRecord = (idJugador = '123456789', puntos, preguntas, pregunta
     }
 }
 
-export const SiguientePregunta = ({id, puntos, aciertos, racha, preguntaNo, errores, reforzar, record}) => {
+export const SiguientePregunta = ({id, puntos, aciertos, racha, preguntaNo, errores, record}) => {
     return async(dispatch) => {
-        const resp = await axios.put(`${point}/record/${id}`, {...record, puntos, aciertos, racha, preguntaNo, errores, reforzar})
+        // reforzar
+        const resp = await axios.put(`${point}/record/${id}`, {...record, puntos, aciertos, racha, preguntaNo, errores})
         dispatch(updateRecord(resp.data.record))
     }
 }

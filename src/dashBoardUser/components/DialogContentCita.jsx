@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import React, { Fragment } from 'react'
 
 export const DialogContentCita = ({ShowDialog, setShowDialog, content, capitulo, libro, inicio, fin}) => {
@@ -23,7 +23,7 @@ export const DialogContentCita = ({ShowDialog, setShowDialog, content, capitulo,
                 content?.map((contenido, index) => {
                     return (
                         <Fragment key={contenido + index}>
-                            <h6>{index + Number(inicio) + 1}. {contenido}</h6>
+                            <Typography variant  = 'h6'>{index + Number(inicio) + 1}. {contenido}</Typography>
                         </Fragment>
                     ) 
                 })

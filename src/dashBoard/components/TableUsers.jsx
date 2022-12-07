@@ -49,7 +49,7 @@ const createData = (avatar, name, calories, fat, carbs, protein) => {
                 <TableCell align="right">Puntos totales</TableCell>
                 <TableCell align="right">Cantidad de aciertos</TableCell>
                 <TableCell align="right">Cantidad errores</TableCell>
-                <TableCell align="right">Reforzar</TableCell>
+                {/* <TableCell align="right">Reforzar</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>

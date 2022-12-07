@@ -1,9 +1,10 @@
-import { ArrowBackIos, Book } from '@mui/icons-material'
+import { ArrowBackIos, Book, Cancel, Check, MusicNote, MusicOff } from '@mui/icons-material'
 import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 import { Antiguotestamento } from '../../Antiguotestamento'
+import { soundLose, soundWin } from '../../helpers/sounds'
 import { useResponsive } from '../../hooks/useResponsive'
 import { Nuevotestamento } from '../../Nuevotestamento'
 import { ScrollToTop } from '../../scrollToTop/ScrollToTop'
@@ -41,11 +42,18 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
     const [PuntosChange, setPuntosChange] = useState(recordFiltrado[0]?.puntos)
 
     const [enRachaDe, setEnRachaDe] = useState(recordFiltrado[0]?.racha)
+
+    const initialSound = localStorage.getItem('sound')
+
+    const [playSound, setPlaySound] = useState(!!initialSound)
     
-    let filtroPreguntas = usuarioActivo?.juego?.reforzar?.filter(reforzar => reforzar?._id === recordFiltrado[0]?.preguntas[change]?._id)
+    // let filtroPreguntas = usuarioActivo?.juego?.reforzar?.filter(reforzar => reforzar?._id === recordFiltrado[0]?.preguntas[change]?._id)
 
     const onClick = (respuesta) => {
         if (respuesta[0]?.correcta === true) {
+            if (playSound) {
+                soundWin()
+            }
             dispatch(SiguientePregunta({
                 id: recordFiltrado[0]?._id,
                 puntos: recordFiltrado[0]?.puntos + PuntosChange,
@@ -53,7 +61,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                 racha: recordFiltrado[0]?.racha + 1,
                 preguntaNo: recordFiltrado[0]?.preguntaNo + 1,
                 errores: recordFiltrado[0]?.errores,
-                reforzar: recordFiltrado[0]?.reforzar,
+                // reforzar: recordFiltrado[0]?.reforzar,
                 record: recordFiltrado[0]
             }))
 
@@ -61,6 +69,9 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
             setShowTrue(true)
             setShowCorrect(true)
         } else {
+            if (playSound) {
+                soundLose()
+            }
             dispatch(SiguientePregunta({
                 id: recordFiltrado[0]?._id,
                 puntos: recordFiltrado[0]?.puntos,
@@ -68,7 +79,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                 racha: recordFiltrado[0]?.racha - recordFiltrado[0]?.racha + 1,
                 preguntaNo: recordFiltrado[0]?.preguntaNo + 1,
                 errores: recordFiltrado[0]?.errores + 1,
-                reforzar: (filtroPreguntas?.length === 0) && [...recordFiltrado[0]?.reforzar, recordFiltrado[0]?.preguntas[change]],
+                // reforzar: (filtroPreguntas?.length === 0) && [...recordFiltrado[0]?.reforzar, recordFiltrado[0]?.preguntas[change]],
                 record: recordFiltrado[0]
             }))
             document.getElementById(`buttonbg${respuesta[1]}`).style.background = '#FF1744'
@@ -170,6 +181,11 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
       elementoScroll.scrollIntoView({block: 'start'})
     }, [change])
 
+    const handleSound = (sound) => {
+        setPlaySound(sound)
+        localStorage.setItem('sound', sound)
+    }
+
     if (recordFiltrado?.length === 0) {
         return <Spinner />
     }
@@ -202,14 +218,21 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                     <Grid xs = {7} sm = {8} md = {8} lg = {9} xl = {9} display = {'flex'} justifyContent = {'end'} my = {'auto'}>
                                         {
                                             (show)
-                                                ?
+                                                &&
                                             <>
-                                                <Typography variant='h6' className={`${(showCorrect) ? 'text-success' : 'text-danger'} mr-2 my-auto`} style={{fontSize: '25px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</Typography>
-                                                <i style={{fontSize: '30px'}} className={`${(showCorrect) ? 'text-success bi-check-circle-fill' : 'text-danger bi bi-x-circle-fill'}`}></i>
+                                                <Typography px={1} variant='h6' sx = {{fontSize: '25px', backgroundColor: (showCorrect) ? '#215d3bd9' : 'error.main', borderRadius: '20px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</Typography>
                                             </>
-                                                :
-                                            <i style={{fontSize: '30px'}} className="text-white bi bi-question-circle-fill"></i>
                                         }
+
+                                        <IconButton color='secondary' onClick={() => handleSound(!playSound)}>
+                                            {
+                                                (!playSound)
+                                                    ?
+                                                <MusicOff />
+                                                    :
+                                                <MusicNote />
+                                            }
+                                        </IconButton>
                                     </Grid>
                                 </Grid>
 

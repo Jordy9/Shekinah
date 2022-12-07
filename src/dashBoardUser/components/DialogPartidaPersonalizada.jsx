@@ -70,13 +70,13 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
 
   return (
     <Dialog
-        open={ShowDialogPartidaP}
-        fullWidth
-        maxWidth = 'md'
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        scroll={'paper'}
+      open={ShowDialogPartidaP}
+      fullWidth
+      maxWidth = 'sm'
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      scroll={'paper'}
     >
         <DialogTitle id="alert-dialog-title">
           <Typography variant = 'h5' textAlign={'center'} >Configura tu partida</Typography>
