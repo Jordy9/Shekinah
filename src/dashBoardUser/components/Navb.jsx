@@ -8,7 +8,7 @@ export const Navb = ({setShow}) => {
 
   const dispatch = useDispatch();
 
-  const { uid } = useSelector(state => state.auth);
+  const { uid, usuarioActivo } = useSelector(state => state.auth);
 
   const navigate = useNavigate()
 
@@ -29,20 +29,25 @@ const noStyle = {
       <AppBar color='primary' component="nav">
         <Toolbar>
 
-          <IconButton
-            onClick={() => setShow(true)}
-            size="large"
-            edge="start"
-            color="secondary"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuTwoTone />
-          </IconButton>
+          {
+            (usuarioActivo?.role === 'administrador')
+              &&
+            <IconButton
+              onClick={() => setShow(true)}
+              size="large"
+              edge="start"
+              color="secondary"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <MenuTwoTone />
+            </IconButton>
+          }
+
           {
             (pathname === '/Perfil')
               &&
-            <IconButton onClick={() => navigate('/lobi')}>
+            <IconButton onClick={() => navigate(-1)}>
               <ArrowBackIos sx = {{color: 'secondary.main'}} />
             </IconButton>
           }

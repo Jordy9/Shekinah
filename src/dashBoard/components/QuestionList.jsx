@@ -52,11 +52,10 @@ export const QuestionList = (props) => {
         >
             <TableCell component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{pregunta}</Typography></TableCell>
             <TableCell component="th" scope="row">{idPregunta}</TableCell>
-            <TableCell component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{respuesta[0].texto}</Typography></TableCell>
+            <TableCell component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{respuesta[0]?.texto}</Typography></TableCell>
             <TableCell align="right">{dificultad}</TableCell>
             <TableCell align="right">{categoria}</TableCell>
             <TableCell align="right">{testam}</TableCell>
-            {/* <TableCell align="right">{idLibro}</TableCell> */}
             <TableCell align="right">{libro}</TableCell>
             <TableCell align="right">{Number(capitulo) + 1}</TableCell>
             <TableCell align="right">{Number(desdeVersiculo) + 1}</TableCell>

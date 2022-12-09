@@ -3,7 +3,7 @@ import { IconButton, TableCell, TableRow } from '@mui/material'
 import user from '../../heroes/user.webp'
 import { Delete, VisibilityOutlined } from '@mui/icons-material'
 import { DialogUsers } from './DialogUsers'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { onUserActive } from '../../store/auth/authSlice'
 import Swal from 'sweetalert2'
 import { eliminarUsuario } from '../../store/auth/thunk'
@@ -11,6 +11,8 @@ import { eliminarUsuario } from '../../store/auth/thunk'
 export const TableUsersContent = (props) => {
 
     const dispatch = useDispatch();
+
+    const { userActive } = useSelector(state => state.auth);
 
     const { name, email, juego} = props
 
@@ -66,7 +68,12 @@ export const TableUsersContent = (props) => {
 
         <TableCell align="center" ><IconButton onClick={() => hanldeShow(props)} color = 'info'><VisibilityOutlined /></IconButton> <IconButton onClick={() => handleDelete(props)} color = 'error'><Delete /></IconButton></TableCell>
 
-        <DialogUsers ShowDialog={showDialog} setShowDialog = {setShowDialog} />
+        {
+            (userActive)
+                &&
+            <DialogUsers ShowDialog={showDialog} setShowDialog = {setShowDialog} />
+        }
+
     </TableRow>
   )
 }

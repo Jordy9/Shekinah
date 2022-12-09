@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Dialog, DialogContent, DialogTitle, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import user from '../../heroes/user.webp'
 import { useFormik } from 'formik';
@@ -102,7 +102,10 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
 
                                 <Grid container mt={2}>
                                     <Grid xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
-                                        <TextField fullWidth {...getFieldProps('role')} id="filled-basic" label="Rol" variant="standard" />
+                                        <TextField fullWidth {...getFieldProps('role')} id="filled-basic" label="Rol" variant="standard" select>
+                                            <MenuItem value="administrador">Administrador</MenuItem>
+                                            <MenuItem value="usuario">Usuario</MenuItem>
+                                        </TextField>
                                         {touched.role && errors.role && <span style={{color: 'red'}}>{errors.role}</span>}
                                     </Grid>
                                 </Grid>

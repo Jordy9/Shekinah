@@ -7,6 +7,7 @@ import { Spinner } from '../Spinner';
 import { iniciarAutenticacion, obtenerUsuarios } from '../store/auth/thunk';
 import { obtenerPreguntas } from '../store/preguntas/thunk';
 import { obtenerRecord } from '../store/record/thunk';
+import { AdminRoute } from './AdminRoute';
 import { UserRoute } from './UserRoute';
 
 export const AppRouter = () => {
@@ -46,7 +47,11 @@ export const AppRouter = () => {
           ?
         <Spinner />
           :
+        (usuarioActivo?.role === 'usuario')
+          ?
         <UserRoute />
+          :
+        <AdminRoute />
           :
         <Routes>
           <Route path='/Login' element = { <LoginScreen /> } />
