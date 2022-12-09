@@ -1,11 +1,11 @@
 import React from 'react'
+import { DashBoardLayaout } from '../../dashBoardUser/layaout/DashBoardLayaout'
 import { TableQuestion } from '../components/TableQuestion'
-import { DashBoardLayaout } from '../layaout/DashBoardLayaout'
 
 export const QuestionList = () => {
   return (
     <DashBoardLayaout>
-        <TableQuestion />
+      <TableQuestion />
     </DashBoardLayaout>
   )
 }

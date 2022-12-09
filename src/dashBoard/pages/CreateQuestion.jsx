@@ -1,6 +1,6 @@
 import React from 'react'
+import { DashBoardLayaout } from '../../dashBoardUser/layaout/DashBoardLayaout'
 import { Form } from '../components/Form'
-import { DashBoardLayaout } from '../layaout/DashBoardLayaout'
 
 export const CreateQuestion = () => {
   return (

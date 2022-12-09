@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
 import { iniciarActualizacion, iniciarActualizacionTema } from '../../store/auth/thunk';
 import { DashBoardLayaout } from '../layaout/DashBoardLayaout';
-import { Box, Button, Divider, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
 import { DialogCambPass } from '../components/DialogCambPass';
 import { Check } from '@mui/icons-material';
 // import { ModalCambPass } from './ModalCambPass';

@@ -1,5 +1,5 @@
 import { Box, Button, Grid, IconButton, MenuItem, Modal, TextField, Tooltip, Typography } from '@mui/material'
-import { Save, Add, Delete, Book } from '@mui/icons-material'
+import { Save, Add, Delete, Book, Check, Cancel } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useFormik } from 'formik';
@@ -22,8 +22,6 @@ const style = {
     borderRadius: '12px',
     boxShadow: 24,
     // backgroundImage: 'linear-gradient(-20deg, #2b5876 0%, #4e4376 100%)',
-    backgroundColor: 'white',
-    color: 'white',
     p: 4,
     overflowY: 'auto',
     height: '500px'
@@ -39,7 +37,14 @@ export const ModalQuestion = ({Show, setShow}) => {
         setShow(false)
     }
 
-    const [formValues, setFormValues] = useState([{ texto: '', correcta: '' }])
+    const [formValues, setFormValues] = useState(
+        [
+            { texto: '', correcta: true },
+            { texto: '', correcta: false },
+            { texto: '', correcta: false },
+            { texto: '', correcta: false },
+        ]
+    )
 
     const {handleSubmit, getFieldProps, touched, errors} = useFormik({
         initialValues: {
@@ -62,8 +67,10 @@ export const ModalQuestion = ({Show, setShow}) => {
             pregunta: Yup.string()
                         .min(3, 'Debe de tener 3 caracteres o más')
                         .required('Requerido'),
-            respuesta: Yup.array()
-                        .required('Requerido'),
+            respuesta: Yup.array().of(Yup.object({
+                    texto: Yup.string().min(3, 'La respuesta debe de tener como mínimo 3 caracteres').required('Requerido'),
+                })
+            ),
             dificultad: Yup.string()
                         .required('Requerido'),
             categoria: Yup.string()
@@ -151,7 +158,7 @@ export const ModalQuestion = ({Show, setShow}) => {
 
             <Box autoComplete="off" sx={{p: 4}}>
 
-                <Typography variant='h4'>Ver o actualizar pregunta</Typography>
+                <Typography variant='h5'>Ver o actualizar pregunta</Typography>
 
                     <form onSubmit={handleSubmit}>
                         <Grid item container flexDirection='row'>
@@ -278,18 +285,20 @@ export const ModalQuestion = ({Show, setShow}) => {
                                         <Fragment key={element + index}>
                                             <Grid flexDirection='column' container xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
                                                 <TextField error = {errors.respuesta} multiline maxRows={2} name='texto' value = {element.texto} onChange={(e) => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
-                                                {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
+                                                {touched?.respuesta?.filter(texto => texto?.texto) && errors.respuesta?.filter(texto => texto?.texto) && <span style={{color: 'red'}}>{errors?.respuesta[index]?.texto}</span>}
                                             </Grid>
 
-                                            <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
-                                                <TextField error = {errors.respuesta} name='correcta' value = {element.correcta} onChange={(e) => handleChange(index, e)} variant='standard' id="select9" label="Acción" select>
-                                                    <MenuItem value={true}>Correcta</MenuItem>
-                                                    <MenuItem value={false}>Incorrecta</MenuItem>
-                                                </TextField>
-                                                {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
+                                            <Grid display={'flex'} justifyContent = {'center'} flexDirection='column' container item xs = {9} sm = {9} md = {9} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
+                                                {
+                                                    (element.correcta === true)
+                                                        ?
+                                                    <Check fontSize='medium' color='success' />
+                                                        :
+                                                    <Cancel color='error' />
+                                                }
                                             </Grid>
 
-                                            <Grid flexDirection='row' justifyContent='end' alignItems='end' container item xs = {2} sx = {{padding: 3, borderRadius: 2}}>
+                                            {/* <Grid flexDirection='row' justifyContent='end' alignItems='end' container item xs = {2} sx = {{padding: 3, borderRadius: 2}}>
                                                 {
                                                     (formValues.length === index + 1)
                                                         &&
@@ -310,7 +319,7 @@ export const ModalQuestion = ({Show, setShow}) => {
                                                     </Tooltip>
                                                 }
 
-                                            </Grid>
+                                            </Grid> */}
                                         </Fragment>
                                         
                                     )

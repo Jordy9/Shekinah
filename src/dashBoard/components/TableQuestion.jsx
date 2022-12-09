@@ -10,7 +10,7 @@ export const TableQuestion = () => {
 
   const {paginacion} = useSelector(state => state.pg)
   
-  const [page, setPage] = useState(Number(paginacion?.page - 1 || 0));
+  const [page, setPage] = useState(0);
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -32,28 +32,27 @@ export const TableQuestion = () => {
 
   return (
     <Box autoComplete="off" sx={{p: 4}}>
-      <Typography marginBottom={5} variant='h4'>Listado de preguntas</Typography>
+      <Typography marginBottom={5} variant='h5'>Listado de preguntas</Typography>
 
       <Box sx={{p: 3}}>
 
         {
           (paginacion)
             ?
-          <TableContainer elevation = {4} component={Paper} sx = {{
-            height: 400,
-            borderRadius: '5px',
-            backgroundColor: '#383c45',
-          }}>
+          <TableContainer elevation = {4} component={Paper} sx = {{height: 400, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px', overflow: 'auto'}}>
             <Grid flexDirection='row' container item xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
               <TextField name='buscador' value={buscadorSearch} onChange = {({target}) => setBuscadorSearch(target.value)} label = 'Buscador' type='search' variant='standard' sx={{
                 m: 1
               }} />
-              <Button color='secondary' sx={{display: 'flex', alignItems: 'end'}} variant='text' onClick={SearchQuestion}>Buscar</Button>
+
+              <Grid display={'flex'} alignItems = {'end'} mb = {0.9}>
+                <Button color='primary' variant='contained' onClick={SearchQuestion}>Buscar</Button>
+              </Grid>
             </Grid>
 
             {/* <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2}>
             </Grid> */}
-            <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto', backgroundColor: 'white' }}>
+            <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto' }}>
               <TableHead>
                 <TableRow>
                   <TableCell>Pregunta</TableCell>
@@ -77,12 +76,12 @@ export const TableQuestion = () => {
               rowsPerPageOptions={[10, 20, 30]}
               labelRowsPerPage = 'Filas por página'
               component="div"
-              count={Number(paginacion?.total) || 0}
+              count={Number(paginacion?.idPreguntasCount) || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              sx = {{color: 'white'}}
+              sx = {{color: 'black'}}
             />
           </TableContainer>
           :

@@ -6,7 +6,8 @@ initialState: {
     usuarios: [],
     uid: null,
     name: null,
-    usuarioActivo: null
+    usuarioActivo: null,
+    userActive: ''
 },
 reducers: {
     onGetUsers: (state, action ) => {
@@ -24,8 +25,24 @@ reducers: {
         state.usuarioActivo = action.payload;
     },
 
+    onUpdateUser: (state, action ) => {
+        state.usuarios = state.usuarios.map(
+            e => (e.id === action.payload.id) ? action.payload : e);
+        state.userActive = action.payload;
+    },
+
+    onDelete: (state, action ) => {
+        state.usuarios = state.usuarios.filter(
+            e => e.id !== action.payload.id);
+        state.userActive = null;
+    },
+
     onActiveUser: (state, action ) => {
         state.usuarioActivo = action.payload;
+    },
+
+    onUserActive: (state, action ) => {
+        state.userActive = action.payload;
     },
 
     onLogout: (state) => {
@@ -46,4 +63,4 @@ reducers: {
     },
 }
 });
-export const { onGetUsers, onRegister, onUpdate, onActiveUser, onLogout, onChecking, onLogin  } = authSlice.actions; 
+export const { onGetUsers, onRegister, onUpdate, onActiveUser, onLogout, onChecking, onLogin, onUserActive, onDelete, onUpdateUser } = authSlice.actions; 

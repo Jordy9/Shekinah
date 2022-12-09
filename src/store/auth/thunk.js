@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Swal from 'sweetalert2';
-import { onActiveUser, onChecking, onGetUsers, onLogin, onLogout, onRegister, onUpdate } from './authSlice'
+import { onActiveUser, onChecking, onDelete, onGetUsers, onLogin, onLogout, onRegister, onUpdate, onUpdateUser } from './authSlice'
 
 const point = process.env.REACT_APP_API_URL
 
@@ -201,6 +201,60 @@ export const iniciarActualizacion = (id, name, lastName, email, password, role) 
     }
 }
 
+export const iniciarActualizacionUserSelected = (id, name, lastName, email, password, role, oldPassword) => {
+    return async(dispatch) => {
+
+        if (!password) {
+            password = oldPassword
+        }
+
+        try {
+            const resp = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role}, {headers: {'x-token': token}})
+    
+            if (resp.data.ok) {
+
+                dispatch(onUpdateUser(resp.data.usuario))
+    
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                return Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario actualizado correctamente'
+                })
+            }
+        } catch ({response}) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'error',
+                title: response.data.msg
+            })
+        }
+        
+
+    }
+}
+
 export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
     return async(dispatch) => {
 
@@ -251,11 +305,11 @@ export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
     }
 }
 
-export const iniciarActualizacionPass = (id, name, lastName, email, passwordActual, password, role) => {
+export const iniciarActualizacionPass = (id, name, lastName, email, password, role) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.put(`${point}/auth/updatePassword/${id}`, {id, name, lastName, email, passwordActual, password, role}, {headers: {'x-token': token}})
+            const resp = await axios.put(`${point}/auth/updatePassword/${id}`, {id, name, lastName, email, password, role}, {headers: {'x-token': token}})
     
             if (resp.data.ok) {
 
@@ -340,6 +394,40 @@ export const iniciarAutenticacion = () => {
             localStorage.removeItem('token-init-date')
             dispatch(onChecking())
             dispatch(onLogout())
+        }
+    }
+}
+
+export const eliminarUsuario = (usuario) => {
+    return async(dispatch) => {
+
+        try {
+            const resp = await axios.delete(`${point}/auth/${usuario?.id}`, {headers: {'x-token': token}});
+
+            if (resp.data.ok) {
+
+                dispatch(onDelete(usuario))
+                
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                return Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario eliminado correctamente'
+                })
+            }
+
+        } catch (error) {
+            console.log(error)
         }
     }
 }

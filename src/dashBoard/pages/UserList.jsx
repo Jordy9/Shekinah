@@ -1,6 +1,6 @@
 import React from 'react'
+import { DashBoardLayaout } from '../../dashBoardUser/layaout/DashBoardLayaout'
 import { TableUsers } from '../components/TableUsers'
-import { DashBoardLayaout } from '../layaout/DashBoardLayaout'
 
 export const UserList = () => {
   return (

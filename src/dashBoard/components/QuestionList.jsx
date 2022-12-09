@@ -47,8 +47,8 @@ export const QuestionList = (props) => {
   return (
     <>
         <TableRow
-        key={pregunta._id}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          key={pregunta._id}
+          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
             <TableCell component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{pregunta}</Typography></TableCell>
             <TableCell component="th" scope="row">{idPregunta}</TableCell>

@@ -1,4 +1,4 @@
-import { Add, Delete, Book, Save } from '@mui/icons-material'
+import { Add, Delete, Book, Save, Check, Cancel } from '@mui/icons-material'
 import { Box, Button, Grid, IconButton, MenuItem, TextField, Tooltip, Typography } from '@mui/material'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useFormik } from 'formik';
@@ -16,7 +16,14 @@ export const Form = () => {
 
     const dispatch = useDispatch()
 
-    const [formValues, setFormValues] = useState([{ texto: '', correcta: '' }])
+    const [formValues, setFormValues] = useState(
+        [
+            { texto: '', correcta: true },
+            { texto: '', correcta: false },
+            { texto: '', correcta: false },
+            { texto: '', correcta: false },
+        ]
+    )
 
     const {handleSubmit, resetForm, getFieldProps, touched, errors} = useFormik({
         initialValues: {
@@ -45,14 +52,23 @@ export const Form = () => {
                 hastaVersiculo: '',
             })
 
-            setFormValues([{ texto: '', correcta: '' }])
+            setFormValues(
+                [
+                    { texto: '', correcta: true },
+                    { texto: '', correcta: false },
+                    { texto: '', correcta: false },
+                    { texto: '', correcta: false },
+                ]
+            )
         },
         validationSchema: Yup.object({
             pregunta: Yup.string()
                         .min(3, 'Debe de tener 3 caracteres o más')
                         .required('Requerido'),
-            respuesta: Yup.array()
-                        .required('Requerido'),
+            respuesta: Yup.array().of(Yup.object({
+                    texto: Yup.string().min(3, 'La respuesta debe de tener como mínimo 3 caracteres').required('Requerido'),
+                })
+            ),
             dificultad: Yup.string()
                         .required('Requerido'),
             categoria: Yup.string()
@@ -118,21 +134,23 @@ export const Form = () => {
             setContentBible(librosBiblia[seleccionarLibro][seleccionarCapitulo]?.slice(getFieldProps('desdeVersiculo')?.value, getFieldProps('hastaVersiculo')?.value))
         }
     }, [getFieldProps('hastaVersiculo')?.value, getFieldProps('desdeVersiculo')?.value])
+
+    console.log(touched)
     
   return (
     <Box autoComplete="off" sx={{p: 4}}>
 
-        <Typography variant='h4'>Crear Pregunta</Typography>
+        <Typography variant='h5'>Crear Pregunta</Typography>
        
        <form onSubmit={handleSubmit}>
             <Grid item container flexDirection='row'>
                 <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
-                    <TextField error = {errors.pregunta} multiline maxRows={4} {...getFieldProps('pregunta')} variant='standard' label = 'Pregunta' type = 'text' fullWidth />
+                    <TextField  multiline maxRows={4} {...getFieldProps('pregunta')} variant='standard' label = 'Pregunta' type = 'text' fullWidth />
                     {touched.pregunta && errors.pregunta && <span style={{color: 'red'}}>{errors.pregunta}</span>}
                 </Grid>
 
                 <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
-                    <TextField error = {errors.dificultad} {...getFieldProps('dificultad')} variant='standard' id="select1" label="Dificultad" select>
+                    <TextField  {...getFieldProps('dificultad')} variant='standard' id="select1" label="Dificultad" select>
                         <MenuItem value="Tierno">Tierno</MenuItem>
                         <MenuItem value="Medio">Medio</MenuItem>
                         <MenuItem value="Avanzado">Avanzado</MenuItem>
@@ -141,7 +159,7 @@ export const Form = () => {
                 </Grid>
 
                 <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
-                    <TextField error = {errors.categoria} {...getFieldProps('categoria')} variant='standard' id="select2" label="Categoría" select>
+                    <TextField  {...getFieldProps('categoria')} variant='standard' id="select2" label="Categoría" select>
                         <MenuItem value="Pentateuco">Pentateuco</MenuItem>
                         <MenuItem value="Histórico">Histórico</MenuItem>
                         <MenuItem value="Sapienciales">Sapienciales</MenuItem>
@@ -152,7 +170,7 @@ export const Form = () => {
                 </Grid>
 
                 <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
-                    <TextField error = {errors.testamento} {...getFieldProps('testamento')} variant='standard' id="select3" label="Testamento" select>
+                    <TextField  {...getFieldProps('testamento')} variant='standard' id="select3" label="Testamento" select>
                         <MenuItem value="AT">Antiguo</MenuItem>
                         <MenuItem value="NT">Nuevo</MenuItem>
                     </TextField>
@@ -160,7 +178,7 @@ export const Form = () => {
                 </Grid>
 
                 <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
-                    <TextField error = {errors.libro} {...getFieldProps('libro')} variant='standard' id="select4" label="Libro" select>
+                    <TextField  {...getFieldProps('libro')} variant='standard' id="select4" label="Libro" select>
                         <MenuItem disabled value=''>Ninguno</MenuItem>
                         {
                             (seleccionarTestamento === 'AT')
@@ -186,7 +204,7 @@ export const Form = () => {
                 </Grid>
 
                 <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
-                    <TextField error = {errors.capitulo} {...getFieldProps('capitulo')} variant='standard' id="select5" label="Capítulo" select>
+                    <TextField  {...getFieldProps('capitulo')} variant='standard' id="select5" label="Capítulo" select>
                         <MenuItem disabled value=''>0</MenuItem>
                         {
                             librosBiblia[seleccionarLibro]?.map((_, index) => {
@@ -200,7 +218,7 @@ export const Form = () => {
                 </Grid>
 
                 <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {3} xl = {3} sx = {{padding: 3, borderRadius: 2}} >
-                    <TextField error = {errors.desdeVersiculo} {...getFieldProps('desdeVersiculo')} variant='standard' id="select6" label="Desde el versiculo"  select>
+                    <TextField {...getFieldProps('desdeVersiculo')} variant='standard' id="select6" label="Desde el versiculo"  select>
                         <MenuItem disabled value=''>0</MenuItem>
                         {
                             (seleccionarLibro !== -1)
@@ -216,7 +234,7 @@ export const Form = () => {
                 </Grid>
 
                 <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {3} xl = {3} sx = {{padding: 3, borderRadius: 2}} >
-                    <TextField error = {errors.hastaVersiculo} {...getFieldProps('hastaVersiculo')} variant='standard' id="select7" label="Hasta el versiculo" select>
+                    <TextField {...getFieldProps('hastaVersiculo')} variant='standard' id="select7" label="Hasta el versiculo" select>
                         <MenuItem disabled value=''>0</MenuItem>
                         {
                             (seleccionarLibro !== -1)
@@ -236,19 +254,21 @@ export const Form = () => {
                         return (
                             <Fragment key={element + index}>
                                 <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
-                                    <TextField error = {errors.respuesta} multiline maxRows={2} name='texto' value = {element.texto} onChange={e => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
-                                    {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
+                                    <TextField  multiline maxRows={2} name='texto' value = {element.texto} onChange={e => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
+                                    {touched?.respuesta?.filter(texto => texto?.texto) && errors.respuesta?.filter(texto => texto?.texto) && <span style={{color: 'red'}}>{errors?.respuesta[index]?.texto}</span>}
                                 </Grid>
 
-                                <Grid flexDirection='column' container item xs = {9} sm = {9} md = {9} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
-                                    <TextField error = {errors.respuesta} name='correcta' value = {element.correcta} onChange={e => handleChange(index, e)} variant='standard' id="select9" label="Acción" select>
-                                        <MenuItem value={true}>Correcta</MenuItem>
-                                        <MenuItem value={false}>Incorrecta</MenuItem>
-                                    </TextField>
-                                    {touched.respuesta && errors.respuesta && <span style={{color: 'red'}}>{errors.respuesta}</span>}
+                                <Grid display={'flex'} justifyContent = {'center'} flexDirection='column' container item xs = {9} sm = {9} md = {9} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
+                                    {
+                                        (element.correcta === true)
+                                            ?
+                                        <Check fontSize='medium' color='success' />
+                                            :
+                                        <Cancel color='error' />
+                                    }
                                 </Grid>
 
-                                <Grid flexDirection='row' justifyContent='end' alignItems='end' container item xs = {2} sx = {{padding: 3, borderRadius: 2}}>
+                                {/* <Grid flexDirection='row' justifyContent='end' alignItems='end' container item xs = {2} sx = {{padding: 3, borderRadius: 2}}>
                                     {
                                         (formValues.length === index + 1)
                                             &&
@@ -269,7 +289,7 @@ export const Form = () => {
                                         </Tooltip>
                                     }
 
-                                </Grid>
+                                </Grid> */}
                             </Fragment>
                             
                         )

@@ -1,12 +1,18 @@
 import { Toolbar } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
+import { Drawer } from '../components/Drawer'
 import { Navb } from '../components/Navb'
 
 export const DashBoardLayaout = ({children}) => {
+
+  const [show, setShow] = useState(false)
+
   return (
     <Box sx={{display: 'flex'}}>
-        <Navb />
+        <Navb setShow = {setShow} />
+
+        <Drawer show = {show} setShow = {setShow} />
 
         <Box
             component = 'main'

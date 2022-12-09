@@ -140,12 +140,8 @@ export const obtenerPreguntaFiltrada = (buscadorSearch) => {
 export const crearPregunta = (pregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo) => {
     return async(dispatch, getState) => {
 
-        const { paginacion } = getState().pg
-
-        const idPregunta = paginacion?.idPreguntasCount + 1
-
         try {
-            const resp = await axios.post(`${point}/pregunta/new`, {pregunta, idPregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo})
+            const resp = await axios.post(`${point}/pregunta/new`, {pregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo})
 
             if (resp.data.ok) {
                 dispatch(crearPreguntaActiva(resp.data.pregunta))

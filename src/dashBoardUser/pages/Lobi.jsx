@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Navb } from '../components/Navb';
 import { TablaPosiciones } from '../components/TablaPosiciones';
 import { Grid } from '@mui/material';
+import { DashBoardLayaout } from '../layaout/DashBoardLayaout';
 
 export const Lobi = () => {
 
@@ -29,14 +30,12 @@ export const Lobi = () => {
   }, [recordFiltrado, pathname])
   
   return (
-    <>
-      <Navb />
-
+    <DashBoardLayaout>
       <Grid container display={'flex'}>
-        <Grid xs = {12} sx = {{mt: '9vh'}}>
+        <Grid xs = {12} >
           <TablaPosiciones />
         </Grid>
       </Grid>
-    </>
+    </DashBoardLayaout>
   )
 }

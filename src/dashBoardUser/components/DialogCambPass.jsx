@@ -13,17 +13,14 @@ export const DialogCambPass = ({showDialogPass, setShowDialogPass}) => {
 
     const {handleSubmit, getFieldProps, touched, errors} = useFormik({
         initialValues: {
-            passwordActual: '',
             password: '',
             confirmPassword: ''
         },
         enableReinitialize: true,
-        onSubmit: ({passwordActual, password}) => {
-            dispatch(iniciarActualizacionPass(usuarioActivo?.id, usuarioActivo?.name, usuarioActivo?.lastName, usuarioActivo?.email.toLowerCase(), passwordActual, password, usuarioActivo?.role))
+        onSubmit: ({password}) => {
+            dispatch(iniciarActualizacionPass(usuarioActivo?.id, usuarioActivo?.name, usuarioActivo?.lastName, usuarioActivo?.email.toLowerCase(), password, usuarioActivo?.role))
         },
         validationSchema: Yup.object({
-            passwordActual: Yup.string()
-                        .required('Requerido'),
             password: Yup.string()
                         .min(8, 'Debe de tener 8 caracteres o más')
                         .required('Requerido'),
@@ -54,7 +51,6 @@ export const DialogCambPass = ({showDialogPass, setShowDialogPass}) => {
         </DialogTitle>
         <DialogContent>
             <form onSubmit={handleSubmit}>
-                <TextField fullWidth sx = {{my: 1}} {...getFieldProps('passwordActual')} id="filled-basic" label="Contraseña" variant="standard" />
                 <TextField fullWidth sx = {{my: 1}} {...getFieldProps('password')} id="filled-basic" label="Contraseña nueva" variant="standard" />
                 <TextField fullWidth sx = {{my: 1}} {...getFieldProps('confirmPassword')} id="filled-basic" label="Escribe de nuevo la nueva contraseña" variant="standard" />
                 <button type='submit' id='idButton' hidden></button>
