@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import user from '../../heroes/user.webp'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { iniciarActualizacionUserSelected } from '../../store/auth/thunk';
+import { DialogAvatar } from '../../dashBoardUser/components/DialogAvatar';
 
 export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
 
@@ -50,6 +51,10 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
                         .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')
         })
       })
+
+      const { name, category, backGround, radius, flip, rotate, translateX, translateY } = userActive?.avatar
+
+      const [showDialogImagen, setShowDialogImagen] = useState(false)
   
     return (
         <Dialog
@@ -68,8 +73,21 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
                     <Grid py = {4} px = {2} xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
                         <Paper elevation={10} sx = {{borderRadius: '20px'}}>
                             <Grid display={'flex'} justifyContent = {'center'}>
-                                <Box mt={2}>
-                                    <img loading="lazy" src={user} style = {{width: '150px', height: '150px', clipPath: 'circle()'}} className='img-fluid' alt="" />
+                                <Box mt={2} sx = {{overflow: 'hidden'}}>
+                                    <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || userActive?.name}.svg`}
+                                        style = {{
+                                            backgroundColor: backGround, 
+                                            width: '150px', 
+                                            height: '150px', 
+                                            borderRadius: `${radius}%`,
+                                            transform: 
+                                                `rotate(${rotate}deg) 
+                                                translateX(${translateX}%) 
+                                                translateY(${translateY}%) 
+                                                scaleX(${(flip) ? '-1' : '1'})`,
+                                        }} 
+                                        alt="" 
+                                    />
                                 </Box>
                             </Grid>
                             
@@ -93,9 +111,8 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
                                     </Grid>
 
                                     <Grid mt={2} xs = {12} sm = {12} md = {12} lg = {4} xl = {4}>
-                                        <Button variant="contained" component="label">
+                                        <Button onClick={() => setShowDialogImagen(true)} variant="contained" component="label">
                                             Imagen
-                                            <input hidden accept="image/*" multiple type="file" />
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -148,6 +165,7 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
                     </Grid>
                 </Grid>
             </DialogContent>
+            <DialogAvatar showDialog={showDialogImagen} setShowDialog = {setShowDialogImagen} usuarioActivo = {userActive} />
         </Dialog>
     )
   }

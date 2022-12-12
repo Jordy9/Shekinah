@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, MenuItem, Switch, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import Categories from '../../helpers/Categories';
@@ -13,17 +13,19 @@ export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
     };
 
     const [avatarConfig, setAvatarConfig] = useState({
-        name: `${usuarioActivo?.name} ${usuarioActivo?.lastName}`,
+        name: usuarioActivo?.avatar?.name || usuarioActivo?.name,
         category: usuarioActivo?.avatar?.category,
         backGround: usuarioActivo?.avatar?.backGround,
         radius: usuarioActivo?.avatar?.radius,
         flip: usuarioActivo?.avatar?.flip,
         rotate: usuarioActivo?.avatar?.rotate,
         translateX: usuarioActivo?.avatar?.translateX,
-        translateY: usuarioActivo?.avatar?.translateY
+        translateY: usuarioActivo?.avatar?.translateY,
     })
 
-    const { name, category, backGround, radius, flip, rotate, translateX, translateY } = avatarConfig
+    const { 
+        name, category, backGround, radius, flip, rotate, translateX, translateY
+    } = avatarConfig
 
     const handleAavatar = () => {
         dispatch(iniciarActualizacion(usuarioActivo?.id, usuarioActivo?.name, usuarioActivo?.lastName, usuarioActivo?.email, usuarioActivo?.password, usuarioActivo?.role, avatarConfig))
@@ -40,7 +42,7 @@ export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
         scroll={'paper'}
     >
         <DialogTitle id="alert-dialog-title">
-            Avatar
+            <Typography align='center' variant='h5'>Imagen de perfil</Typography>
         </DialogTitle>
         <DialogContent>
             <Grid display={'flex'} justifyContent = {'center'}>
@@ -83,7 +85,8 @@ export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
             </Grid>
 
             <Grid mt={2}>
-                <TextField name='radius' value={radius} onChange={({target}) => setAvatarConfig({...avatarConfig, radius: target.value})} id="filled-basic" fullWidth type='range' label="Redondez" variant="standard" />
+                {radius}%
+                <TextField InputProps={{inputProps: { max: 50, min: 0 }}} name='radius' value={radius} onChange={({target}) => setAvatarConfig({...avatarConfig, radius: target.value})} id="filled-basic" fullWidth type='range' label="Redondez" variant="standard" />
             </Grid>
 
             <Grid mt={2} xs = {12} sm = {6} md = {6} lg = {6} xl = {6}>
@@ -94,6 +97,7 @@ export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
             </Grid>
 
             <Grid mt={2} xs = {12} sm = {6} md = {6} lg = {6} xl = {6}>
+                {rotate}
                 <TextField InputProps={{inputProps: { max: 360, min: 0 }}} name='rotate' value={rotate} onChange={({target}) => setAvatarConfig({...avatarConfig, rotate: target.value})} id="filled-basic" fullWidth type='range' label="Rotar" variant="standard" />
             </Grid>
 
