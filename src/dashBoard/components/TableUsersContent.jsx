@@ -14,7 +14,9 @@ export const TableUsersContent = (props) => {
 
     const { userActive } = useSelector(state => state.auth);
 
-    const { name, email, juego} = props
+    const { name, email, juego, avatar} = props
+
+    const { name: nameAvatar, category, backGround, radius, flip, rotate, translateX, translateY } = avatar
 
     const [showDialog, setShowDialog] = useState(false)
     
@@ -43,7 +45,19 @@ export const TableUsersContent = (props) => {
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
         <TableCell style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
-            <img src={user} style = {{width: '50px', height: '50px', clipPath: 'circle()'}} alt="" />
+            <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${nameAvatar || name}.svg`} 
+                style = {{
+                    backgroundColor: backGround, 
+                    width: '50px', 
+                    height: '50px', 
+                    borderRadius: `${radius}%`,
+                    transform: 
+                    `rotate(${rotate}deg) 
+                    translateX(${translateX}%) 
+                    translateY(${translateY}%) 
+                    scaleX(${(flip) ? '-1' : '1'})`,
+                }}
+                alt="" />
         </TableCell>
 
         <TableCell style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">

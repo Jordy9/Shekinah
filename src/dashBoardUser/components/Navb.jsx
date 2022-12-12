@@ -1,7 +1,7 @@
 import { ArrowBackIos, Logout, MenuTwoTone } from '@mui/icons-material';
-import { AppBar, Avatar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Avatar, Box, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { iniciarLogout } from '../../store/auth/thunk'
 
 export const Navb = ({setShow}) => {
@@ -14,15 +14,7 @@ export const Navb = ({setShow}) => {
 
   const { pathname } = useLocation()
 
-  const activeStyle = {
-    textDecoration: "none",
-    color: 'white'
-}
-
-const noStyle = {
-    textDecoration: 'none',
-    color: 'grey'
-}
+  const { name, category, backGround, radius, flip, rotate, translateX, translateY } = usuarioActivo?.avatar
 
   return (
     <>
@@ -60,15 +52,24 @@ const noStyle = {
           </Typography>
 
           <Grid
-              item justifyContent='end'
-              mx={1}
+            item justifyContent='end'
+            mx={1}
+            sx = {{overflow: 'hidden'}}
           >
-            <Avatar
-              onClick = {() => navigate('/Perfil')}
-              alt="Remy Sharp"
-              src="https://mui.com/static/images/avatar/2.jpg"
-              sx={{ width: 50, height: 50, cursor: 'pointer' }}
-            />
+            <img onClick = {() => navigate('/Perfil')} loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || usuarioActivo?.name}.svg`} 
+              style = {{
+                backgroundColor: backGround, 
+                width: 50, 
+                height: 50, 
+                borderRadius: `${radius}%`,
+                transform: 
+                  `rotate(${rotate}deg) 
+                  translateX(${translateX}%) 
+                  translateY(${translateY}%) 
+                  scaleX(${(flip) ? '-1' : '1'})`,
+                cursor: 'pointer'
+              }}
+              alt="" />
           </Grid>
 
           <Box>

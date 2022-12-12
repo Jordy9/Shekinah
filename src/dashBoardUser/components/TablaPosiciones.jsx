@@ -17,10 +17,12 @@ export const TablaPosiciones = () => {
     const [ShowModalPartidaP, setShowModalPartidaP] = useState(false)
 
     const comenzarJuegoRapido = () => {
-        dispatch(obtenerPreguntasJuego())
+      dispatch(obtenerPreguntasJuego())
     }
 
     const navigate = useNavigate()
+
+    const { name, category, backGround, radius, flip, rotate, translateX, translateY } = usuarioActivo?.avatar
 
   return (
     <>
@@ -28,8 +30,20 @@ export const TablaPosiciones = () => {
           <Grid p={2} display={'flex'} justifyContent = 'space-between' alignItems={'center'}>
               <Typography variant='h5' textAlign={'center'}>Top 10</Typography>
               <Grid display={'flex'} justifyContent = 'space-between' alignItems={'center'} sx = {{cursor: 'pointer'}} onClick={() => navigate('/Perfil')}>
-                  <Grid mx={1} display = {'flex'} justifyContent = {'center'}>
-                      <img style={{width: '50px', height: '50px', clipPath: 'circle()'}} src={user} alt="" />
+                  <Grid mx={1} display = {'flex'} justifyContent = {'center'} sx = {{overflow: 'hidden'}}>
+                    <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || usuarioActivo?.name}.svg`} 
+                      style = {{
+                          backgroundColor: backGround, 
+                          width: '50px', 
+                          height: '50px', 
+                          borderRadius: `${radius}%`,
+                          transform: 
+                            `rotate(${rotate}deg) 
+                            translateX(${translateX}%) 
+                            translateY(${translateY}%) 
+                            scaleX(${(flip) ? '-1' : '1'})`,
+                      }}
+                      alt="" />
                   </Grid>
                   <Typography variant='h5'>{usuarioActivo?.name}</Typography>
               </Grid>

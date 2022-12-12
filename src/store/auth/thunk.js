@@ -151,11 +151,11 @@ export const crearUsuario = (name, lastName, email, password) => {
     }
 }
 
-export const iniciarActualizacion = (id, name, lastName, email, password, role) => {
+export const iniciarActualizacion = (id, name, lastName, email, password, role, avatar) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role}, {headers: {'x-token': token}})
+            const resp = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role, avatar}, {headers: {'x-token': token}})
     
             if (resp.data.ok) {
 

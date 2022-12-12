@@ -9,6 +9,7 @@ import { DashBoardLayaout } from '../layaout/DashBoardLayaout';
 import { Box, Button, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
 import { DialogCambPass } from '../components/DialogCambPass';
 import { Check } from '@mui/icons-material';
+import { DialogAvatar } from '../components/DialogAvatar';
 // import { ModalCambPass } from './ModalCambPass';
 // import { crearRecord } from '../../store/record/thunk';
 
@@ -26,7 +27,7 @@ export const Perfil = () => {
     },
     enableReinitialize: true,
     onSubmit: ({name, lastName, email}) => {
-        dispatch(iniciarActualizacion(usuarioActivo?.id, name, lastName, email.toLowerCase(), usuarioActivo?.password, usuarioActivo?.role))
+        dispatch(iniciarActualizacion(usuarioActivo?.id, name, lastName, email.toLowerCase(), usuarioActivo?.password, usuarioActivo?.role, usuarioActivo?.avatar))
 
         resetForm({
           name:  usuarioActivo?.name,
@@ -114,14 +115,30 @@ export const Perfil = () => {
     dispatch(iniciarActualizacionTema(tema, usuarioActivo, selected))
   }
 
+  const { name, category, backGround, radius, flip, rotate, translateX, translateY } = usuarioActivo?.avatar
+
+  const [showDialog, setShowDialog] = useState(false)
+
   return (
         <DashBoardLayaout>
             <Grid container>
                 <Grid py = {4} px = {2} xs = {12} sm = {12} md = {12} lg = {4} xl = {4}>
                     <Paper elevation={10} sx = {{borderRadius: '20px'}}>
                         <Grid display={'flex'} justifyContent = {'center'}>
-                            <Box mt={2}>
-                                <img loading="lazy" src={user} style = {{width: '250px', height: '250px', clipPath: 'circle()'}} className='img-fluid' alt="" />
+                            <Box mt={2} sx = {{overflow: 'hidden'}}>
+                                <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || usuarioActivo?.name}.svg`} 
+                                    style = {{
+                                        backgroundColor: backGround, 
+                                        width: '250px', 
+                                        height: '250px', 
+                                        borderRadius: `${radius}%`,
+                                        transform: 
+                                            `rotate(${rotate}deg) 
+                                            translateX(${translateX}%) 
+                                            translateY(${translateY}%) 
+                                            scaleX(${(flip) ? '-1' : '1'})`,
+                                    }}
+                                    alt="" />
                             </Box>
                         </Grid>
                         
@@ -145,9 +162,8 @@ export const Perfil = () => {
                                 </Grid>
 
                                 <Grid mt={2} xs = {12} sm = {12} md = {12} lg = {4} xl = {4}>
-                                    <Button variant="contained" component="label">
+                                    <Button onClick={() => setShowDialog(true)} variant="contained" component="label">
                                         Imagen
-                                        <input hidden accept="image/*" multiple type="file" />
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -204,6 +220,7 @@ export const Perfil = () => {
                 </Grid>
             </Grid>
             <DialogCambPass showDialogPass = {showModalPass} setShowDialogPass = {setShowModalPass} />
+            <DialogAvatar showDialog = {showDialog} setShowDialog = {setShowDialog} usuarioActivo = {usuarioActivo} />
         </DashBoardLayaout>
   )
 }
