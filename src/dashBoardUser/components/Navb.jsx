@@ -14,8 +14,6 @@ export const Navb = ({setShow}) => {
 
   const { pathname } = useLocation()
 
-  const { name, category, backGround, radius, flip, rotate, translateX, translateY } = usuarioActivo?.avatar
-
   return (
     <>
       <AppBar color='primary' component="nav">
@@ -51,26 +49,33 @@ export const Navb = ({setShow}) => {
             Shekinah
           </Typography>
 
-          <Grid
-            item justifyContent='end'
-            mx={1}
-            sx = {{overflow: 'hidden'}}
-          >
-            <img onClick = {() => navigate('/Perfil')} loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || usuarioActivo?.name}.svg`} 
-              style = {{
-                backgroundColor: backGround, 
-                width: 50, 
-                height: 50, 
-                borderRadius: `${radius}%`,
-                transform: 
-                  `rotate(${rotate}deg) 
-                  translateX(${translateX}%) 
-                  translateY(${translateY}%) 
-                  scaleX(${(flip) ? '-1' : '1'})`,
-                cursor: 'pointer'
-              }}
-              alt="" />
-          </Grid>
+          {
+            (usuarioActivo)
+              &&
+            <Grid
+              display={'flex'}
+              item justifyContent='end'
+              alignItems={'center'}
+              mx={1}
+              sx = {{overflow: 'hidden'}}
+            >
+              <Avatar onClick = {() => navigate('/Perfil')} src={`https://avatars.dicebear.com/api/${usuarioActivo?.avatar?.category}/:${usuarioActivo?.avatar?.name || usuarioActivo?.name}.svg`} 
+                style = {{
+                  backgroundColor: usuarioActivo?.avatar?.backGround, 
+                  width: 50, 
+                  height: 50, 
+                  borderRadius: `${usuarioActivo?.avatar?.radius}%`,
+                  transform: 
+                    `rotate(${usuarioActivo?.avatar?.rotate}deg) 
+                    translateX(${usuarioActivo?.avatar?.translateX}%) 
+                    translateY(${usuarioActivo?.avatar?.translateY}%) 
+                    scaleX(${(usuarioActivo?.avatar?.flip) ? '-1' : '1'})`,
+                  cursor: 'pointer'
+                }}
+                alt="" />
+            </Grid>
+          }
+
 
           <Box>
             {

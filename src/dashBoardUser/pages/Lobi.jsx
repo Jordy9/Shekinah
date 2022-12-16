@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Navb } from '../components/Navb';
 import { TablaPosiciones } from '../components/TablaPosiciones';
 import { Grid } from '@mui/material';
 import { DashBoardLayaout } from '../layaout/DashBoardLayaout';
@@ -31,8 +30,8 @@ export const Lobi = () => {
   
   return (
     <DashBoardLayaout>
-      <Grid container display={'flex'}>
-        <Grid xs = {12} >
+      <Grid container display={'flex'} sx = {{height: '100%'}}>
+        <Grid xs = {12}>
           <TablaPosiciones />
         </Grid>
       </Grid>

@@ -26,7 +26,7 @@ export const TablaPosiciones = () => {
 
   return (
     <>
-      <TableContainer sx={{width: '70vw', height: '80vh', mx: 'auto', mt: 2, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px'}} component={Paper}>
+      <TableContainer sx={{width: '70vw', height: '79vh', mx: 'auto', mt: 2, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px'}} component={Paper}>
           <Grid p={2} display={'flex'} justifyContent = 'space-between' alignItems={'center'}>
               <Typography variant='h5' textAlign={'center'}>Top 10</Typography>
               <Grid display={'flex'} justifyContent = 'space-between' alignItems={'center'} sx = {{cursor: 'pointer'}} onClick={() => navigate('/Perfil')}>

@@ -58,93 +58,92 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
   
     return (
         <Dialog
-            open={ShowDialog}
-            fullWidth
-            maxWidth = 'sm'
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
+        open={ShowDialog}
+        onClose={handleClose}
+        fullWidth
+        maxWidth = 'sm'
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        scroll={'paper'}
         >
             <DialogTitle id="alert-dialog-title">
                 Ver o actualizar usuario
             </DialogTitle>
-            <DialogContent>
+            <DialogContent sx = {{borderRadius: '20px'}}>
                 <Grid container>
-                    <Grid py = {4} px = {2} xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
-                        <Paper elevation={10} sx = {{borderRadius: '20px'}}>
-                            <Grid display={'flex'} justifyContent = {'center'}>
-                                <Box mt={2} sx = {{overflow: 'hidden'}}>
-                                    <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || userActive?.name}.svg`}
-                                        style = {{
-                                            backgroundColor: backGround, 
-                                            width: '150px', 
-                                            height: '150px', 
-                                            borderRadius: `${radius}%`,
-                                            transform: 
-                                                `rotate(${rotate}deg) 
-                                                translateX(${translateX}%) 
-                                                translateY(${translateY}%) 
-                                                scaleX(${(flip) ? '-1' : '1'})`,
-                                        }} 
-                                        alt="" 
-                                    />
-                                </Box>
+                    <Grid py = {4} xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
+                        <Grid display={'flex'} justifyContent = {'center'}>
+                            <Box mt={2} sx = {{overflow: 'hidden'}}>
+                                <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || userActive?.name}.svg`}
+                                    style = {{
+                                        backgroundColor: backGround, 
+                                        width: '150px', 
+                                        height: '150px', 
+                                        borderRadius: `${radius}%`,
+                                        transform: 
+                                            `rotate(${rotate}deg) 
+                                            translateX(${translateX}%) 
+                                            translateY(${translateY}%) 
+                                            scaleX(${(flip) ? '-1' : '1'})`,
+                                    }} 
+                                    alt="" 
+                                />
+                            </Box>
+                        </Grid>
+                        
+                        <form onSubmit={handleSubmit}>
+                            <Grid container mt={3}>
+                                <Grid xs = {12} sm = {12} md = {12} lg = {6} xl = {6}>
+                                    <TextField {...getFieldProps('name')} id="filled-basic" label="Nombre" variant="standard" />
+                                    {touched.name && errors.name && <span style={{color: 'red'}}>{errors.name}</span>}
+                                </Grid>
+
+                                <Grid xs = {12} sm = {12} md = {12} lg = {6} xl = {6}>
+                                    <TextField {...getFieldProps('lastName')} id="filled-basic" label="Apellido" variant="standard" />
+                                    {touched.lastName && errors.lastName && <span style={{color: 'red'}}>{errors.lastName}</span>}
+                                </Grid>
+                            </Grid>
+
+                            <Grid container mt={2}>
+                                <Grid xs = {12} sm = {12} md = {12} lg = {8} xl = {8}>
+                                    <TextField {...getFieldProps('email')} id="filled-basic" label="Correo electrónico" variant="standard" />
+                                    {touched.email && errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
+                                </Grid>
+
+                                <Grid mt={2} xs = {12} sm = {12} md = {12} lg = {4} xl = {4}>
+                                    <Button onClick={() => setShowDialogImagen(true)} variant="contained" component="label">
+                                        Imagen
+                                    </Button>
+                                </Grid>
+                            </Grid>
+
+                            <Grid container mt={2}>
+                                <Grid xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
+                                    <TextField fullWidth {...getFieldProps('role')} id="filled-basic" label="Rol" variant="standard" select>
+                                        <MenuItem value="administrador">Administrador</MenuItem>
+                                        <MenuItem value="usuario">Usuario</MenuItem>
+                                    </TextField>
+                                    {touched.role && errors.role && <span style={{color: 'red'}}>{errors.role}</span>}
+                                </Grid>
+                            </Grid>
+
+                            <Grid container>
+                                <Grid xs = {12} sm = {12} md = {12} lg = {6} xl = {6}>
+                                    <TextField {...getFieldProps('password')} id="filled-basic" label="Contraseña" variant="standard" />
+                                    {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
+                                </Grid>
+
+                                <Grid xs = {12} sm = {12} md = {12} lg = {6} xl = {6}>
+                                    <TextField {...getFieldProps('confirmPassword')} id="filled-basic" label="Confirmar contraseña" variant="standard" />
+                                    {touched.confirmPassword && errors.confirmPassword && <span style={{color: 'red'}}>{errors.confirmPassword}</span>}
+                                </Grid>
                             </Grid>
                             
-                            <form onSubmit={handleSubmit} style = {{paddingLeft: '1.5rem', paddingRight: '1.5rem', paddingBottom: '1.5rem'}}>
-                                <Grid container mt={3}>
-                                    <Grid xs = {12} sm = {12} md = {12} lg = {6} xl = {6}>
-                                        <TextField {...getFieldProps('name')} id="filled-basic" label="Nombre" variant="standard" />
-                                        {touched.name && errors.name && <span style={{color: 'red'}}>{errors.name}</span>}
-                                    </Grid>
-
-                                    <Grid xs = {12} sm = {12} md = {12} lg = {6} xl = {6}>
-                                        <TextField {...getFieldProps('lastName')} id="filled-basic" label="Apellido" variant="standard" />
-                                        {touched.lastName && errors.lastName && <span style={{color: 'red'}}>{errors.lastName}</span>}
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container mt={2}>
-                                    <Grid xs = {12} sm = {12} md = {12} lg = {8} xl = {8}>
-                                        <TextField {...getFieldProps('email')} id="filled-basic" label="Correo electrónico" variant="standard" />
-                                        {touched.email && errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
-                                    </Grid>
-
-                                    <Grid mt={2} xs = {12} sm = {12} md = {12} lg = {4} xl = {4}>
-                                        <Button onClick={() => setShowDialogImagen(true)} variant="contained" component="label">
-                                            Imagen
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container mt={2}>
-                                    <Grid xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
-                                        <TextField fullWidth {...getFieldProps('role')} id="filled-basic" label="Rol" variant="standard" select>
-                                            <MenuItem value="administrador">Administrador</MenuItem>
-                                            <MenuItem value="usuario">Usuario</MenuItem>
-                                        </TextField>
-                                        {touched.role && errors.role && <span style={{color: 'red'}}>{errors.role}</span>}
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container>
-                                    <Grid xs = {12} sm = {12} md = {12} lg = {6} xl = {6}>
-                                        <TextField {...getFieldProps('password')} id="filled-basic" label="Contraseña" variant="standard" />
-                                        {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
-                                    </Grid>
-
-                                    <Grid xs = {12} sm = {12} md = {12} lg = {6} xl = {6}>
-                                        <TextField {...getFieldProps('confirmPassword')} id="filled-basic" label="Confirmar contraseña" variant="standard" />
-                                        {touched.confirmPassword && errors.confirmPassword && <span style={{color: 'red'}}>{errors.confirmPassword}</span>}
-                                    </Grid>
-                                </Grid>
-                                
-                                <Button sx={{mt: 2}} fullWidth variant = 'contained' type='submit'>Guardar</Button>
-                            </form>
-                        </Paper>
+                            <Button sx={{mt: 2}} fullWidth variant = 'contained' type='submit'>Guardar</Button>
+                        </form>
                     </Grid>
 
-                    <Grid py = {4} px = {2} xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
+                    <Grid py = {4} xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
                         <Paper elevation={10} sx = {{borderRadius: '20px', pt: 2}}>
                             <Typography variant = 'h5' textAlign={'center'} ><strong>Información de las partidas</strong></Typography>
 
