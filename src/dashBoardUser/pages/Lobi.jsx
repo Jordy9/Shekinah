@@ -30,11 +30,7 @@ export const Lobi = () => {
   
   return (
     <DashBoardLayaout>
-      <Grid container display={'flex'} sx = {{height: '100%'}}>
-        <Grid xs = {12}>
-          <TablaPosiciones />
-        </Grid>
-      </Grid>
+      <TablaPosiciones />
     </DashBoardLayaout>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import user from '../../heroes/user.webp'
 import { useFormik } from 'formik';
@@ -55,6 +55,10 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
       const { name, category, backGround, radius, flip, rotate, translateX, translateY } = userActive?.avatar
 
       const [showDialogImagen, setShowDialogImagen] = useState(false)
+
+      const handleButton = () => {
+        document.getElementById('idButtomSubmitUser').click()
+      }
   
     return (
         <Dialog
@@ -139,31 +143,15 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
                                 </Grid>
                             </Grid>
                             
-                            <Button sx={{mt: 2}} fullWidth variant = 'contained' type='submit'>Guardar</Button>
+                            <Button id='idButtomSubmitUser' type = 'submit' hidden></Button>
                         </form>
-                    </Grid>
-
-                    <Grid py = {4} xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
-                        <Paper elevation={10} sx = {{borderRadius: '20px', pt: 2}}>
-                            <Typography variant = 'h5' textAlign={'center'} ><strong>Información de las partidas</strong></Typography>
-
-                            <Grid display={'flex'} justifyContent = {'space-around'} container my={2} p = {2}>
-                                <Grid>
-                                    <Typography variant = 'h5' textAlign={'center'}>Aciertos: {userActive?.juego?.aciertos || 0}</Typography>
-                                </Grid>
-
-                                <Grid>
-                                    <Typography variant = 'h5' textAlign={'center'}>Racha mas alta: {userActive?.juego?.racha - 1 || 0}</Typography>
-                                </Grid>
-
-                                <Grid>
-                                    <Typography variant = 'h5' textAlign={'center'}>Total de puntos: {userActive?.juego?.puntos || 0}</Typography>
-                                </Grid>
-                            </Grid>
-                        </Paper>
                     </Grid>
                 </Grid>
             </DialogContent>
+            <DialogActions>
+                <Button fullWidth variant = 'contained' onClick={handleClose} type='button'>Cerrar</Button>
+                <Button fullWidth variant = 'contained' onClick={handleButton} type='button'>Guardar</Button>
+            </DialogActions>
             <DialogAvatar showDialog={showDialogImagen} setShowDialog = {setShowDialogImagen} usuarioActivo = {userActive} />
         </Dialog>
     )

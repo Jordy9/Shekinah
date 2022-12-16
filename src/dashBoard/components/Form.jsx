@@ -253,12 +253,12 @@ export const Form = () => {
                     formValues?.map((element, index) => {
                         return (
                             <Fragment key={element + index}>
-                                <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
-                                    <TextField  multiline maxRows={2} name='texto' value = {element.texto} onChange={e => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
+                                <Grid flexDirection='column' container item xs = {9} sm = {9} md = {9} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
+                                    <TextField multiline maxRows={2} name='texto' value = {element.texto} onChange={e => handleChange(index, e)} variant='standard' label = 'Respuesta' type = 'text' fullWidth />
                                     {touched?.respuesta?.filter(texto => texto?.texto) && errors.respuesta?.filter(texto => texto?.texto) && <span style={{color: 'red'}}>{errors?.respuesta[index]?.texto}</span>}
                                 </Grid>
 
-                                <Grid display={'flex'} justifyContent = {'center'} flexDirection='column' container item xs = {9} sm = {9} md = {9} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
+                                <Grid display={'flex'} justifyContent = {'center'} flexDirection='column' container item xs = {3} sm = {3} md = {3} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
                                     {
                                         (element.correcta === true)
                                             ?

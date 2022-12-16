@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { TableQuestion } from '../dashBoard/components/TableQuestion'
 import { CreateQuestion } from '../dashBoard/pages/CreateQuestion'
+import { QuestionList } from '../dashBoard/pages/QuestionList'
 import { UserList } from '../dashBoard/pages/UserList'
 import { InGame } from '../dashBoardUser/pages/InGame'
 import { Lobi } from '../dashBoardUser/pages/Lobi'
@@ -21,7 +21,7 @@ export const AdminRoute = () => {
 
       <Route path='/crearPregunta' element = { <CreateQuestion /> } />
 
-      <Route path='/listadoPreguntas' element = { <TableQuestion /> } />
+      <Route path='/listadoPreguntas' element = { <QuestionList /> } />
 
       <Route path='/*' element = {<Navigate to='/Lobi' />} />
 

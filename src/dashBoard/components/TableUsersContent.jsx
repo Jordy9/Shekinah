@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { IconButton, TableCell, TableRow } from '@mui/material'
-import user from '../../heroes/user.webp'
+import { Avatar, IconButton, TableCell, TableRow } from '@mui/material'
 import { Delete, VisibilityOutlined } from '@mui/icons-material'
 import { DialogUsers } from './DialogUsers'
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,8 +43,8 @@ export const TableUsersContent = (props) => {
     <TableRow
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
-        <TableCell style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
-            <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${nameAvatar || name}.svg`} 
+        <TableCell size='small' style = {{display: 'flex', justifyContent: 'center'}} component="th" scope="row">
+            <Avatar src={`https://avatars.dicebear.com/api/${category}/:${nameAvatar || name}.svg`} 
                 style = {{
                     backgroundColor: backGround, 
                     width: '50px', 
@@ -60,27 +59,27 @@ export const TableUsersContent = (props) => {
                 alt="" />
         </TableCell>
 
-        <TableCell style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
+        <TableCell size='small' style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
             {name}
         </TableCell>
 
-        <TableCell style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
+        <TableCell size='small' style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
             {email}
         </TableCell>
 
-        <TableCell style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
+        <TableCell size='small' style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
             {juego?.puntos || 0}
         </TableCell>
 
-        <TableCell style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
+        <TableCell size='small' style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
             {juego?.aciertos || 0}
         </TableCell>
 
-        <TableCell style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
+        <TableCell size='small' style = {{verticalAlign: 'middle'}} align='center' component="th" scope="row">
             {juego?.errores || 0}
         </TableCell>
 
-        <TableCell align="center" ><IconButton onClick={() => hanldeShow(props)} color = 'info'><VisibilityOutlined /></IconButton> <IconButton onClick={() => handleDelete(props)} color = 'error'><Delete /></IconButton></TableCell>
+        <TableCell size='small' align="center" ><IconButton onClick={() => hanldeShow(props)} color = 'info'><VisibilityOutlined /></IconButton> <IconButton onClick={() => handleDelete(props)} color = 'error'><Delete /></IconButton></TableCell>
 
         {
             (userActive)

@@ -1,4 +1,4 @@
-import { ArrowBackIos, Book, Cancel, Check, MusicNote, MusicOff } from '@mui/icons-material'
+import { ArrowBackIos, Book, MusicNote, MusicOff } from '@mui/icons-material'
 import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -7,7 +7,6 @@ import { Antiguotestamento } from '../../Antiguotestamento'
 import { soundLose, soundWin } from '../../helpers/sounds'
 import { useResponsive } from '../../hooks/useResponsive'
 import { Nuevotestamento } from '../../Nuevotestamento'
-import { ScrollToTop } from '../../scrollToTop/ScrollToTop'
 import { Spinner } from '../../Spinner'
 import { GuardarRecord } from '../../store/auth/thunk'
 import { BorrarPregunta, SiguientePregunta } from '../../store/record/thunk'
@@ -192,11 +191,10 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
     
   return (
     <>
-        <ScrollToTop change = {change} />
         {
             (!showResultados)
-                ?
-            <>
+            ?
+            <div id='preguntaScroll'>
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar position="static">
                         {/* <Toolbar> */}
@@ -358,7 +356,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                     }
 
                 </Grid>
-            </>
+            </div>
                 :
             <Resultados />
         }

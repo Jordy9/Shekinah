@@ -9,15 +9,16 @@ export const DialogContentBible = ({ShowDialog, setShowDialog, content, capitulo
 
   return (
     <Dialog
-        open={ShowDialog}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      open={ShowDialog}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      scroll={'paper'}
     >
-        <DialogTitle id="alert-dialog-title" sx={{backgroundColor: '#383c45'}}>
+        <DialogTitle id="alert-dialog-title">
           {libro} {Number(capitulo) + 1}
         </DialogTitle>
-        <DialogContent sx={{backgroundColor: '#383c45'}}>
+        <DialogContent>
           {
             content?.map((contenido, index) => {
               return (

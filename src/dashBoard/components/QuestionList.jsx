@@ -46,28 +46,28 @@ export const QuestionList = (props) => {
 
   return (
     <>
-        <TableRow
-          key={pregunta._id}
-          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-        >
-            <TableCell component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{pregunta}</Typography></TableCell>
-            <TableCell component="th" scope="row">{idPregunta}</TableCell>
-            <TableCell component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{respuesta[0]?.texto}</Typography></TableCell>
-            <TableCell align="right">{dificultad}</TableCell>
-            <TableCell align="right">{categoria}</TableCell>
-            <TableCell align="right">{testam}</TableCell>
-            <TableCell align="right">{libro}</TableCell>
-            <TableCell align="right">{Number(capitulo) + 1}</TableCell>
-            <TableCell align="right">{Number(desdeVersiculo) + 1}</TableCell>
-            <TableCell align="right">{Number(hastaVersiculo) + 1}</TableCell>
-            <TableCell align="center" ><IconButton onClick={() => OpenModal(props)} color = 'info'><VisibilityOutlined /></IconButton> <IconButton onClick={Handleddelete} color = 'error'><Delete /></IconButton></TableCell>
-        </TableRow>
-        
-        {
-          (props)
-            &&
-          <ModalQuestion Show = {Show} setShow = {setShow} />
-        }
+      <TableRow
+        key={pregunta._id}
+        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      >
+        <TableCell size='small' component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{pregunta}</Typography></TableCell>
+        <TableCell size='small' component="th" align="center" scope="row">{idPregunta}</TableCell>
+        <TableCell size='small' component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{respuesta[0]?.texto}</Typography></TableCell>
+        <TableCell size='small' align="center">{dificultad}</TableCell>
+        <TableCell size='small' align="center">{categoria}</TableCell>
+        <TableCell size='small' align="center">{testam}</TableCell>
+        <TableCell size='small' align="center">{libro}</TableCell>
+        <TableCell size='small' align="center">{Number(capitulo) + 1}</TableCell>
+        <TableCell size='small' align="center">{Number(desdeVersiculo) + 1}</TableCell>
+        <TableCell size='small' align="center">{Number(hastaVersiculo) + 1}</TableCell>
+        <TableCell size='small' align="center" ><IconButton onClick={() => OpenModal(props)} color = 'info'><VisibilityOutlined /></IconButton> <IconButton onClick={Handleddelete} color = 'error'><Delete /></IconButton></TableCell>
+      </TableRow>
+      
+      {
+        (props)
+          &&
+        <ModalQuestion Show = {Show} setShow = {setShow} />
+      }
     </>
   )
 }

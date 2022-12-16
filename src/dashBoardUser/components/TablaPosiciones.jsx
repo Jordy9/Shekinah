@@ -1,5 +1,5 @@
 import { PlayCircle, Settings } from '@mui/icons-material'
-import { BottomNavigation, BottomNavigationAction, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from '@mui/material'
+import { Avatar, BottomNavigation, BottomNavigationAction, Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -25,30 +25,30 @@ export const TablaPosiciones = () => {
     const { name, category, backGround, radius, flip, rotate, translateX, translateY } = usuarioActivo?.avatar
 
   return (
-    <>
-      <TableContainer sx={{width: '70vw', height: '79vh', mx: 'auto', mt: 2, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px'}} component={Paper}>
+    <Box display={'flex'} alignItems={'center'} sx = {{height: '80vh'}}>
+      <TableContainer sx={{width: '70vw', height: '500px', mx: 'auto', mt: 2, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px'}} component={Paper}>
           <Grid p={2} display={'flex'} justifyContent = 'space-between' alignItems={'center'}>
               <Typography variant='h5' textAlign={'center'}>Top 10</Typography>
               <Grid display={'flex'} justifyContent = 'space-between' alignItems={'center'} sx = {{cursor: 'pointer'}} onClick={() => navigate('/Perfil')}>
                   <Grid mx={1} display = {'flex'} justifyContent = {'center'} sx = {{overflow: 'hidden'}}>
-                    <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || usuarioActivo?.name}.svg`} 
+                    <Avatar src={`https://avatars.dicebear.com/api/${category}/:${name || usuarioActivo?.name}.svg`} 
                       style = {{
-                          backgroundColor: backGround, 
-                          width: '50px', 
-                          height: '50px', 
-                          borderRadius: `${radius}%`,
-                          transform: 
-                            `rotate(${rotate}deg) 
-                            translateX(${translateX}%) 
-                            translateY(${translateY}%) 
-                            scaleX(${(flip) ? '-1' : '1'})`,
+                        backgroundColor: backGround, 
+                        width: '50px', 
+                        height: '50px', 
+                        borderRadius: `${radius}%`,
+                        transform: 
+                          `rotate(${rotate}deg) 
+                          translateX(${translateX}%) 
+                          translateY(${translateY}%) 
+                          scaleX(${(flip) ? '-1' : '1'})`,
                       }}
                       alt="" />
                   </Grid>
                   <Typography variant='h5'>{usuarioActivo?.name}</Typography>
               </Grid>
           </Grid>
-        <Table aria-label="simple table">
+        <Table aria-label="simple table" stickyHeader = {true}>
           <TableHead>
             <TableRow>
               <TableCell align="center">Imagen</TableCell>
@@ -57,7 +57,7 @@ export const TablaPosiciones = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-              <TablaSpreedList />
+            <TablaSpreedList />
           </TableBody>
         </Table>
 
@@ -74,6 +74,6 @@ export const TablaPosiciones = () => {
         </BottomNavigation>
       </Paper>
 
-    </>
+    </Box>
   )
 }

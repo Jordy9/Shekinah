@@ -10,19 +10,18 @@ export const DashBoardLayaout = ({children}) => {
 
   return (
     <Box sx={{display: 'flex'}}>
-        <Navb setShow = {setShow} />
+      <Navb setShow = {setShow} />
 
-        <Drawer show = {show} setShow = {setShow} />
+      <Drawer show = {show} setShow = {setShow} />
 
-        <Box
-            component = 'main'
-            sx={{flexGrow: 1}}
-        >
-
-            <Toolbar />
-            
-            {children}
-        </Box>
+      <Box
+        component = 'main'
+        sx={{flexGrow: 1}}
+      >
+        <Toolbar />
+        
+        {children}
+      </Box>
     </Box>
   )
 }

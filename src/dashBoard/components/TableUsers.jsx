@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, Avatar, Box, Typography } from '@mui/material'
 import { TableUsersSpreed } from './TableUsersSpreed';
+import { useResponsive } from '../../hooks/useResponsive';
 
-  
-  export const TableUsers = () => {
+export const TableUsers = () => {
   
   const [page, setPage] = useState(0);
 
@@ -14,6 +14,8 @@ import { TableUsersSpreed } from './TableUsersSpreed';
     setPage(0);
   };
 
+  const [ respWidth ] = useResponsive()
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -22,13 +24,9 @@ import { TableUsersSpreed } from './TableUsersSpreed';
     <Box autoComplete="off" sx={{p: 4}}>
       <Typography marginBottom={5} variant='h5'>Usuarios</Typography>
 
-      <Box sx={{p: 3}}>
-
-        <TableContainer elevation = {4} component={Paper} sx = {{
-          height: 400,
-          borderRadius: '20px',
-        }}>
-          <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto'}}>
+      <Box>
+        <TableContainer elevation = {4} component={Paper} sx={{width: '80vw', height: '400px', mx: 'auto', mt: 2, borderTopLeftRadius: '20px', borderBottomLeftRadius: 0, borderBottomRightRadius: 0}}>
+          <Table aria-label="simple table" stickyHeader = {true}>
             <TableHead>
               <TableRow>
                 <TableCell align="center">Foto</TableCell>
@@ -44,16 +42,19 @@ import { TableUsersSpreed } from './TableUsersSpreed';
               <TableUsersSpreed />
             </TableBody>
           </Table>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={10}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
         </TableContainer>
+        <TablePagination
+          sx={{width: '80vw', mx: 'auto', borderTopLeftRadius: 0, borderTopRightRadius: 0, borderBottomLeftRadius: '20px'}}
+          labelRowsPerPage = {(respWidth > 991) ? 'Filas por página' : 'Filas'}
+          labelDisplayedRows = {({ from, to, count }) => `${from}-${to} de ${count}`}
+          rowsPerPageOptions={[10, 25, 100]}
+          component={Paper}
+          count={10}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Box>
     </Box>
   )

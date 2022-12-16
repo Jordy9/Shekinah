@@ -1,7 +1,7 @@
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, Box, Typography, TextField, IconButton, Button, CircularProgress, Grid } from '@mui/material'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { DashBoardLayaout } from '../../dashBoardUser/layaout/DashBoardLayaout';
+import { useResponsive } from '../../hooks/useResponsive';
 import { obtenerPreguntaFiltrada, obtenerPreguntas } from '../../store/preguntas/thunk';
 import { TableQuestionList } from './TableQuestionList';
   
@@ -31,68 +31,59 @@ export const TableQuestion = () => {
     dispatch(obtenerPreguntaFiltrada(buscadorSearch))
   }
 
+  const [ respWidth ] = useResponsive()
+
   return (
-    <DashBoardLayaout>
-      <Box autoComplete="off" sx={{p: 4}}>
-        <Typography marginBottom={5} variant='h5'>Listado de preguntas</Typography>
+    <Box autoComplete="off" sx={{p: 4}}>
+      <Typography marginBottom={5} variant='h5'>Listado de preguntas</Typography>
 
-        <Box sx={{p: 3}}>
+      <Box>
 
-          {
-            (paginacion)
-              ?
-            <TableContainer elevation = {4} component={Paper} sx = {{height: 400, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px', overflow: 'auto'}}>
-              <Grid flexDirection='row' container item xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
-                <TextField name='buscador' value={buscadorSearch} onChange = {({target}) => setBuscadorSearch(target.value)} label = 'Buscador' type='search' variant='standard' sx={{
-                  m: 1
-                }} />
+          <TableContainer elevation = {4} component={Paper} sx={{width: '80vw', height: '400px', mx: 'auto', mt: 2, borderTopLeftRadius: '20px', borderBottomLeftRadius: 0, borderBottomRightRadius: 0}}>
+            <Grid flexDirection='row' container item xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
+              <TextField name='buscador' value={buscadorSearch} onChange = {({target}) => setBuscadorSearch(target.value)} label = 'Buscador' type='search' variant='standard' sx={{
+                m: 1
+              }} />
 
-                <Grid display={'flex'} alignItems = {'end'} mb = {0.9}>
-                  <Button color='primary' variant='contained' onClick={SearchQuestion}>Buscar</Button>
-                </Grid>
+              <Grid display={'flex'} alignItems = {'end'} mb = {0.9}>
+                <Button color='primary' variant='contained' onClick={SearchQuestion}>Buscar</Button>
               </Grid>
-
-              {/* <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2}>
-              </Grid> */}
-              <Table aria-label="simple table" stickyHeader = {true} sx={{ minWidth: 650, overflow: 'auto' }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Pregunta</TableCell>
-                    <TableCell>Id Pregunta</TableCell>
-                    <TableCell>Respuesta</TableCell>
-                    <TableCell align="right">Dificultad</TableCell>
-                    <TableCell align="right">Categoría</TableCell>
-                    <TableCell align="right">Testamento</TableCell>
-                    <TableCell align="right">Libro</TableCell>
-                    <TableCell align="right">Capítulo</TableCell>
-                    <TableCell align="right">Desde el versiculo</TableCell>
-                    <TableCell align="right">Hasta el versiculo</TableCell>
-                    <TableCell align="center">Acción</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableQuestionList />
-                </TableBody>
-              </Table>
-              <TablePagination
-                rowsPerPageOptions={[10, 20, 30]}
-                labelRowsPerPage = 'Filas por página'
-                component="div"
-                count={Number(paginacion?.idPreguntasCount) || 0}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                sx = {{color: 'black'}}
-              />
-            </TableContainer>
-            :
-            <Box justifyContent='center' alignItems='center' sx={{ display: 'flex', height: '45vh'}}>
-              <CircularProgress />
-            </Box>
-          }
-        </Box>
+            </Grid>
+            
+            <Table aria-label="simple table" stickyHeader = {true}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Pregunta</TableCell>
+                  <TableCell>Id Pregunta</TableCell>
+                  <TableCell>Respuesta</TableCell>
+                  <TableCell align="center">Dificultad</TableCell>
+                  <TableCell align="center">Categoría</TableCell>
+                  <TableCell align="center">Testamento</TableCell>
+                  <TableCell align="center">Libro</TableCell>
+                  <TableCell align="center">Capítulo</TableCell>
+                  <TableCell align="center">Desde el versiculo</TableCell>
+                  <TableCell align="center">Hasta el versiculo</TableCell>
+                  <TableCell align="center">Acción</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableQuestionList />
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            sx={{width: '80vw', mx: 'auto', borderTopLeftRadius: 0, borderTopRightRadius: 0, borderBottomLeftRadius: '20px'}}
+            rowsPerPageOptions={[10, 20, 30]}
+            labelRowsPerPage = {(respWidth > 991) ? 'Filas por página' : 'Filas'}
+            labelDisplayedRows = {({ from, to, count }) => `${from}-${to} de ${count}`}
+            component={Paper}
+            count={Number(paginacion?.idPreguntasCount) || 0}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
       </Box>
-    </DashBoardLayaout>
+    </Box>
   )
 }

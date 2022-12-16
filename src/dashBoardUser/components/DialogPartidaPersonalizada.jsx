@@ -12,7 +12,7 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
     setShowDialogPartidaP(false)
   }
 
-  const { paginacion } = useSelector(state => state.pg);
+  const { usuarioActivo } = useSelector(state => state.auth);
 
   const dispatch = useDispatch();
 
@@ -68,6 +68,10 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
 
   const [ respWidth ] = useResponsive()
 
+  const handleButton = () => {
+    document.getElementById('buttonSubmitPartidaPersonalizada').click()
+  }
+
   return (
     <Dialog
       open={ShowDialogPartidaP}
@@ -83,9 +87,13 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
-            <Button variant = 'contained' type='button' onClick={() => setShowPregunta(!showPregunta)}>
-              {(!showPregunta) ? 'Partida por Rango o Id' : 'Partida personalizada'}
-            </Button>
+            {
+              (usuarioActivo?.role === 'administrador')
+                &&
+              <Button variant = 'contained' type='button' onClick={() => setShowPregunta(!showPregunta)}>
+                {(!showPregunta) ? 'Partida por Rango o Id' : 'Partida personalizada'}
+              </Button>
+            }
             {
               (!showPregunta)
                 ?
@@ -124,13 +132,7 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
                     </Grid>
                 </Grid>
 
-                <Grid container p = {2}>
-                  <Grid xs = {12}>
-                    <Button variant = 'contained' type='submit'>
-                      Jugar partida personalizada
-                    </Button>
-                  </Grid>
-                </Grid>
+                <Button id='buttonSubmitPartidaPersonalizada' hidden type='submit'></Button>
               </>
                 :
               <>
@@ -142,14 +144,6 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
                     <TextField value={formId} onChange = {(e) => setFormId(e.target.value)} variant = 'standard' label = 'Id de la pregunta' />
                   </Grid>
                 </Grid>
-
-                <Grid container>
-                  <Grid xs = {12}>
-                    <Button variant = 'contained' type='button' onClick={submitt}>
-                      Jugar partida con id
-                    </Button>
-                  </Grid>
-                </Grid>
               </>
             }
 
@@ -159,6 +153,17 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
           <Button variant = 'contained' type='button' onClick={handleClose}>
             Cerrar
           </Button>
+          {
+            (showPregunta)
+              ?
+            <Button variant = 'contained' type='button' onClick={submitt}>
+              Jugar partida con id
+            </Button>
+              :
+            <Button onClick={handleButton} variant = 'contained' type='button'>
+              Jugar partida personalizada
+            </Button>
+          }
         </DialogActions>
       </Dialog>
   )
