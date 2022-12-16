@@ -161,7 +161,13 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
             </Button>
               :
             <Button onClick={handleButton} variant = 'contained' type='button'>
-              Jugar partida personalizada
+              {
+                (respWidth > 991)
+                  ?
+                'Jugar partida personalizada'
+                  :
+                'Jugar'
+              }
             </Button>
           }
         </DialogActions>
