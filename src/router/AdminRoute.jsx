@@ -6,6 +6,7 @@ import { UserList } from '../dashBoard/pages/UserList'
 import { InGame } from '../dashBoardUser/pages/InGame'
 import { Lobi } from '../dashBoardUser/pages/Lobi'
 import { Perfil } from '../dashBoardUser/pages/Perfil'
+import { Temas } from '../dashBoardUser/components/Temas'
 
 export const AdminRoute = () => {
   return (
@@ -22,6 +23,8 @@ export const AdminRoute = () => {
       <Route path='/crearPregunta' element = { <CreateQuestion /> } />
 
       <Route path='/listadoPreguntas' element = { <QuestionList /> } />
+
+      <Route path='/temas' element = { <Temas /> } />
 
       <Route path='/*' element = {<Navigate to='/Lobi' />} />
 

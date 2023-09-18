@@ -9,6 +9,7 @@ import { obtenerPreguntas } from '../store/preguntas/thunk';
 import { obtenerRecord } from '../store/record/thunk';
 import { AdminRoute } from './AdminRoute';
 import { UserRoute } from './UserRoute';
+import { obtenerTemas } from '../store/temas/thunk';
 
 export const AppRouter = () => {
 
@@ -23,6 +24,7 @@ export const AppRouter = () => {
     dispatch(iniciarAutenticacion())
     dispatch(obtenerPreguntas())
     dispatch(obtenerRecord())
+    dispatch(obtenerTemas())
   }, [dispatch])
 
   useEffect(() => {

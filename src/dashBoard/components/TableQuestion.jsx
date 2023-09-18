@@ -54,6 +54,7 @@ export const TableQuestion = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>Pregunta</TableCell>
+                  <TableCell>Tema</TableCell>
                   <TableCell>Id Pregunta</TableCell>
                   <TableCell>Respuesta</TableCell>
                   <TableCell align="center">Dificultad</TableCell>

@@ -1,4 +1,4 @@
-import { Add, Delete, Book, Save, Check, Cancel } from '@mui/icons-material'
+import { Book, Save, Check, Cancel } from '@mui/icons-material'
 import { Box, Button, Grid, IconButton, MenuItem, TextField, Tooltip, Typography } from '@mui/material'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useFormik } from 'formik';
@@ -8,13 +8,15 @@ import { Nuevotestamento } from '../../Nuevotestamento';
 import { Antiguotestamento } from '../../Antiguotestamento';
 import { DialogContentBible } from './DialogContentBible';
 import { crearPregunta } from '../../store/preguntas/thunk';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const librosBiblia = [...Antiguotestamento(), ...Nuevotestamento()]
 
 export const Form = () => {
 
     const dispatch = useDispatch()
+
+    const { temas } = useSelector(state => state.tm);
 
     const [formValues, setFormValues] = useState(
         [
@@ -36,10 +38,11 @@ export const Form = () => {
             capitulo:   '',
             desdeVersiculo: '',
             hastaVersiculo: '',
+            tema: '',
         },
         enableReinitialize: true,
-        onSubmit: ({pregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo}) => {
-            dispatch(crearPregunta(pregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo))
+        onSubmit: ({pregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo, tema}) => {
+            dispatch(crearPregunta(pregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo, tema))
 
             resetForm({
                 pregunta:   '',
@@ -50,6 +53,7 @@ export const Form = () => {
                 capitulo:   '',
                 desdeVersiculo: '',
                 hastaVersiculo: '',
+                tema: '',
             })
 
             setFormValues(
@@ -83,6 +87,7 @@ export const Form = () => {
                         .required('Requerido'),
             hastaVersiculo: Yup.string()
                         .required('Requerido'),
+            tema: Yup.string()
         })
     })
         
@@ -135,7 +140,7 @@ export const Form = () => {
         }
     }, [getFieldProps('hastaVersiculo')?.value, getFieldProps('desdeVersiculo')?.value])
 
-    console.log(touched)
+    console.log(temas)
     
   return (
     <Box autoComplete="off" sx={{p: 4}}>
@@ -144,9 +149,20 @@ export const Form = () => {
        
        <form onSubmit={handleSubmit}>
             <Grid item container flexDirection='row'>
-                <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
+                <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {6} xl = {6} sx = {{padding: 3, borderRadius: 2}} >
                     <TextField  multiline maxRows={4} {...getFieldProps('pregunta')} variant='standard' label = 'Pregunta' type = 'text' fullWidth />
                     {touched.pregunta && errors.pregunta && <span style={{color: 'red'}}>{errors.pregunta}</span>}
+                </Grid>
+
+                <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
+                    <TextField  {...getFieldProps('tema')} variant='standard' id="select1" label="Tema" select>
+                        {
+                            temas?.map( e => (
+                                <MenuItem key={ e?._id } value={ e?.tema }>{e?.tema}</MenuItem>
+                            ))
+                        }
+                    </TextField>
+                    {touched.tema && errors.tema && <span style={{color: 'red'}}>{errors.tema}</span>}
                 </Grid>
 
                 <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >

@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
-import { obtenerPreguntasJuegoPersonalizado, obtenerPreguntasPorId } from '../../store/preguntas/thunk'
+import { jugarPreguntasPorTema, obtenerPreguntasJuegoPersonalizado, obtenerPreguntasPorId } from '../../store/preguntas/thunk'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import { useResponsive } from '../../hooks/useResponsive';
+import { ConfigurationComponents } from './ConfigurationComponents';
+import { PreguntasTema } from './PreguntasTema';
+import { ButtonComponents } from './ButtonComponents';
 
 export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPartidaP}) => {
 
@@ -13,6 +16,8 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
   }
 
   const { usuarioActivo } = useSelector(state => state.auth);
+
+  const { temas, preguntasTema } = useSelector(state => state.tm);
 
   const dispatch = useDispatch();
 
@@ -45,6 +50,8 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
 
   const [showPregunta, setShowPregunta] = useState(false)
 
+  const [showPreguntaTema, setShowPreguntaTema] = useState(false)
+
   const Categoria = [
     {value: 'Pentateuco', label: 'Pentateuco'}, 
     {value: 'Histórico', label : 'Histórico'},
@@ -66,10 +73,17 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
     {value: '15', label: '15'}, 
   ]
 
-  const [ respWidth ] = useResponsive()
-
   const handleButton = () => {
     document.getElementById('buttonSubmitPartidaPersonalizada').click()
+  }
+
+  const [preguntasTOGame, setPreguntasTOGame] = useState([])
+
+  const handleJugarPorTemas = () => {
+
+    if ( preguntasTOGame.length === 0 ) return
+
+    dispatch( jugarPreguntasPorTema(preguntasTOGame) )
   }
 
   return (
@@ -87,89 +101,71 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
+            <Grid display={ 'flex' } justifyContent={ 'space-between' }>
+              {
+                (usuarioActivo?.role === 'administrador')
+                  &&
+                <Button variant = 'contained' type='button' onClick={() => {
+                  setShowPreguntaTema(false)
+                  setShowPregunta(!showPregunta)
+                }}>
+                  {(!showPregunta) ? 'Partida por Rango o Id' : 'Partida personalizada'}
+                </Button>
+              }
+              {
+                (usuarioActivo?.role === 'administrador')
+                  &&
+                <Button variant = 'contained' type='button' onClick={() => setShowPreguntaTema(!showPreguntaTema)}>
+                  Por tema
+                </Button>
+              }
+            </Grid>
+            
             {
-              (usuarioActivo?.role === 'administrador')
-                &&
-              <Button variant = 'contained' type='button' onClick={() => setShowPregunta(!showPregunta)}>
-                {(!showPregunta) ? 'Partida por Rango o Id' : 'Partida personalizada'}
-              </Button>
-            }
-            {
-              (!showPregunta)
+              ( showPreguntaTema )
                 ?
-              <>
-                <Grid container p={3} display = {'flex'} justifyContent = {'center'}>
-                    <Grid xs = {12} sm = {12} md = {12} lg = {4} xl = {4}>
-                      <TextField fullWidth {...getFieldProps('categoria')} variant = 'standard' label = 'Categoría' select>
-                        {Categoria.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-
-                    <Grid sx = {{mx: (respWidth > 991) && 1}} xs = {12} sm = {12} md = {12} lg = {3} xl = {3}>
-
-                      <TextField fullWidth {...getFieldProps('dificultad')} variant = 'standard' label = 'Dificultad' select>
-                        {Dificultad.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-
-                    <Grid xs = {12} sm = {12} md = {12} lg = {4} xl = {4}>
-
-                      <TextField fullWidth {...getFieldProps('pregunta')} variant = 'standard' label = 'Preguntas' select>
-                        {Preguntas.map((option) => (
-                          <MenuItem selected key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                </Grid>
-
-                <Button id='buttonSubmitPartidaPersonalizada' hidden type='submit'></Button>
-              </>
+              <PreguntasTema
+                temas={ temas }
+                preguntasTOGame={ preguntasTOGame }
+                setPreguntasTOGame={ setPreguntasTOGame }
+              />
                 :
-              <>
-                <Typography variant='h6'>Para pruebas</Typography>
-                <Typography variant = 'body2'>Si desea buscar por rango siga esta sintaxis: 1-5 o 100-110</Typography>
-                <Typography variant = 'body2'>Si desea buscar por ids especificos siga esta sintaxis: 1,5,7,15,20</Typography>
-                <Grid container py = {2}>
-                  <Grid xs = {12}>
-                    <TextField value={formId} onChange = {(e) => setFormId(e.target.value)} variant = 'standard' label = 'Id de la pregunta' />
-                  </Grid>
-                </Grid>
-              </>
+              <ConfigurationComponents
+                Categoria={ Categoria }
+                Dificultad={ Dificultad }
+                Preguntas={ Preguntas }
+                formId={ formId }
+                getFieldProps={ getFieldProps }
+                setFormId={ setFormId }
+                showPregunta={ showPregunta }
+              />
             }
 
           </form>
         </DialogContent>
-        <DialogActions>
-          <Button variant = 'contained' type='button' onClick={handleClose}>
-            Cerrar
-          </Button>
+        <DialogActions sx={{ px: 2 }}>
+
           {
-            (showPregunta)
+            ( showPreguntaTema )
               ?
-            <Button variant = 'contained' type='button' onClick={submitt}>
-              Jugar partida con id
-            </Button>
+            <>
+              <Button fullWidth variant = 'contained' type='button' onClick={handleClose}>
+                Cerrar
+              </Button>
+
+              <Button fullWidth variant = 'contained' type='button' onClick={handleJugarPorTemas}>
+                Jugar
+              </Button>
+            </>
               :
-            <Button onClick={handleButton} variant = 'contained' type='button'>
-              {
-                (respWidth > 991)
-                  ?
-                'Jugar partida personalizada'
-                  :
-                'Jugar'
-              }
-            </Button>
+            <ButtonComponents
+              handleButton={ handleButton }
+              handleClose={ handleClose }
+              showPregunta={ showPregunta }
+              submitt={ submitt }
+            />
           }
+
         </DialogActions>
       </Dialog>
   )

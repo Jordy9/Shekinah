@@ -11,7 +11,7 @@ export const QuestionList = (props) => {
 
     const dispatch = useDispatch()
 
-    const {pregunta, idPregunta, respuesta, dificultad, categoria, testamento, idLibro, libro, capitulo, desdeVersiculo, hastaVersiculo} = props
+    const {pregunta, idPregunta, respuesta, dificultad, categoria, testamento, idLibro, libro, capitulo, desdeVersiculo, hastaVersiculo, tema} = props
 
     const [Show, setShow] = useState(false)
 
@@ -51,6 +51,7 @@ export const QuestionList = (props) => {
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
         <TableCell size='small' component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{pregunta}</Typography></TableCell>
+        <TableCell size='small' component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{tema}</Typography></TableCell>
         <TableCell size='small' component="th" align="center" scope="row">{idPregunta}</TableCell>
         <TableCell size='small' component="th" scope="row"><Typography fontSize='0.875rem' sx={elipsis}>{respuesta[0]?.texto}</Typography></TableCell>
         <TableCell size='small' align="center">{dificultad}</TableCell>

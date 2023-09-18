@@ -17,6 +17,8 @@ export const ModalQuestion = ({Show, setShow}) => {
 
     const dispatch = useDispatch()
 
+    const {temas} = useSelector(state => state.tm)
+
     const {preguntaActiva} = useSelector(state => state.pg)
 
     const handleClose = () => {
@@ -44,10 +46,11 @@ export const ModalQuestion = ({Show, setShow}) => {
             capitulo:   Number(preguntaActiva?.capitulo) || 0,
             desdeVersiculo: Number(preguntaActiva?.desdeVersiculo) || 0,
             hastaVersiculo: Number(preguntaActiva?.hastaVersiculo) || 0,
+            tema: preguntaActiva?.tema ?? ''
         },
         enableReinitialize: true,
-        onSubmit: ({pregunta, idPregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo}) => {
-            dispatch(actualizarPregunta(pregunta, idPregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo))
+        onSubmit: ({pregunta, idPregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo, tema}) => {
+            dispatch(actualizarPregunta(pregunta, idPregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo, tema))
         },
         validationSchema: Yup.object({
             pregunta: Yup.string()
@@ -71,6 +74,7 @@ export const ModalQuestion = ({Show, setShow}) => {
                         .required('Requerido'),
             hastaVersiculo: Yup.string()
                         .required('Requerido'),
+            tema: Yup.string()
         })
     })
 
@@ -156,9 +160,20 @@ export const ModalQuestion = ({Show, setShow}) => {
 
                 <form onSubmit={handleSubmit}>
                     <Grid item container flexDirection='row'>
-                        <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {8} xl = {8} sx = {{padding: 3, borderRadius: 2}} >
+                        <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {6} xl = {6} sx = {{padding: 3, borderRadius: 2}} >
                             <TextField error = {errors.pregunta} multiline maxRows={4} {...getFieldProps('pregunta')} variant='standard' label = 'Pregunta' type = 'text' fullWidth />
                             {touched.pregunta && errors.pregunta && <span style={{color: 'red'}}>{errors.pregunta}</span>}
+                        </Grid>
+
+                        <Grid flexDirection='column' container item xs = {6} sm = {6} md = {6} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >
+                            <TextField  {...getFieldProps('tema')} variant='standard' id="select1" label="Tema" select>
+                                {
+                                    temas?.map( e => (
+                                        <MenuItem key={ e?._id } value={ e?.tema }>{e?.tema}</MenuItem>
+                                    ))
+                                }
+                            </TextField>
+                            {touched.tema && errors.tema && <span style={{color: 'red'}}>{errors.tema}</span>}
                         </Grid>
 
                         <Grid flexDirection='column' container item xs = {12} sm = {12} md = {12} lg = {2} xl = {2} sx = {{padding: 3, borderRadius: 2}} >

@@ -3,6 +3,7 @@ export const preguntasSlice = createSlice({
 name: 'preguntas',
 initialState: {
     preguntas: null,
+    preguntasTema: null,
     preguntasGame: null,
     preguntaActiva: null,
     paginacion: null
@@ -10,6 +11,10 @@ initialState: {
 reducers: {
     getPreguntas: (state, action ) => {
         state.preguntas = action.payload;
+    },
+
+    getPreguntasTema: (state, action ) => {
+        state.preguntasTema = action.payload;
     },
 
     getPreguntasGame: (state, action ) => {
@@ -41,4 +46,4 @@ reducers: {
     },
 }
 });
-export const { getPreguntas, getPreguntasGame, paginacion, preguntaActiva, crearPreguntaActiva, actualizarPreguntaActiva, eliminarPreguntaActiva } = preguntasSlice.actions;
+export const { getPreguntas, getPreguntasTema, getPreguntasGame, paginacion, preguntaActiva, crearPreguntaActiva, actualizarPreguntaActiva, eliminarPreguntaActiva } = preguntasSlice.actions;
