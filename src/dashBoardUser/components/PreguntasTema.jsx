@@ -1,12 +1,10 @@
 import { Checkbox, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, TextField } from '@mui/material'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { obtenerPreguntasPorTema } from '../../store/preguntas/thunk';
 import { useState } from 'react';
 
 export const PreguntasTema = ({ temas, preguntasTOGame, setPreguntasTOGame }) => {
-
-    const { preguntasTema } = useSelector(state => state.tm);
 
     const dispatch = useDispatch();
 
@@ -63,7 +61,7 @@ export const PreguntasTema = ({ temas, preguntasTOGame, setPreguntasTOGame }) =>
                             values?.map(({ _id, pregunta }) => (
                                 <MenuItem onClick={ () => handleChange(_id) } key={_id} value={_id}>
                                     <Checkbox checked={preguntasTOGame?.findIndex( e => e === _id ) > -1} />
-                                    <ListItemText primary={pregunta} />
+                                    <ListItemText primary={ `${ ( preguntasTOGame.indexOf(_id) >= 0 ) ? `${ preguntasTOGame.indexOf(_id) + 1 }-` : '' } ${pregunta}` } />
                                 </MenuItem>
                             ))
                         }
