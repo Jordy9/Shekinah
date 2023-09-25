@@ -10,6 +10,7 @@ import { obtenerRecord } from '../store/record/thunk';
 import { AdminRoute } from './AdminRoute';
 import { UserRoute } from './UserRoute';
 import { obtenerTemas } from '../store/temas/thunk';
+import { obtenerPreguntasTema } from '../store/preguntasTema/thunk';
 
 export const AppRouter = () => {
 
@@ -22,11 +23,19 @@ export const AppRouter = () => {
   useEffect(() => {
     dispatch(obtenerUsuarios())
     dispatch(iniciarAutenticacion())
-    dispatch(obtenerPreguntas())
     dispatch(obtenerRecord())
     dispatch(obtenerTemas())
   }, [dispatch])
 
+  useEffect(() => {
+    
+    if ( usuarioActivo?.role !== 'administrador' ) return
+
+    dispatch(obtenerPreguntas())
+    dispatch(obtenerPreguntasTema())
+
+  }, [usuarioActivo, dispatch])
+  
   useEffect(() => {
     if (usuarioActivo?.tema) {
       if (!localStorage.getItem('tema')) {

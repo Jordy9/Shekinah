@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import React, { Fragment } from 'react'
 
-export const DialogContentCita = ({ShowDialog, setShowDialog, content, capitulo, libro, inicio, fin}) => {
+export const DialogContentCita = ({tipo, nota, ShowDialog, setShowDialog, content, capitulo, libro, inicio, fin}) => {
 
     const handleClose = () => {
         setShowDialog(false); 
@@ -15,11 +15,17 @@ export const DialogContentCita = ({ShowDialog, setShowDialog, content, capitulo,
         aria-describedby="alert-dialog-description"
         scroll={'paper'}
     >
-        <DialogTitle id="alert-dialog-title">
-            {libro} {Number(capitulo) + 1}
-        </DialogTitle>
+        {
+            ( tipo === 'Pregunta' )
+                &&
+            <DialogTitle id="alert-dialog-title">
+                {libro} {Number(capitulo) + 1}
+            </DialogTitle>
+        }
         <DialogContent>
             {
+                ( tipo === 'Pregunta' )
+                    ?
                 content?.map((contenido, index) => {
                     return (
                         <Fragment key={contenido + index}>
@@ -27,10 +33,12 @@ export const DialogContentCita = ({ShowDialog, setShowDialog, content, capitulo,
                         </Fragment>
                     ) 
                 })
+                    :
+                <Typography variant  = 'h6'>{nota}</Typography>
             }
         </DialogContent>
-        <DialogActions>
-            <Button onClick={handleClose} variant='contained'>Cerrar</Button>
+        <DialogActions sx={{ px: 2 }} >
+            <Button fullWidth onClick={handleClose} variant='contained'>Cerrar</Button>
         </DialogActions>
     </Dialog>
   )

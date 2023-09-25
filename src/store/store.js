@@ -3,6 +3,7 @@ import { authSlice } from './auth'
 import { preguntasSlice } from './preguntas'
 import { recordSlice } from './record/recordSlice'
 import { temasSlice } from './temas/temasSlice'
+import { preguntasTemaSlice } from './preguntasTema/preguntasTemaSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     pg: preguntasSlice.reducer,
     rc: recordSlice.reducer,
     tm: temasSlice.reducer,
+    pgt: preguntasTemaSlice.reducer,
   },
 })

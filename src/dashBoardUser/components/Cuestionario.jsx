@@ -1,4 +1,4 @@
-import { ArrowBackIos, Book, MusicNote, MusicOff } from '@mui/icons-material'
+import { ArrowBackIos, MusicNote, MusicOff } from '@mui/icons-material'
 import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,6 +13,7 @@ import { BorrarPregunta, SiguientePregunta } from '../../store/record/thunk'
 import { Resultados } from '../pages/Resultados'
 import './Cuestionario.css'
 import { DialogContentCita } from './DialogContentCita'
+import { ButtonShowDialog } from './ButtonShowDialog'
 
 const librosBiblia = [...Antiguotestamento(), ...Nuevotestamento()]
 
@@ -89,8 +90,11 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
         }
     }
 
+    const [contentBible, setContentBible] = useState()
+
     const next = () => {
         if (change + 1 < recordFiltrado[0]?.preguntas?.length) {
+            setContentBible()
             document.getElementById(`buttonbg${response[1]}`).style.background = 'none'
             document.getElementById(`buttonbg${response[1]}`).style.color = ''
             setChange(change + 1)
@@ -128,31 +132,23 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
           })
     }
 
-    const [contentBible, setContentBible] = useState()
-
     useEffect(() => {
-        if (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.hastaVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) {
-            setContentBible(librosBiblia[recordFiltrado[0]?.preguntas[change]?.idLibro][recordFiltrado[0]?.preguntas[change]?.capitulo]?.slice(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo, Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1))
+
+        if ( recordFiltrado[0]?.preguntas[change]?.tipo === 'Tema' ) {
+            setContentBible(recordFiltrado[0]?.preguntas[change]?.nota)
+        } else {
+            if (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.hastaVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) {
+                setContentBible(librosBiblia[recordFiltrado[0]?.preguntas[change]?.idLibro][recordFiltrado[0]?.preguntas[change]?.capitulo]?.slice(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo, Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1))
+            }
+    
+            if (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.hastaVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) {
+                setContentBible(librosBiblia[recordFiltrado[0]?.preguntas[change].idLibro][recordFiltrado[0]?.preguntas[change]?.capitulo]?.slice(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo, Number(recordFiltrado[0]?.preguntas[change].hastaVersiculo) + 1))
+            }
         }
 
-        if (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.hastaVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) {
-            setContentBible(librosBiblia[recordFiltrado[0]?.preguntas[change].idLibro][recordFiltrado[0]?.preguntas[change]?.capitulo]?.slice(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo, Number(recordFiltrado[0]?.preguntas[change].hastaVersiculo) + 1))
-        }
-    }, [recordFiltrado[0]?.preguntas[change]?.hastaVersiculo, recordFiltrado[0]?.preguntas[change]?.desdeVersiculo])
+    }, [recordFiltrado[0]?.preguntas[change]?.hastaVersiculo, recordFiltrado[0]?.preguntas[change]?.desdeVersiculo, recordFiltrado[0]?.preguntas[change]?.tipo])
 
-    const respuestasAleatorias = [...recordFiltrado[0]?.preguntas[change]?.respuesta].sort((a, b) => {
-        const nameA = a.texto.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.texto.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-      
-        // names must be equal
-        return 0;
-    })
+    const respuestasAleatorias = [...recordFiltrado[0]?.preguntas[change]?.respuesta]
 
     const [colorChange, setColorChange] = useState()
 
@@ -284,15 +280,12 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                         {
                                             (show)
                                                 &&
-                                            <Button variant='contained' endIcon = {<Book />} onClick={() => setShowModalContent(true)}>
-                                                {
-                                                    (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
-                                                        ?
-                                                    <Typography className='textCard1' variant='subtitle2' color={'white'} component={'span'}>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</Typography>
-                                                        :
-                                                    <Typography className='textCard1' variant='subtitle2' color={'white'} component={'span'}>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</Typography>
-                                                }
-                                            </Button>
+                                            <ButtonShowDialog
+                                                change={ change }
+                                                recordFiltrado={ recordFiltrado }
+                                                setShowModalContent={ setShowModalContent }
+                                                tipo={ recordFiltrado[0]?.preguntas[change]?.tipo }
+                                            />
                                         }
 
                                         {
@@ -328,15 +321,12 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                                 {
                                                     (show)
                                                         &&
-                                                    <Button variant='contained' endIcon = {<Book />} onClick={() => setShowModalContent(true)}>
-                                                        {
-                                                            (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo)
-                                                                ?
-                                                            <Typography className='textCard1' variant='subtitle2' color={'white'} component={'span'}>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}</Typography>
-                                                                :
-                                                            <Typography className='textCard1' variant='subtitle2' color={'white'} component={'span'}>Ver cita: {recordFiltrado[0]?.preguntas[change]?.libro} {Number(recordFiltrado[0]?.preguntas[change]?.capitulo) + 1}:{Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1}-{Number(recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) + 1}</Typography>
-                                                        }
-                                                    </Button>
+                                                    <ButtonShowDialog
+                                                        change={ change }
+                                                        recordFiltrado={ recordFiltrado }
+                                                        setShowModalContent={ setShowModalContent }
+                                                        tipo={ recordFiltrado[0]?.preguntas[change]?.tipo }
+                                                    />
                                                 }
 
                                                 {
@@ -362,6 +352,8 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
         }
 
         <DialogContentCita
+            tipo={ recordFiltrado[0]?.preguntas[change]?.tipo }
+            nota={ recordFiltrado[0]?.preguntas[change]?.nota }
             ShowDialog = {ShowModalContent}
             setShowDialog = {setShowModalContent}
             content = {contentBible} 

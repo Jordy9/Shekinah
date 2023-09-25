@@ -62,13 +62,13 @@ export const DialogTema = () => {
         </DialogTitle>
         <DialogContent>
             <Box component={ 'form' } onSubmit={ handleSubmit } p={ 2 }>
-                <TextField value={ tema } onChange={ ({ target }) => setTema(target.value) } multiline maxRows={ 5 } variant='filled' fullWidth label = 'tema' />
+                <TextField value={ tema } onChange={ ({ target }) => setTema(target.value) } multiline maxRows={ 5 } variant='standard' fullWidth label = 'tema' />
                 <button hidden id='handleSubmitTema' type='submit'></button>
             </Box>
         </DialogContent>
         <DialogActions sx={{ px: 2 }}>
-            <Button fullWidth onClick={ handleClose }>Cancelar</Button>
-            <Button type='submit' fullWidth onClick={ handleClick }>Guardar</Button>
+            <Button variant='contained' fullWidth onClick={ handleClose }>Cancelar</Button>
+            <Button variant='contained' type='submit' fullWidth onClick={ handleClick }>Guardar</Button>
         </DialogActions>
     </Dialog>
   )

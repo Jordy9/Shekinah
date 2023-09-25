@@ -36,6 +36,12 @@ export const Drawer = ({show, setShow}) => {
             route: '/temas',
             Icon: () => <ListAlt />
         },
+
+        {
+            label: 'Preguntas Para Tema',
+            route: '/preguntasTema',
+            Icon: () => <ListAlt />
+        },
     ]
 
     const navigate = useNavigate()
