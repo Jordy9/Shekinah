@@ -113,7 +113,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
         }
     }
 
-    const temaColor = localStorage.getItem('tema') || usuarioActivo?.tema
+    const temaColor = usuarioActivo?.tema || localStorage.getItem('tema')
 
     const salir = () => {
         Swal.fire({
