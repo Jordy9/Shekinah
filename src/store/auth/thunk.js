@@ -4,8 +4,6 @@ import { onActiveUser, onChecking, onDelete, onGetUsers, onLogin, onLogout, onRe
 
 const point = process.env.REACT_APP_API_URL
 
-const token = localStorage.getItem('token') || '';
-
 export const obtenerUsuarios = () => {
     return async(dispatch) => {
         const resp = await axios.get(`${point}/auth`)
@@ -18,6 +16,8 @@ export const obtenerUsuarios = () => {
 
 export const iniciarLogin = (email, password) => {
     return async(dispatch) => {
+
+        const token = localStorage.getItem('token') || '';
 
         try {
             const resp = await axios.post(`${point}/auth`, {email, password}, {headers: {'x-token': token}})
@@ -60,6 +60,8 @@ export const iniciarLogin = (email, password) => {
 export const startLoginGoogle = (response) => {
     return async(dispatch) => {
 
+        const token = localStorage.getItem('token') || '';
+
         try {
             const resp = await axios.post(`${point}/auth/google`, response, {headers: {'x-token': token}});
             
@@ -95,6 +97,8 @@ export const startLoginGoogle = (response) => {
 
 export const startLoginFacebook = (response) => {
     return async(dispatch) => {
+
+        const token = localStorage.getItem('token') || '';
         
         try {
             const resp = await axios.post(`${point}/auth/facebook`, response, {headers: {'x-token': token}});
@@ -132,18 +136,16 @@ export const startLoginFacebook = (response) => {
 export const crearUsuario = (name, lastName, email, password) => {
     return async(dispatch) => {
         try {
-            const resp = await axios.post(`${point}/auth/new`, {name, lastName, email, password})
+            const { data } = await axios.post(`${point}/auth/new`, {name, lastName, email, password})
 
             dispatch(onRegister({
-                uid: resp.data.uid,
-                name: resp.data.name
+                uid: data.uid,
+                name: data.name,
+                usuario: data.usuario
             }))
 
-            localStorage.setItem('token', resp.data.token)
+            localStorage.setItem('token', data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
-
-            dispatch(obtenerUsuarioActivo())
-
 
         } catch (error) {
             console.log(error)
@@ -153,6 +155,8 @@ export const crearUsuario = (name, lastName, email, password) => {
 
 export const iniciarActualizacion = (id, name, lastName, email, password, role, avatar) => {
     return async(dispatch) => {
+
+        const token = localStorage.getItem('token') || '';
 
         try {
             const resp = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role, avatar}, {headers: {'x-token': token}})
@@ -208,6 +212,8 @@ export const iniciarActualizacionUserSelected = (id, name, lastName, email, pass
             password = oldPassword
         }
 
+        const token = localStorage.getItem('token') || '';
+
         try {
             const resp = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role}, {headers: {'x-token': token}})
     
@@ -258,6 +264,8 @@ export const iniciarActualizacionUserSelected = (id, name, lastName, email, pass
 export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
     return async(dispatch) => {
 
+        const token = localStorage.getItem('token') || '';
+
         try {
             const resp = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, tema, selected}, {headers: {'x-token': token}})
     
@@ -307,6 +315,8 @@ export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
 
 export const iniciarActualizacionPass = (id, name, lastName, email, password, role) => {
     return async(dispatch) => {
+
+        const token = localStorage.getItem('token') || '';
 
         try {
             const resp = await axios.put(`${point}/auth/updatePassword/${id}`, {id, name, lastName, email, password, role}, {headers: {'x-token': token}})
@@ -362,6 +372,8 @@ export const obtenerUsuarioActivo = () => {
 
         const usuario = usuarios?.find(usuarios => usuarios.id === uid)
 
+        console.log(usuario)
+
         dispatch(onActiveUser(usuario))
         
     }
@@ -378,6 +390,8 @@ export const iniciarLogout = () => {
 
 export const iniciarAutenticacion = () => {
     return async(dispatch) => {
+
+        const token = localStorage.getItem('token') || '';
 
         try {
             const resp = await axios.get(`${point}/auth/renew`, {headers: {'x-token': token}});
@@ -400,6 +414,8 @@ export const iniciarAutenticacion = () => {
 
 export const eliminarUsuario = (usuario) => {
     return async(dispatch) => {
+
+        const token = localStorage.getItem('token') || '';
 
         try {
             const resp = await axios.delete(`${point}/auth/${usuario?.id}`, {headers: {'x-token': token}});
@@ -444,6 +460,8 @@ export const GuardarRecord = (record) => {
             // reforzar: (!usuarioActivo?.juego) ? record?.reforzar : [...usuarioActivo?.juego?.reforzar, ...record?.reforzar],
             racha: (!usuarioActivo?.juego) ? record?.racha : (usuarioActivo?.juego?.racha < record?.racha) ? record?.racha : usuarioActivo?.juego?.racha
         }
+
+        const token = localStorage.getItem('token') || '';
 
         try {
             const resp = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, juego}, {headers: {'x-token': token}})

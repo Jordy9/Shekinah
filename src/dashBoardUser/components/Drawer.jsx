@@ -2,7 +2,7 @@ import { CreateOutlined, Group, Home, ListAlt } from '@mui/icons-material'
 import { IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText, SwipeableDrawer } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const Drawer = ({show, setShow}) => {
 
@@ -46,6 +46,8 @@ export const Drawer = ({show, setShow}) => {
 
     const navigate = useNavigate()
 
+    const { pathname } = useLocation()
+
   return (
     <SwipeableDrawer
       anchor={'left'}
@@ -56,10 +58,10 @@ export const Drawer = ({show, setShow}) => {
         <Box sx = {{width: 250}}>
             {
                 listRoute.map(({label, route, Icon}, index) => (
-                    <ListItem key={route} disablePadding>
+                    <ListItem key={route} disablePadding sx={{ backgroundColor: ( pathname === route ) ? 'primary.main' : 'inherit', color: ( pathname === route ) ? 'white' : 'inherit', '&:hover': { backgroundColor: 'primary.main', color: 'white' } }}>
                         <ListItemButton onClick={() => navigate(route)}>
                             <ListItemIcon>
-                                <IconButton>
+                                <IconButton sx={{ color: ( pathname === route ) ? 'white' : 'inherit' }}>
                                     <Icon />
                                 </IconButton>
                             </ListItemIcon>

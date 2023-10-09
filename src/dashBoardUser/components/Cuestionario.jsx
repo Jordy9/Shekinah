@@ -1,4 +1,4 @@
-import { ArrowBackIos, MusicNote, MusicOff } from '@mui/icons-material'
+import { ArrowBackIos, ArrowForwardIos, MusicNote, MusicOff, QuestionAnswer } from '@mui/icons-material'
 import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -272,7 +272,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                         {
                                             (response && !show)
                                                 &&
-                                            <Button hidden = {show} onClick={() => onClick(response)} variant='contained'>Responder</Button>
+                                            <Button endIcon={ <QuestionAnswer /> } hidden = {show} onClick={() => onClick(response)} variant='contained'>Responder</Button>
                                         }
                                     </Grid>
 
@@ -291,7 +291,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                         {
                                             (show)
                                                 &&
-                                            <Button variant='contained' onClick={next}>
+                                            <Button endIcon={ <ArrowForwardIos /> } variant='contained' onClick={next}>
                                                 Siguiente
                                             </Button>
                                         }
@@ -313,7 +313,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                                 {
                                                     (response && !show)
                                                         &&
-                                                    <Button hidden = {show} onClick={() => onClick(response)} variant='contained'>Responder</Button>
+                                                    <Button endIcon={ <QuestionAnswer /> } hidden = {show} onClick={() => onClick(response)} variant='contained'>Responder</Button>
                                                 }
                                             </Grid>
 
@@ -332,7 +332,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                                 {
                                                     (show)
                                                         &&
-                                                    <Button variant='contained' onClick={next}>
+                                                    <Button endIcon={ <ArrowForwardIos /> } variant='contained' onClick={next}>
                                                         Siguiente
                                                     </Button>
                                                 }

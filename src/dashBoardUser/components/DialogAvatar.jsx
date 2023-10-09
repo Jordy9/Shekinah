@@ -1,7 +1,7 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, MenuItem, Switch, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import Categories from '../../helpers/Categories';
+import { Categories } from '../../helpers/Categories';
 import { iniciarActualizacion } from '../../store/auth/thunk';
 
 export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
@@ -47,7 +47,7 @@ export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
         <DialogContent>
             <Grid display={'flex'} justifyContent = {'center'}>
                 <Box mt={2} sx = {{overflow: 'hidden'}}>
-                    <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name}.svg`}
+                    <img loading="lazy" src={`https://api.dicebear.com/7.x/${category}/svg?seed=${name}`}
                         style = {{
                             backgroundColor: backGround, 
                             width: '250px', 

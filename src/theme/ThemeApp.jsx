@@ -26,7 +26,7 @@ export const ThemeApp = ({ children }) => {
               main: '#008080'
           },
           warning: {
-              main: selected
+              main: usuarioActivo?.selected || selected
           },
           error: {
               main: red.A400

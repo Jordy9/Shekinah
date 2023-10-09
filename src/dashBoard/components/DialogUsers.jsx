@@ -78,7 +78,7 @@ export const DialogUsers = ({ShowDialog, setShowDialog, usuario}) => {
                     <Grid py = {4} xs = {12} sm = {12} md = {12} lg = {12} xl = {12}>
                         <Grid display={'flex'} justifyContent = {'center'}>
                             <Box mt={2} sx = {{overflow: 'hidden'}}>
-                                <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || userActive?.name}.svg`}
+                                <img loading="lazy" src={`https://api.dicebear.com/7.x/${category}/svg?seed=${ name || userActive?.name }`}
                                     style = {{
                                         backgroundColor: backGround, 
                                         width: '150px', 

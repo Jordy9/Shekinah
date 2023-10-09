@@ -14,6 +14,8 @@ export const Navb = ({setShow}) => {
 
   const { pathname } = useLocation()
 
+  const isCCbs = ( usuarioActivo?.id === '652469d52449387ebbff39da' ) && 'https://yt3.ggpht.com/mf1VTcWGDbw6SnUd1sBFdLFD-Y1LxrJpPWAcqoCZ-9xBOx7UDevKXkzGpxLzotTDFNM5zQCcWg=s176-c-k-c0x00ffffff-no-rj-mo'
+
   return (
     <>
       <AppBar color='primary' component="nav">
@@ -59,23 +61,29 @@ export const Navb = ({setShow}) => {
               mx={1}
               sx = {{overflow: 'hidden'}}
             >
-              <Avatar onClick = {() => navigate('/Perfil')} src={`https://avatars.dicebear.com/api/${usuarioActivo?.avatar?.category}/:${usuarioActivo?.avatar?.name || usuarioActivo?.name}.svg`} 
-                style = {{
-                  backgroundColor: usuarioActivo?.avatar?.backGround, 
-                  width: 50, 
-                  height: 50, 
-                  borderRadius: `${usuarioActivo?.avatar?.radius}%`,
-                  transform: 
-                    `rotate(${usuarioActivo?.avatar?.rotate}deg) 
-                    translateX(${usuarioActivo?.avatar?.translateX}%) 
-                    translateY(${usuarioActivo?.avatar?.translateY}%) 
-                    scaleX(${(usuarioActivo?.avatar?.flip) ? '-1' : '1'})`,
-                  cursor: 'pointer'
-                }}
-                alt="" />
+              {/* https://api.dicebear.com/7.x/${category}/svg?seed=${nameAvatar || name} */}
+              {
+                ( isCCbs )
+                  ?
+                <Avatar onClick = { () => navigate('/Perfil') } src={ isCCbs } variant='circular' sx={{ width: '50px', height: '50px', cursor: 'pointer' }} />
+                  :
+                <Avatar sx={{ cursor: 'pointer' }} onClick = {() => navigate('/Perfil')} src={`https://api.dicebear.com/7.x/${usuarioActivo?.avatar?.category}/svg?seed=${usuarioActivo?.avatar?.name || usuarioActivo?.name}`}
+                  style = {{
+                    backgroundColor: usuarioActivo?.avatar?.backGround, 
+                    width: 50, 
+                    height: 50, 
+                    borderRadius: `${usuarioActivo?.avatar?.radius}%`,
+                    transform: 
+                      `rotate(${usuarioActivo?.avatar?.rotate}deg) 
+                      translateX(${usuarioActivo?.avatar?.translateX}%) 
+                      translateY(${usuarioActivo?.avatar?.translateY}%) 
+                      scaleX(${(usuarioActivo?.avatar?.flip) ? '-1' : '1'})`,
+                    cursor: 'pointer'
+                  }}
+                  alt="" />
+              }
             </Grid>
           }
-
 
           <Box>
             {

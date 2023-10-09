@@ -17,6 +17,8 @@ reducers: {
     onRegister: (state, action ) => {
         state.uid = action.payload.uid;
         state.name = action.payload.name;
+        state.usuarios.push(action.payload.usuario)
+        state.usuarioActivo = action.payload.usuario
     },
 
     onUpdate: (state, action ) => {

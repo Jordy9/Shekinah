@@ -44,7 +44,7 @@ export const TableUsersContent = (props) => {
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
         <TableCell size='small' style = {{display: 'flex', justifyContent: 'center'}} component="th" scope="row">
-            <Avatar src={`https://avatars.dicebear.com/api/${category}/:${nameAvatar || name}.svg`} 
+            <Avatar src={`https://api.dicebear.com/7.x/${category}/svg?seed=${nameAvatar || name}`} 
                 style = {{
                     backgroundColor: backGround, 
                     width: '50px', 

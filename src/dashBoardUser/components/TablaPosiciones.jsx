@@ -24,6 +24,8 @@ export const TablaPosiciones = () => {
 
     const { name, category, backGround, radius, flip, rotate, translateX, translateY } = usuarioActivo?.avatar
 
+    const isCCbs = ( usuarioActivo?.id === '652469d52449387ebbff39da' ) && 'https://yt3.ggpht.com/mf1VTcWGDbw6SnUd1sBFdLFD-Y1LxrJpPWAcqoCZ-9xBOx7UDevKXkzGpxLzotTDFNM5zQCcWg=s176-c-k-c0x00ffffff-no-rj-mo'
+
   return (
     <Box display={'flex'} alignItems={'center'} sx = {{height: '80vh'}}>
       <TableContainer sx={{width: '70vw', height: '500px', mx: 'auto', mt: 2, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px'}} component={Paper}>
@@ -31,19 +33,25 @@ export const TablaPosiciones = () => {
               <Typography variant='h5' textAlign={'center'}>Top 10</Typography>
               <Grid display={'flex'} justifyContent = 'space-between' alignItems={'center'} sx = {{cursor: 'pointer'}} onClick={() => navigate('/Perfil')}>
                   <Grid mx={1} display = {'flex'} justifyContent = {'center'} sx = {{overflow: 'hidden'}}>
-                    <Avatar src={`https://avatars.dicebear.com/api/${category}/:${name || usuarioActivo?.name}.svg`} 
-                      style = {{
-                        backgroundColor: backGround, 
-                        width: '50px', 
-                        height: '50px', 
-                        borderRadius: `${radius}%`,
-                        transform: 
-                          `rotate(${rotate}deg) 
-                          translateX(${translateX}%) 
-                          translateY(${translateY}%) 
-                          scaleX(${(flip) ? '-1' : '1'})`,
-                      }}
-                      alt="" />
+                    {
+                      ( isCCbs )
+                        ?
+                      <Avatar src={ isCCbs } variant='circular' sx={{ width: '50px', height: '50px' }} />
+                        :
+                      <Avatar src={`https://api.dicebear.com/7.x/${category}/svg?seed=${name || usuarioActivo?.name}`}
+                        style = {{
+                          backgroundColor: backGround, 
+                          width: '50px', 
+                          height: '50px', 
+                          borderRadius: `${radius}%`,
+                          transform: 
+                            `rotate(${rotate}deg) 
+                            translateX(${translateX}%) 
+                            translateY(${translateY}%) 
+                            scaleX(${(flip) ? '-1' : '1'})`,
+                        }}
+                        alt="" />
+                    }
                   </Grid>
                   <Typography variant='h5'>{usuarioActivo?.name}</Typography>
               </Grid>

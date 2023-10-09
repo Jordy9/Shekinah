@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
 import { iniciarActualizacion, iniciarActualizacionTema } from '../../store/auth/thunk';
 import { DashBoardLayaout } from '../layaout/DashBoardLayaout';
-import { Box, Button, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
 import { DialogCambPass } from '../components/DialogCambPass';
 import { Check } from '@mui/icons-material';
 import { DialogAvatar } from '../components/DialogAvatar';
@@ -119,6 +119,8 @@ export const Perfil = () => {
 
   const [showDialog, setShowDialog] = useState(false)
 
+  const isCCbs = ( usuarioActivo?.id === '652469d52449387ebbff39da' ) && 'https://yt3.ggpht.com/mf1VTcWGDbw6SnUd1sBFdLFD-Y1LxrJpPWAcqoCZ-9xBOx7UDevKXkzGpxLzotTDFNM5zQCcWg=s176-c-k-c0x00ffffff-no-rj-mo'
+
   return (
         <DashBoardLayaout>
             <Grid container>
@@ -126,19 +128,25 @@ export const Perfil = () => {
                     <Paper elevation={10} sx = {{borderRadius: '20px'}}>
                         <Grid display={'flex'} justifyContent = {'center'}>
                             <Box mt={2} sx = {{overflow: 'hidden'}}>
-                                <img loading="lazy" src={`https://avatars.dicebear.com/api/${category}/:${name || usuarioActivo?.name}.svg`} 
-                                    style = {{
-                                        backgroundColor: backGround, 
-                                        width: '250px', 
-                                        height: '250px', 
-                                        borderRadius: `${radius}%`,
-                                        transform: 
-                                            `rotate(${rotate}deg) 
-                                            translateX(${translateX}%) 
-                                            translateY(${translateY}%) 
-                                            scaleX(${(flip) ? '-1' : '1'})`,
-                                    }}
-                                    alt="" />
+                                {
+                                    ( isCCbs )
+                                        ?
+                                    <Avatar src={ isCCbs } variant='circular' sx={{ width: '250px', height: '250px' }} />
+                                        :
+                                    <img loading="lazy" src={`https://api.dicebear.com/7.x/${category}/svg?seed=${name || usuarioActivo?.name}`} 
+                                        style = {{
+                                            backgroundColor: backGround, 
+                                            width: '250px', 
+                                            height: '250px', 
+                                            borderRadius: `${radius}%`,
+                                            transform: 
+                                                `rotate(${rotate}deg) 
+                                                translateX(${translateX}%) 
+                                                translateY(${translateY}%) 
+                                                scaleX(${(flip) ? '-1' : '1'})`,
+                                        }}
+                                        alt="" />
+                                }
                             </Box>
                         </Grid>
                         
