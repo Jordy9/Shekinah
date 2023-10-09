@@ -372,8 +372,6 @@ export const obtenerUsuarioActivo = () => {
 
         const usuario = usuarios?.find(usuarios => usuarios.id === uid)
 
-        console.log(usuario)
-
         dispatch(onActiveUser(usuario))
         
     }
