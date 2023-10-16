@@ -1,11 +1,13 @@
-import React from 'react'
-import { Box, Button, Grid, Paper, Typography } from '@mui/material';
+import React, { Fragment } from 'react'
+import { Box, Button, CircularProgress, Grid, IconButton, Paper, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { BorrarPregunta } from '../../store/record/thunk';
 import { GuardarRecord } from '../../store/auth/thunk';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useResponsive } from '../../hooks/useResponsive';
+import { Download } from '@mui/icons-material';
+import { Document, Page, Text, StyleSheet, PDFDownloadLink, View } from '@react-pdf/renderer';
 
 export const Resultados = () => {
 
@@ -48,7 +50,11 @@ export const Resultados = () => {
     
   return (
     <Box py={ py } px={ px } sx={{ height: '100vh', width: '100%' }}>
-        <Typography variant='h4' className='noTextWhite'>Resultados</Typography>
+        <Box display={ 'flex' } justifyContent={ 'space-between' }>
+            <Typography variant='h4' className='noTextWhite'>Resultados</Typography>
+
+            <ListToPDF record={ record } />
+        </Box>
         <Box component={ Paper } p={ 2 } elevation={10} sx = {{width: '100%', height: '80vh', borderRadius: '10px'}}>
             <Box overflow={ 'auto' } height={ percent }>
                 <Grid container spacing={2} mb={ 3 }>
@@ -105,3 +111,135 @@ export const Resultados = () => {
     </Box>
   )
 }
+
+const styles = StyleSheet.create({
+    body: {
+      paddingTop: 35,
+      paddingBottom: 65,
+      paddingHorizontal: 35,
+    },
+    title: {
+      fontSize: 24,
+    },
+    author: {
+      fontSize: 12,
+      textAlign: 'center',
+      marginBottom: 40,
+    },
+    text: {
+      margin: 12,
+      fontSize: 14,
+      textAlign: 'justify',
+      fontFamily: 'Times-Roman',
+      position: 'relative'
+    },
+    image: {
+      marginVertical: 15,
+      marginHorizontal: 100,
+    },
+    header: {
+      fontSize: 12,
+      marginBottom: 20,
+      textAlign: 'center',
+      color: 'grey',
+    },
+    pageNumber: {
+      position: 'absolute',
+      fontSize: 12,
+      bottom: 30,
+      left: 0,
+      right: 0,
+      textAlign: 'center',
+      color: 'grey',
+    },
+    IsCorrecta: {
+        padding: 4,
+        borderRadius: '11px',
+        color: 'white',
+        backgroundColor: 'rgba(33,93,59,255)',
+        position: 'absolute',
+        left: 0,
+        marginLeft: 12,
+        bottom: 0
+    },
+    IsIncorrecta: {
+        padding: 4,
+        borderRadius: '11px',
+        color: 'white',
+        backgroundColor: '#FF1744',
+        position: 'absolute',
+        left: 0,
+        marginLeft: 12,
+        bottom: 0
+    },
+    leer: {
+        backgroundColor: 'black', 
+        borderRadius: '11px',
+        color: 'white',
+        padding: 4,
+        marginLeft: 12,
+        position: 'absolute',
+        right: 0,
+        bottom: 0
+    }
+  });
+
+const MyDocument = ({ record }) => {
+    return (
+    <Document>
+        <Page size="A4" style={styles.body}>
+            <Text style={styles.title}>Listado de preguntas</Text>
+            {
+                record?.preguntas?.map((item, index) => (
+                    <Fragment key={index}>
+                        <Text style={ styles.text }>
+                            {`${index + 1}. ${item.pregunta} ` }
+                        </Text>
+
+                        <View style={{ display: 'flex', position: 'relative', marginTop: 30 }}>
+
+                            {
+                                ( record?.seleccionadas[index]?.respuesta?.correcta )
+                                    ?
+                                <Text style={ styles.IsCorrecta }>Correcta</Text>
+                                    :
+                                <Text style={ styles.IsIncorrecta }>Incorrecta</Text>
+                            }
+
+                            {
+                                ( item?.desdeVersiculo === item?.hastaVersiculo )
+                                    ?
+                                <Text strokeWidth={'100px'} style={ styles.leer } variant='subtitle2' color={'white'} component={'span'}>Leer: {item?.libro} {Number(item?.capitulo) + 1}:{Number(item?.desdeVersiculo) + 1}</Text>
+                                    :
+                                <Text strokeWidth={'100px'} style={ styles.leer } variant='subtitle2' color={'white'} component={'span'}>Leer: {item?.libro} {Number(item?.capitulo) + 1}:{Number(item?.desdeVersiculo) + 1}-{Number(item?.hastaVersiculo) + 1}</Text>
+                            }
+                        </View>
+
+                            
+                    </Fragment>
+                ))
+            }
+        </Page>
+    </Document>
+    )
+}
+
+const ListToPDF = ({ record }) => {
+    return (
+      <PDFDownloadLink document={<MyDocument record={ record } />} fileName="Listado de preguntas.pdf">
+        {
+            ({ loading }) => (
+                ( loading ) 
+                    ?
+                <div style={{ paddingRight: 5 }}>
+                    <CircularProgress size='30px' />
+                </div>
+                    : 
+                <IconButton>
+                    <Download color='info' />
+                </IconButton>
+            )
+        }
+      </PDFDownloadLink>
+    );
+};
