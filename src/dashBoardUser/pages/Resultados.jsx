@@ -9,6 +9,7 @@ import { useResponsive } from '../../hooks/useResponsive';
 import { Download } from '@mui/icons-material';
 import { Document, Page, Text, StyleSheet, PDFDownloadLink, View } from '@react-pdf/renderer';
 import Confetti from '../components/Confetti';
+import { Spinner } from '../../Spinner';
 
 export const Resultados = () => {
 
@@ -46,6 +47,10 @@ export const Resultados = () => {
     const py = ( respWidth > 700 ) ? 3 : 2
 
     const px = ( respWidth > 700 ) ? 3 : 1.5
+
+    if ( !record ) {
+        return <Spinner />
+    }
 
     // const resultsRecord = [{ labbel: 'Puntuación', record: record?.puntos }, { label: 'Aciertos', record: record?.aciertos }, { label: 'Errores', record: record?.errores }, { label: ( respWidth > 700 ) ? 'Total de preguntas' : 'Preguntas', record: record?.preguntas?.length }, { label: 'Precisión' , record: `${ precisionFinal }%` }]
     

@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 let confetti = []
 
 const Confetti = () => {
+
+  const [confettiRender, setConfettiRender] = useState([])
 
   useEffect(() => {
     
@@ -20,10 +22,17 @@ const Confetti = () => {
     }
 
   }, [])
-  
+
+  useEffect(() => {
+   
+    if ( confetti.length >= 20 ) {
+      setConfettiRender(confetti)
+    }
+  }, [confetti])
+
   return (
     <div className="confetti-container">
-      {confetti.map((confetto, index) => (
+      {confettiRender.map((confetto, index) => (
         <div
           key={index}
           className="confetto"
