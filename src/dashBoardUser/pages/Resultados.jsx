@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { useResponsive } from '../../hooks/useResponsive';
 import { Download } from '@mui/icons-material';
 import { Document, Page, Text, StyleSheet, PDFDownloadLink, View } from '@react-pdf/renderer';
+import Confetti from '../components/Confetti';
 
 export const Resultados = () => {
 
@@ -24,7 +25,7 @@ export const Resultados = () => {
 
     const precision = ( record?.aciertos / record?.preguntas?.length ) * 100
 
-    const precisionFinal = ( precision > 0 ) ? precision.toFixed(1) : precision
+    const precisionFinal = ( precision > 0 && precision < 100 ) ? precision.toFixed(1) : precision
 
     useEffect(() => {
       
@@ -50,6 +51,13 @@ export const Resultados = () => {
     
   return (
     <Box py={ py } px={ px } sx={{ height: '100vh', width: '100%', position: 'relative' }}>
+        
+        {
+            ( precision >= 70 )
+                &&
+            <Confetti />
+        }
+
         <Box display={ 'flex' } justifyContent={ 'space-between' }>
             <Typography variant='h4' className='noTextWhite'>Resultados</Typography>
 

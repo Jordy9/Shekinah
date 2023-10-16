@@ -243,3 +243,30 @@ h4 {
       transform: translateY(4px);
     transition: all 0.1s ease 0s;
   }
+  .confetti-container {
+    position: absolute;
+    width: 95%;
+    height: 96%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .confetto {
+    position: absolute;
+    overflow: hidden;
+    width: 10px;
+    height: 10px;
+    background-color: #f0f;
+    border-radius: 50%;
+    animation: fall linear infinite;
+  }
+  
+  @keyframes fall {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(0, 100vh);
+    }
+  }
+  
