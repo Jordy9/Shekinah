@@ -37,8 +37,8 @@ export const AppRouter = () => {
     }
   }, [usuarioActivo])
 
-  if (!!uid && !usuarioActivo) {
-    return <Spinner />
+  if ( !!uid && !usuarioActivo ) {
+    return <Spinner tema={ usuarioActivo?.tema } />
   }
   
   return (
@@ -50,7 +50,7 @@ export const AppRouter = () => {
           ?
         <Spinner />
           :
-        (usuarioActivo?.role === 'usuario')
+        ( usuarioActivo?.role === 'usuario' )
           ?
         <UserRoute />
           :

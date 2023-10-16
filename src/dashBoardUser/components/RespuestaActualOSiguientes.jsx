@@ -10,7 +10,7 @@ export const RespuestaActualOSiguientes = ({ recordRespuestas, handleResponse, r
                 return (
                     <Grid item p={2} xs = {12} sm = {12} md = {12} lg = {6} xl = {6} key={respuesta + index}>
                         <Grid p={1} display = {'flex'} alignItems = 'center' onClick={() => handleResponse(respuesta, index, recordRespuestas)} sx={{cursor: 'pointer', maxHeight: '150px', overflowY: 'auto', backgroundColor: (response) && (Number(response[1]) === index + 1 && !show) && 'warning.main', color: (response) && (Number(response[1]) === index + 1 && !show) && 'secondary.main', borderRadius: '20px', margin: 0}}>
-                            <Button variant='contained'>
+                            <Button sx={{ boxShadow: ( response && Number(response[1]) === index + 1 ) ? 12 : 3 }} variant='contained'>
                                 {index + 1}
                             </Button>
                             

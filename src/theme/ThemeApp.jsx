@@ -1,7 +1,6 @@
 import { ThemeProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
 import React from 'react'
-// import { themeTheme } from './index'
 import { createTheme } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useSelector } from 'react-redux'

@@ -72,6 +72,26 @@ h4 {
   text-align: center;
 }
 
+.noTextWhite {
+  color: black !important;
+}
+
+.TextError {
+  color: #FF1744 !important;
+}
+
+.TextSuccess {
+  color: rgba(33,93,59,255) !important;
+}
+
+.TextInfo {
+  color: #0288d1 !important;
+}
+
+.TextPrimary {
+  color: #008080 !important;
+}
+
 /* CSS */
 /* .button-74 {
   background-color: #fbeee0;

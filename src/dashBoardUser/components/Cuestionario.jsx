@@ -340,11 +340,9 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                             :
                         <Box mt={35}>
                             {
-                                (response)
-                                    &&
                                 <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
                                     <Toolbar>
-                                        <Box px={ 1 } py={3} sx={{ flexGrow: 1 }} component = {'div'}>
+                                        <Box px={ 1 } py={2} sx={{ flexGrow: 1 }} component = {'div'}>
 
                                             <Grid display={'flex'} justifyContent = {'space-between'}>
                                                 {
@@ -373,7 +371,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                                 {
                                                     (show)
                                                         &&
-                                                    <Button endIcon={ <ArrowForwardIos /> } variant='contained' onClick={next}>
+                                                    <Button sx={{ boxShadow: 12 }} endIcon={ <ArrowForwardIos /> } variant='contained' onClick={next}>
                                                         Siguiente
                                                     </Button>
                                                 }
