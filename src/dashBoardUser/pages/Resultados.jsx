@@ -111,7 +111,7 @@ export const Resultados = () => {
                 <Button sx={{ width: 300 }} onClick={terminarJuego} variant = 'contained'>Terminar</Button>
             </Box>
                 :
-            <Box position={ 'absolute' } bottom={ 15 } right={ '50%' } sx={{ transform: 'translateX(50%)' }}>
+            <Box position={ 'absolute' } bottom={ 7.5 } right={ '50%' } sx={{ transform: 'translateX(50%)' }}>
                 <Button sx={{ width: 300 }} onClick={terminarJuego} variant = 'contained'>Terminar</Button>
             </Box>
         }    
