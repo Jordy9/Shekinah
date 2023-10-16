@@ -86,6 +86,12 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
     dispatch( jugarPreguntasPorTema(preguntasTOGame) )
   }
 
+  const [ respWidth ] = useResponsive();
+
+  const message = ( respWidth > 600 ) ? 'Partida por Rango o Id' : 'Rango o Id'
+
+  const message2 = ( respWidth > 600 ) ? 'Partida personalizada' : 'Personalizada'
+
   return (
     <Dialog
       open={ShowDialogPartidaP}
@@ -109,7 +115,7 @@ export const DialogPartidaPersonalizada = ({ShowDialogPartidaP, setShowDialogPar
                   setShowPreguntaTema(false)
                   setShowPregunta(!showPregunta)
                 }}>
-                  {(!showPregunta) ? 'Partida por Rango o Id' : 'Partida personalizada'}
+                  {(!showPregunta) ? message : message2 }
                 </Button>
               }
               {

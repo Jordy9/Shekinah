@@ -6,6 +6,8 @@ export const ButtonComponents = ({ handleClose, showPregunta, submitt, handleBut
 
     const [ respWidth ] = useResponsive();
 
+    const message = ( respWidth > 600 ) ? 'Jugar partida con id' : 'Jugar'
+
   return (
     <>
         <Button fullWidth variant = 'contained' type='button' onClick={handleClose}>
@@ -15,7 +17,7 @@ export const ButtonComponents = ({ handleClose, showPregunta, submitt, handleBut
         (showPregunta)
             ?
         <Button fullWidth variant = 'contained' type='button' onClick={submitt}>
-            Jugar partida con id
+            { message }
         </Button>
             :
         <Button fullWidth onClick={handleButton} variant = 'contained' type='button'>

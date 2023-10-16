@@ -55,7 +55,7 @@ export const ConfigurationComponents = ({ showPregunta, getFieldProps, Categoria
                 <Typography variant = 'body2'>Si desea buscar por ids especificos siga esta sintaxis: 1,5,7,15,20</Typography>
                 <Grid container py = {2}>
                     <Grid xs = {12}>
-                    <TextField value={formId} onChange = {(e) => setFormId(e.target.value)} variant = 'standard' label = 'Id de la pregunta' />
+                        <TextField value={formId} onChange = {(e) => setFormId(e.target.value)} variant = 'standard' label = 'Id de la pregunta' />
                     </Grid>
                 </Grid>
             </>

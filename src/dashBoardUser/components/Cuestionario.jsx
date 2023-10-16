@@ -145,6 +145,11 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
         
         if ( change === 0 ) return
 
+        if ( selected || response ) {
+            setResponse()
+            setselected(null)
+        }
+
         setChange((prev) => prev - 1)
 
     }

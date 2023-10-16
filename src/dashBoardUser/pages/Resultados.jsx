@@ -49,7 +49,7 @@ export const Resultados = () => {
     // const resultsRecord = [{ labbel: 'Puntuación', record: record?.puntos }, { label: 'Aciertos', record: record?.aciertos }, { label: 'Errores', record: record?.errores }, { label: ( respWidth > 700 ) ? 'Total de preguntas' : 'Preguntas', record: record?.preguntas?.length }, { label: 'Precisión' , record: `${ precisionFinal }%` }]
     
   return (
-    <Box py={ py } px={ px } sx={{ height: '100vh', width: '100%' }}>
+    <Box py={ py } px={ px } sx={{ height: '100vh', width: '100%', position: 'relative' }}>
         <Box display={ 'flex' } justifyContent={ 'space-between' }>
             <Typography variant='h4' className='noTextWhite'>Resultados</Typography>
 
