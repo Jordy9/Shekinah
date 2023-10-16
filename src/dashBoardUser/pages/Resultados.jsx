@@ -40,9 +40,9 @@ export const Resultados = () => {
 
     const percent2 = ( respWidth > 600 ) ? '20%' : '25%'
 
-    const variant = ( respWidth > 700 ) ? 'h2' : 'h4'
+    const variant = ( respWidth > 700 ) ? 'h2' : ( respWidth >= 460 && respWidth <= 700 ) ? 'h3' : 'h4'
 
-    const py = ( respWidth > 700 ) ? 3 : 1
+    const py = ( respWidth > 700 ) ? 3 : 2
 
     const px = ( respWidth > 700 ) ? 3 : 1.5
 
@@ -85,17 +85,17 @@ export const Resultados = () => {
                     <Typography textAlign={ 'center' } variant={ variant } className='TextInfo'>{ record?.puntos }</Typography>
                     <Typography textAlign={ 'center' }>Puntuación</Typography>
                 </Box>
-                <Box>
+                <Box mx={ 1 }>
                     <Typography textAlign={ 'center' } variant={ variant } className='TextSuccess'>{ record?.aciertos }</Typography>
                     <Typography textAlign={ 'center' }>Aciertos</Typography>
                 </Box>
-                <Box>
+                <Box mx={ 1 }>
                     <Typography textAlign={ 'center' } variant={ variant } className='TextError'>{ record?.errores }</Typography>
                     <Typography textAlign={ 'center' }>Errores</Typography>
                 </Box>
-                <Box>
+                <Box mx={ 1 }>
                     <Typography textAlign={ 'center' } variant={ variant } className='TextPrimary'>{ record?.preguntas?.length }</Typography>
-                    <Typography textAlign={ 'center' }>{ ( respWidth > 700 ) ? 'Total de preguntas' : 'Preguntas' }</Typography>
+                    <Typography textAlign={ 'center' }>Total de preguntas</Typography>
                 </Box>
                 <Box>
                     <Typography textAlign={ 'center' } variant={ variant } className='noTextWhite'>{ precisionFinal }%</Typography>
@@ -104,10 +104,17 @@ export const Resultados = () => {
             </Grid>
         </Box>
 
-
-        <Box position={ 'absolute' } bottom={ 15 } right={ 20 }>
-            <Button sx={{ width: 300 }} onClick={terminarJuego} variant = 'contained'>Terminar</Button>
-        </Box>
+        {
+            ( respWidth > 600 )
+                ?
+            <Box position={ 'absolute' } bottom={ 15 } right={ 20 }>
+                <Button sx={{ width: 300 }} onClick={terminarJuego} variant = 'contained'>Terminar</Button>
+            </Box>
+                :
+            <Box position={ 'absolute' } bottom={ 15 } right={ '50%' } sx={{ transform: 'translateX(50%)' }}>
+                <Button sx={{ width: 300 }} onClick={terminarJuego} variant = 'contained'>Terminar</Button>
+            </Box>
+        }    
     </Box>
   )
 }
