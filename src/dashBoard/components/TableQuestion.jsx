@@ -1,5 +1,5 @@
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, Box, Typography, TextField, IconButton, Button, CircularProgress, Grid } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useResponsive } from '../../hooks/useResponsive';
 import { obtenerPreguntaFiltrada, obtenerPreguntas } from '../../store/preguntas/thunk';
@@ -33,6 +33,12 @@ export const TableQuestion = () => {
 
   const [ respWidth ] = useResponsive()
 
+  useEffect(() => {
+    
+    dispatch(obtenerPreguntas())
+
+  }, [dispatch])
+  
   return (
     <Box autoComplete="off" sx={{p: 4}}>
       <Typography marginBottom={5} variant='h5'>Listado de preguntas</Typography>

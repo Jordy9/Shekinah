@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, Avatar, Box, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, Box, Typography } from '@mui/material'
 import { TableUsersSpreed } from './TableUsersSpreed';
 import { useResponsive } from '../../hooks/useResponsive';
+import { useDispatch } from 'react-redux';
+import { obtenerUsuarios } from '../../store/auth/thunk';
 
 export const TableUsers = () => {
+
+  const dispatch = useDispatch();
   
   const [page, setPage] = useState(0);
 
@@ -19,6 +23,12 @@ export const TableUsers = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  useEffect(() => {
+    
+    dispatch(obtenerUsuarios())
+
+  }, [dispatch])
 
   return (
     <Box autoComplete="off" sx={{p: 4}}>

@@ -5,15 +5,13 @@ import { crearRecord } from '../record/thunk';
 
 const point = process.env.REACT_APP_API_URL
 
-const token = localStorage.getItem('token') || '';
-
 export const obtenerPreguntas = (page, size) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${point}/pregunta/pag?page=${page || 1}&size=${size || 10}`)
-            dispatch(getPreguntas(resp.data.preguntas))
-            dispatch(paginacion({page: resp.data.page, total: resp.data.total, idPreguntasCount: resp.data.count}))
+            const { data } = await axios.get(`${point}/pregunta/pag?page=${page || 1}&size=${size || 10}`)
+            dispatch(getPreguntas(data.preguntas))
+            dispatch(paginacion({page: data.page, total: data.total, idPreguntasCount: data.count}))
             
         } catch (error) {
             console.log(error)
@@ -66,12 +64,12 @@ export const obtenerPreguntasJuego = (page, size) => {
         const { uid } = getState().auth;
 
         try {
-            const resp = await axios.get(`${point}/pregunta/juego`)
-            // const resp = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
+            const { data } = await axios.get(`${point}/pregunta/juego`)
+            // const { data } = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
 
-            dispatch(getPreguntasGame(resp.data.preguntas))
+            dispatch(getPreguntasGame(data.preguntas))
 
-            dispatch(crearRecord(uid, 0, resp.data.preguntas, 0))
+            dispatch(crearRecord(uid, 0, data.preguntas, 0))
             
             
         } catch (error) {
@@ -87,14 +85,14 @@ export const obtenerPreguntasJuegoPersonalizado = (categoria, dificultad, pregun
         const { uid } = getState().auth;
 
         try {
-            const resp = await axios.post(`${point}/pregunta/juegop`, {categoria, dificultad, pregunta})
-            // const resp = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
+            const { data } = await axios.post(`${point}/pregunta/juegop`, {categoria, dificultad, pregunta})
+            // const { data } = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
 
-            if (resp.data.preguntas?.length !== 0) {
+            if (data.preguntas?.length !== 0) {
 
-                dispatch(getPreguntasGame(resp.data.preguntas))
+                dispatch(getPreguntasGame(data.preguntas))
     
-                dispatch(crearRecord(uid, 0, resp.data.preguntas, 0))
+                dispatch(crearRecord(uid, 0, data.preguntas, 0))
             } else {
                 const Toast = Swal.mixin({
                     toast: true,
@@ -127,13 +125,13 @@ export const obtenerPreguntasPorId = (ids) => {
         const { uid } = getState().auth;
 
         try {
-            const resp = await axios.post(`${point}/pregunta/juegoId`, {ids})
+            const { data } = await axios.post(`${point}/pregunta/juegoId`, {ids})
 
-            if (resp.data.preguntas?.length !== 0) {
+            if (data.preguntas?.length !== 0) {
 
-                dispatch(getPreguntasGame(resp.data.preguntas))
+                dispatch(getPreguntasGame(data.preguntas))
     
-                dispatch(crearRecord(uid, 0, resp.data.preguntas, 0))
+                dispatch(crearRecord(uid, 0, data.preguntas, 0))
             } else {
                 const Toast = Swal.mixin({
                     toast: true,
@@ -164,9 +162,9 @@ export const obtenerPreguntaFiltrada = (buscadorSearch) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${point}/pregunta/pag?searchParams=${buscadorSearch || ''}`)
-            dispatch(getPreguntas(resp.data.preguntas))
-            dispatch(paginacion({page: resp.data.page, total: resp.data.total, idPreguntasCount: resp.data.count}))
+            const { data } = await axios.get(`${point}/pregunta/pag?searchParams=${buscadorSearch || ''}`)
+            dispatch(getPreguntas(data.preguntas))
+            dispatch(paginacion({page: data.page, total: data.total, idPreguntasCount: data.count}))
             
         } catch (error) {
             console.log(error)
@@ -179,10 +177,10 @@ export const crearPregunta = (pregunta, respuesta, dificultad, categoria, testam
     return async(dispatch, getState) => {
 
         try {
-            const resp = await axios.post(`${point}/pregunta/new`, {pregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo, tema})
+            const { data } = await axios.post(`${point}/pregunta/new`, {pregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo, tema})
 
-            if (resp.data.ok) {
-                dispatch(crearPreguntaActiva(resp.data.pregunta))
+            if (data.ok) {
+                dispatch(crearPreguntaActiva(data.pregunta))
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -230,10 +228,10 @@ export const actualizarPregunta = (pregunta, idPregunta, respuesta, dificultad, 
         const { preguntaActiva } = getState().pg
 
         try {
-            const resp = await axios.put(`${point}/pregunta/${preguntaActiva._id}`, {pregunta, idPregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo, tema})
+            const { data } = await axios.put(`${point}/pregunta/${preguntaActiva._id}`, {pregunta, idPregunta, respuesta, dificultad, categoria, testamento, libro, capitulo, desdeVersiculo, hastaVersiculo, tema})
     
-            if (resp.data.ok) {
-                dispatch(actualizarPreguntaActiva(resp.data.pregunta))
+            if (data.ok) {
+                dispatch(actualizarPreguntaActiva(data.pregunta))
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'bottom-end',
@@ -262,9 +260,9 @@ export const eliminarPregunta = (props) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.delete(`${point}/pregunta/${props._id}`)
+            const { data } = await axios.delete(`${point}/pregunta/${props._id}`)
     
-            if (resp.data.ok) {
+            if (data.ok) {
                 dispatch(eliminarPreguntaActiva(props))
                 const Toast = Swal.mixin({
                     toast: true,

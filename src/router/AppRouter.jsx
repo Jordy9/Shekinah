@@ -4,13 +4,9 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { LoginScreen } from '../dashBoardUser/pages/LoginScreen';
 import { Registro } from '../dashBoardUser/pages/Registro';
 import { Spinner } from '../Spinner';
-import { iniciarAutenticacion, obtenerUsuarios } from '../store/auth/thunk';
-import { obtenerPreguntas } from '../store/preguntas/thunk';
-import { obtenerRecord } from '../store/record/thunk';
+import { iniciarAutenticacion, obtenerUsuariosTop10 } from '../store/auth/thunk';
 import { AdminRoute } from './AdminRoute';
 import { UserRoute } from './UserRoute';
-import { obtenerTemas } from '../store/temas/thunk';
-import { obtenerPreguntasTema } from '../store/preguntasTema/thunk';
 
 export const AppRouter = () => {
 
@@ -21,20 +17,16 @@ export const AppRouter = () => {
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    dispatch(obtenerUsuarios())
     dispatch(iniciarAutenticacion())
-    dispatch(obtenerRecord())
-    dispatch(obtenerTemas())
   }, [dispatch])
 
   useEffect(() => {
+
+    if ( uid ) return
+
+    dispatch(obtenerUsuariosTop10())
     
-    if ( usuarioActivo?.role !== 'administrador' ) return
-
-    dispatch(obtenerPreguntas())
-    dispatch(obtenerPreguntasTema())
-
-  }, [usuarioActivo, dispatch])
+  }, [uid, dispatch])
   
   useEffect(() => {
     if (usuarioActivo?.tema) {

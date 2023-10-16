@@ -14,6 +14,9 @@ import { Resultados } from '../pages/Resultados'
 import './Cuestionario.css'
 import { DialogContentCita } from './DialogContentCita'
 import { ButtonShowDialog } from './ButtonShowDialog'
+import { RespuestasAnteriores } from './RespuestasAnteriores'
+import { RespuestaActualOSiguientes } from './RespuestaActualOSiguientes'
+import { ButtonNavigationQuestions } from './ButtonNavigationQuestions'
 
 const librosBiblia = [...Antiguotestamento(), ...Nuevotestamento()]
 
@@ -23,11 +26,9 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
 
     const { record } = useSelector(state => state.rc);
 
-    const { uid, usuarioActivo } = useSelector(state => state.auth);
+    const { usuarioActivo } = useSelector(state => state.auth);
 
-    const recordFiltrado = record?.filter(record => record?.idJugador === uid)
-
-    const [change, setChange] = useState(recordFiltrado[0]?.preguntaNo)
+    const [change, setChange] = useState(record?.preguntaNo)
 
     const [response, setResponse] = useState()
 
@@ -35,34 +36,37 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
 
     const [ShowModalContent, setShowModalContent] = useState(false)
 
+    const [selected, setselected] = useState(null)
+
     const [showTrue, setShowTrue] = useState(false)
 
     const [showCorrect, setShowCorrect] = useState(false)
     
-    const [PuntosChange, setPuntosChange] = useState(recordFiltrado[0]?.puntos)
+    const [PuntosChange, setPuntosChange] = useState(record?.puntos)
 
-    const [enRachaDe, setEnRachaDe] = useState(recordFiltrado[0]?.racha)
+    const [enRachaDe, setEnRachaDe] = useState(record?.racha)
 
     const initialSound = localStorage.getItem('sound')
 
     const [playSound, setPlaySound] = useState(!!initialSound)
-    
-    // let filtroPreguntas = usuarioActivo?.juego?.reforzar?.filter(reforzar => reforzar?._id === recordFiltrado[0]?.preguntas[change]?._id)
 
+    const tipo = record?.preguntas[change]?.tipo
+    
     const onClick = (respuesta) => {
         if (respuesta[0]?.correcta === true) {
             if (playSound) {
                 soundWin()
             }
+
             dispatch(SiguientePregunta({
-                id: recordFiltrado[0]?._id,
-                puntos: recordFiltrado[0]?.puntos + PuntosChange,
-                aciertos: recordFiltrado[0]?.aciertos + 1,
-                racha: recordFiltrado[0]?.racha + 1,
-                preguntaNo: recordFiltrado[0]?.preguntaNo + 1,
-                errores: recordFiltrado[0]?.errores,
-                // reforzar: recordFiltrado[0]?.reforzar,
-                record: recordFiltrado[0]
+                id: record?._id,
+                puntos: record?.puntos + PuntosChange,
+                aciertos: record?.aciertos + 1,
+                racha: record?.racha + 1,
+                preguntaNo: record?.preguntaNo + 1,
+                errores: record?.errores,
+                record: record,
+                seleccionadas: [ ...record?.seleccionadas, selected ] 
             }))
 
             setShow(true)
@@ -73,17 +77,15 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                 soundLose()
             }
             dispatch(SiguientePregunta({
-                id: recordFiltrado[0]?._id,
-                puntos: recordFiltrado[0]?.puntos,
-                aciertos: recordFiltrado[0]?.aciertos,
-                racha: recordFiltrado[0]?.racha - recordFiltrado[0]?.racha + 1,
-                preguntaNo: recordFiltrado[0]?.preguntaNo + 1,
-                errores: recordFiltrado[0]?.errores + 1,
-                // reforzar: (filtroPreguntas?.length === 0) && [...recordFiltrado[0]?.reforzar, recordFiltrado[0]?.preguntas[change]],
-                record: recordFiltrado[0]
+                id: record?._id,
+                puntos: record?.puntos,
+                aciertos: record?.aciertos,
+                racha: record?.racha - record?.racha + 1,
+                preguntaNo: record?.preguntaNo + 1,
+                errores: record?.errores + 1,
+                record: record,
+                seleccionadas: [ ...record?.seleccionadas, selected ] 
             }))
-            document.getElementById(`buttonbg${respuesta[1]}`).style.background = '#FF1744'
-            document.getElementById(`buttonbg${respuesta[1]}`).style.color = 'white'
             setShow(true)
             setShowTrue(true)
             setShowCorrect(false)
@@ -93,24 +95,58 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
     const [contentBible, setContentBible] = useState()
 
     const next = () => {
-        if (change + 1 < recordFiltrado[0]?.preguntas?.length) {
-            setContentBible()
-            document.getElementById(`buttonbg${response[1]}`).style.background = 'none'
-            document.getElementById(`buttonbg${response[1]}`).style.color = ''
+        if (change + 1 < record?.preguntas?.length) {
             setChange(change + 1)
             if (showCorrect) {
                 setEnRachaDe(enRachaDe + 1)
             } else {
-                setEnRachaDe(recordFiltrado[0]?.racha - recordFiltrado[0]?.racha + 1)
+                setEnRachaDe(record?.racha - record?.racha + 1)
             }
             setResponse()
             setShow(false)
             setShowTrue(false)
+            setContentBible()
         } else {
             setShowResultados(true)
-            // dispatch(BorrarPregunta(recordFiltrado[0]?._id))
-            // dispatch(GuardarRecord(recordFiltrado[0]))
         }
+    }
+
+    const nextForward = () => {
+        if ( change === record.preguntaNo ) return
+
+        setChange((prev) => prev + 1)
+    }
+
+    const DissabledToSelect = ( change >= record.preguntaNo ) ? false : true
+
+    const handleResponse = ( respuesta, index, respuestas) => {
+        if ( DissabledToSelect ) return
+
+        if ( !response || Number(response[1]) !== index + 1 ) {
+            const bottonIndexCorrecta = respuestas.findIndex( rp => rp.correcta === true )
+    
+            setselected({
+                preguntaNo: record?.preguntaNo,
+                preguntaId: record.preguntas[change]._id,
+                bottonIndexSelected: index,
+                bottonIndexCorrecta,
+                respuesta
+            })
+    
+            setResponse([respuesta, `${index + 1}`])
+        } else {
+            setResponse()
+            setselected(null)
+        }
+
+    }
+
+    const prev = () => {
+        
+        if ( change === 0 ) return
+
+        setChange((prev) => prev - 1)
+
     }
 
     const temaColor = usuarioActivo?.tema || localStorage.getItem('tema')
@@ -126,48 +162,48 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
             confirmButtonText: 'Si'
           }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(BorrarPregunta(recordFiltrado[0]?._id))
-                dispatch(GuardarRecord(recordFiltrado[0]))
+                dispatch(BorrarPregunta(record?._id))
+                dispatch(GuardarRecord(record))
             }
           })
     }
 
     useEffect(() => {
 
-        if ( recordFiltrado[0]?.preguntas[change]?.tipo === 'Tema' ) {
-            setContentBible(recordFiltrado[0]?.preguntas[change]?.nota)
+        if ( tipo === 'Tema' ) {
+            setContentBible(record?.preguntas[change]?.nota)
         } else {
-            if (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.hastaVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.desdeVersiculo === recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) {
-                setContentBible(librosBiblia[recordFiltrado[0]?.preguntas[change]?.idLibro][recordFiltrado[0]?.preguntas[change]?.capitulo]?.slice(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo, Number(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo) + 1))
+            if ( record?.preguntas[change]?.desdeVersiculo === record?.preguntas[change]?.hastaVersiculo ) {
+                setContentBible(librosBiblia[record?.preguntas[change]?.idLibro][record?.preguntas[change]?.capitulo]?.slice(record?.preguntas[change]?.desdeVersiculo, Number(record?.preguntas[change]?.desdeVersiculo) + 1))
             }
     
-            if (recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.hastaVersiculo !== '' && recordFiltrado[0]?.preguntas[change]?.desdeVersiculo !== recordFiltrado[0]?.preguntas[change]?.hastaVersiculo) {
-                setContentBible(librosBiblia[recordFiltrado[0]?.preguntas[change].idLibro][recordFiltrado[0]?.preguntas[change]?.capitulo]?.slice(recordFiltrado[0]?.preguntas[change]?.desdeVersiculo, Number(recordFiltrado[0]?.preguntas[change].hastaVersiculo) + 1))
+            if ( record?.preguntas[change]?.desdeVersiculo !== record?.preguntas[change]?.hastaVersiculo ) {
+                setContentBible(librosBiblia[record?.preguntas[change]?.idLibro][record?.preguntas[change]?.capitulo]?.slice(record?.preguntas[change]?.desdeVersiculo, Number(record?.preguntas[change]?.hastaVersiculo) + 1))
             }
         }
 
-    }, [recordFiltrado[0]?.preguntas[change]?.hastaVersiculo, recordFiltrado[0]?.preguntas[change]?.desdeVersiculo, recordFiltrado[0]?.preguntas[change]?.tipo])
+    }, [change, record.preguntas, tipo, record])
 
-    const respuestasAleatorias = [...recordFiltrado[0]?.preguntas[change]?.respuesta]
+    const recordRespuestas = [ ...record?.preguntas[change]?.respuesta ]
 
     const [colorChange, setColorChange] = useState()
 
     useEffect(() => {
-      if (recordFiltrado[0]?.preguntas[change]?.dificultad === 'Tierno') {
-        setColorChange('info.main')
-        setPuntosChange(1 * recordFiltrado[0]?.racha)
+      if (record?.preguntas[change]?.dificultad === 'Tierno') {
+        setColorChange('#0288d1')
+        setPuntosChange(1 * record?.racha)
       }
 
-      if (recordFiltrado[0]?.preguntas[change]?.dificultad === 'Medio') {
+      if (record?.preguntas[change]?.dificultad === 'Medio') {
         setColorChange('#f57c00')
-        setPuntosChange(2 * recordFiltrado[0]?.racha)
+        setPuntosChange(2 * record?.racha)
       }
 
-      if (recordFiltrado[0]?.preguntas[change]?.dificultad === 'Avanzado') {
+      if (record?.preguntas[change]?.dificultad === 'Avanzado') {
         setColorChange('error.main')
-        setPuntosChange(3 * recordFiltrado[0]?.racha)
+        setPuntosChange(3 * record?.racha)
       }
-    }, [recordFiltrado[0]?.preguntas[change]?.dificultad, recordFiltrado[0]?.preguntas[change]?.pregunta])
+    }, [change, record?.preguntas, record?.racha])
 
     const [respWidth] = useResponsive()
 
@@ -181,7 +217,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
         localStorage.setItem('sound', sound)
     }
 
-    if (recordFiltrado?.length === 0) {
+    if ( !record ) {
         return <Spinner />
     }
     
@@ -193,72 +229,69 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
             <div id='preguntaScroll'>
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar position="static">
-                        {/* <Toolbar> */}
-                            <Grid p={4}>
-                                <Grid style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
-                                    <IconButton onClick={salir}>
-                                        <ArrowBackIos sx = {{color: 'secondary.main'}} />
-                                    </IconButton>
-                                    <Typography variant='h5' color = 'white'>{change + 1} / {recordFiltrado[0]?.preguntas?.length}</Typography>
-                                    <Typography variant='h5' color = 'white'>{usuarioActivo?.name}</Typography>
-                                    <Typography variant='h5' color = 'white'>Puntos: {recordFiltrado[0]?.puntos}</Typography>
+                        <Grid p={4}>
+                            <Grid style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
+                                <IconButton onClick={salir}>
+                                    <ArrowBackIos sx = {{color: 'secondary.main'}} />
+                                </IconButton>
+                                <Typography variant='h5' color = 'white'>{change + 1} / {record?.preguntas?.length}</Typography>
+                                <Typography variant='h5' color = 'white'>{usuarioActivo?.name}</Typography>
+                                <Typography variant='h5' color = 'white'>Puntos: {record?.puntos}</Typography>
+                            </Grid>
+
+                            <Grid container>
+                                <Grid item xs = {5} sm = {4} md = {4} lg = {3} xl = {3}>
+                                    <Typography variant='h6' mt = {4} mb = {4} color = {'white'}>Racha de: {enRachaDe}x</Typography>
                                 </Grid>
 
-                                <Grid container spacing={2}>
-                                    <Grid xs = {5} sm = {4} md = {4} lg = {3} xl = {3}>
-                                        <Typography variant='h6' mt = {4} mb = {4} color = {'white'}>Racha de: {enRachaDe}x</Typography>
-                                    </Grid>
+                                <Grid item xs = {7} sm = {8} md = {8} lg = {9} xl = {9} display = {'flex'} justifyContent = {'end'} my = {'auto'}>
+                                    {
+                                        (show)
+                                            &&
+                                        <>
+                                            <Typography px={1} variant='h6' sx = {{fontSize: '25px', backgroundColor: (showCorrect) ? '#215d3bd9' : 'error.main', borderRadius: '20px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</Typography>
+                                        </>
+                                    }
 
-                                    <Grid xs = {7} sm = {8} md = {8} lg = {9} xl = {9} display = {'flex'} justifyContent = {'end'} my = {'auto'}>
+                                    <IconButton color='secondary' onClick={() => handleSound(!playSound)}>
                                         {
-                                            (show)
-                                                &&
-                                            <>
-                                                <Typography px={1} variant='h6' sx = {{fontSize: '25px', backgroundColor: (showCorrect) ? '#215d3bd9' : 'error.main', borderRadius: '20px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</Typography>
-                                            </>
+                                            (!playSound)
+                                                ?
+                                            <MusicOff />
+                                                :
+                                            <MusicNote />
                                         }
-
-                                        <IconButton color='secondary' onClick={() => handleSound(!playSound)}>
-                                            {
-                                                (!playSound)
-                                                    ?
-                                                <MusicOff />
-                                                    :
-                                                <MusicNote />
-                                            }
-                                        </IconButton>
-                                    </Grid>
-                                </Grid>
-
-                                <hr style = {{color: 'white'}} />
-
-                                <Grid container>
-                                    <Grid xs = {12} style={{maxHeight: '150px', overflowY: 'auto'}}>
-                                        <Typography variant = 'h5' id='preguntaScroll' my={2} style={{textAlign: 'justify'}}>{recordFiltrado[0]?.preguntas[change]?.pregunta} <Typography p={0.7} component={'span'} sx = {{backgroundColor: colorChange, borderRadius: '20px', fontSize: '18px'}}>{recordFiltrado[0]?.preguntas[change]?.dificultad}</Typography> </Typography>
-                                    </Grid>
+                                    </IconButton>
                                 </Grid>
                             </Grid>
-                        {/* </Toolbar> */}
+
+                            <hr style = {{color: 'white'}} />
+
+                            <Grid container>
+                                <Grid item xs = {12} style={{maxHeight: '150px', overflowY: 'auto'}}>
+                                    <Typography variant = 'h5' id='preguntaScroll' my={2} style={{textAlign: 'justify'}}>{record?.preguntas[change]?.pregunta} <Typography p={0.7} component={'span'} sx = {{backgroundColor: colorChange, borderRadius: '20px', fontSize: '18px'}}>{record?.preguntas[change]?.dificultad}</Typography> </Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </AppBar>
                 </Box>
 
                 <Grid container>
                     {
-                        respuestasAleatorias.map((respuesta, index) => {
-                            return (
-                                <Grid p={2} xs = {12} sm = {12} md = {12} lg = {6} xl = {6} key={respuesta + index}>
-                                    <Grid p={1} display = {'flex'} alignItems = 'center' onClick={() => setResponse([respuesta, `${index + 1}`])} sx={{cursor: 'pointer', maxHeight: '150px', overflowY: 'auto', backgroundColor: (response) && (Number(response[1]) === index + 1 && !show) && 'warning.main', color: (response) && (Number(response[1]) === index + 1 && !show) && 'secondary.main', borderRadius: '20px', margin: 0}}>
-                                        <Button variant='contained'>
-                                            {index + 1}
-                                        </Button>
-                                        
-                                        <Typography ml={1} px = {1} variant = 'h6' id = {`buttonbg${index + 1}`} className={`${(showTrue && respuesta?.correcta === true) && 'bg-success'}`} style={{borderRadius: '20px'}}>
-                                            {respuesta.texto}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            )
-                        })
+                        ( DissabledToSelect )
+                            ?
+                        <RespuestasAnteriores
+                            recordRespuestas={ recordRespuestas }
+                            seleccionadas={ record?.seleccionadas[change] }
+                        />
+                            :
+                        <RespuestaActualOSiguientes
+                            handleResponse={ handleResponse }
+                            recordRespuestas={ recordRespuestas }
+                            response={ response }
+                            show={ show }
+                            showTrue={ showTrue }
+                        />
                     }
 
                     {
@@ -266,15 +299,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                             ?
                         <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
                             <Toolbar>
-                                <Box p={3} sx={{ flexGrow: 1 }} component = {'div'}>
-
-                                    <Grid container display={'flex'} justifyContent = {'end'}>
-                                        {
-                                            (response && !show)
-                                                &&
-                                            <Button endIcon={ <QuestionAnswer /> } hidden = {show} onClick={() => onClick(response)} variant='contained'>Responder</Button>
-                                        }
-                                    </Grid>
+                                <Box p={1} sx={{ flexGrow: 1 }} component = {'div'}>
 
                                     <Grid display={'flex'} justifyContent = {'space-between'}>
                                         {
@@ -282,16 +307,28 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                                 &&
                                             <ButtonShowDialog
                                                 change={ change }
-                                                recordFiltrado={ recordFiltrado }
+                                                record={ record }
                                                 setShowModalContent={ setShowModalContent }
-                                                tipo={ recordFiltrado[0]?.preguntas[change]?.tipo }
+                                                tipo={ tipo }
                                             />
                                         }
 
+                                        <ButtonNavigationQuestions
+                                            change={ change }
+                                            nextForward={ nextForward }
+                                            preguntaNo={ record.preguntaNo }
+                                            prev={ prev }
+                                            show={ show }
+                                            onClick={ onClick }
+                                            response={ response }
+                                            showCorrect={ showCorrect }
+                                            DissabledToSelect={ DissabledToSelect }
+                                        />
+
                                         {
-                                            (show)
+                                            ( show )
                                                 &&
-                                            <Button endIcon={ <ArrowForwardIos /> } variant='contained' onClick={next}>
+                                            <Button sx={{ boxShadow: 12 }} endIcon={ <ArrowForwardIos /> } variant='contained' onClick={next}>
                                                 Siguiente
                                             </Button>
                                         }
@@ -307,15 +344,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                     &&
                                 <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
                                     <Toolbar>
-                                        <Box p={3} sx={{ flexGrow: 1 }} component = {'div'}>
-
-                                            <Grid container display={'flex'} justifyContent = {'end'}>
-                                                {
-                                                    (response && !show)
-                                                        &&
-                                                    <Button endIcon={ <QuestionAnswer /> } hidden = {show} onClick={() => onClick(response)} variant='contained'>Responder</Button>
-                                                }
-                                            </Grid>
+                                        <Box px={ 1 } py={3} sx={{ flexGrow: 1 }} component = {'div'}>
 
                                             <Grid display={'flex'} justifyContent = {'space-between'}>
                                                 {
@@ -323,11 +352,23 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                                                         &&
                                                     <ButtonShowDialog
                                                         change={ change }
-                                                        recordFiltrado={ recordFiltrado }
+                                                        record={ record }
                                                         setShowModalContent={ setShowModalContent }
-                                                        tipo={ recordFiltrado[0]?.preguntas[change]?.tipo }
+                                                        tipo={ tipo }
                                                     />
                                                 }
+
+                                                <ButtonNavigationQuestions
+                                                    change={ change }
+                                                    nextForward={ nextForward }
+                                                    preguntaNo={ record.preguntaNo }
+                                                    prev={ prev }
+                                                    show={ show }
+                                                    onClick={ onClick }
+                                                    response={ response }
+                                                    showCorrect={ showCorrect }
+                                                    DissabledToSelect={ DissabledToSelect }
+                                                />
 
                                                 {
                                                     (show)
@@ -352,14 +393,14 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
         }
 
         <DialogContentCita
-            tipo={ recordFiltrado[0]?.preguntas[change]?.tipo }
-            nota={ recordFiltrado[0]?.preguntas[change]?.nota }
+            tipo={ tipo }
+            nota={ record?.preguntas[change]?.nota }
             ShowDialog = {ShowModalContent}
             setShowDialog = {setShowModalContent}
             content = {contentBible} 
-            capitulo = {recordFiltrado[0]?.preguntas[change]?.capitulo} 
-            libro = {recordFiltrado[0]?.preguntas[change]?.libro} 
-            inicio = {recordFiltrado[0]?.preguntas[change]?.desdeVersiculo} 
+            capitulo = {record?.preguntas[change]?.capitulo} 
+            libro = {record?.preguntas[change]?.libro} 
+            inicio = {record?.preguntas[change]?.desdeVersiculo} 
             fin 
         />
     </>

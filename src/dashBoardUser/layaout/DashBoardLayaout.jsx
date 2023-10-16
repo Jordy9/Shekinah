@@ -9,7 +9,7 @@ export const DashBoardLayaout = ({children}) => {
   const [show, setShow] = useState(false)
 
   return (
-    <Box sx={{display: 'flex'}}>
+    <Box>
       <Navb setShow = {setShow} />
 
       <Drawer show = {show} setShow = {setShow} />

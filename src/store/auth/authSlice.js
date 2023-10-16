@@ -4,6 +4,7 @@ name: 'auth',
 initialState: {
     checking: true,
     usuarios: [],
+    top10: [],
     uid: null,
     name: null,
     usuarioActivo: null,
@@ -14,11 +15,14 @@ reducers: {
         state.usuarios = action.payload;
     },
 
+    onGetUsersTop10: (state, action ) => {
+        state.top10 = action.payload;
+    },
+
     onRegister: (state, action ) => {
         state.uid = action.payload.uid;
         state.name = action.payload.name;
-        state.usuarios.push(action.payload.usuario)
-        state.usuarioActivo = action.payload.usuario
+        state.usuarioActivo = action.payload.usuarioActivo
     },
 
     onUpdate: (state, action ) => {
@@ -62,7 +66,8 @@ reducers: {
         state.checking = false
         state.uid = action.payload.uid;
         state.name = action.payload.name;
+        state.usuarioActivo = action.payload.usuarioActivo
     },
 }
 });
-export const { onGetUsers, onRegister, onUpdate, onActiveUser, onLogout, onChecking, onLogin, onUserActive, onDelete, onUpdateUser } = authSlice.actions; 
+export const { onGetUsers, onGetUsersTop10, onRegister, onUpdate, onActiveUser, onLogout, onChecking, onLogin, onUserActive, onDelete, onUpdateUser } = authSlice.actions; 

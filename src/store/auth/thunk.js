@@ -1,16 +1,30 @@
 import axios from 'axios'
 import Swal from 'sweetalert2';
-import { onActiveUser, onChecking, onDelete, onGetUsers, onLogin, onLogout, onRegister, onUpdate, onUpdateUser } from './authSlice'
+import { onActiveUser, onChecking, onDelete, onGetUsers, onGetUsersTop10, onLogin, onLogout, onRegister, onUpdate, onUpdateUser } from './authSlice'
+import { getRecord } from '../record/recordSlice';
 
 const point = process.env.REACT_APP_API_URL
 
 export const obtenerUsuarios = () => {
     return async(dispatch) => {
-        const resp = await axios.get(`${point}/auth`)
+        const { data } = await axios.get(`${point}/auth`)
 
-        dispatch(onGetUsers(resp.data.usuarios))
+        dispatch(onGetUsers(data.usuarios))
         
         dispatch(obtenerUsuarioActivo())
+    }
+}
+
+export const obtenerUsuariosTop10 = () => {
+    return async(dispatch) => {
+
+        try {   
+            const { data } = await axios.get(`${point}/auth/top10`)
+    
+            dispatch(onGetUsersTop10(data.usuarios))
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 
@@ -20,19 +34,22 @@ export const iniciarLogin = (email, password) => {
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.post(`${point}/auth`, {email, password}, {headers: {'x-token': token}})
+            const { data } = await axios.post(`${point}/auth`, {email, password}, {headers: {'x-token': token}})
     
-            if (resp.data.ok) {
+            if ( data.ok ) {
+
+                dispatch(getRecord(data.record))
+
+                const { id, name } = data.usuario
 
                 dispatch(onLogin({
-                    uid: resp.data.uid,
-                    name: resp.data.name
+                    uid: id,
+                    name: name,
+                    usuarioActivo: data.usuario
                 }))
     
-                localStorage.setItem('token', resp.data.token)
+                localStorage.setItem('token', data.token)
                 localStorage.setItem('token-init-date', new Date().getTime());
-
-                dispatch(obtenerUsuarioActivo())
             }
         } catch ({response}) {
             const Toast = Swal.mixin({
@@ -63,14 +80,19 @@ export const startLoginGoogle = (response) => {
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.post(`${point}/auth/google`, response, {headers: {'x-token': token}});
+            const { data } = await axios.post(`${point}/auth/google`, response, {headers: {'x-token': token}});
             
-            localStorage.setItem('token', resp.data.token)
+            localStorage.setItem('token', data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
+
+            dispatch(getRecord(data.record))
+
+            const { id, name } = data.usuario
     
             await dispatch(onLogin({
-                uid: resp.data.uid,
-                name: resp.data.name
+                uid: id,
+                name: name,
+                usuarioActivo: data.usuario
             }))
             
             dispatch(obtenerUsuarioActivo())            
@@ -101,14 +123,19 @@ export const startLoginFacebook = (response) => {
         const token = localStorage.getItem('token') || '';
         
         try {
-            const resp = await axios.post(`${point}/auth/facebook`, response, {headers: {'x-token': token}});
+            const { data } = await axios.post(`${point}/auth/facebook`, response, {headers: {'x-token': token}});
 
-            localStorage.setItem('token', resp.data.token)
+            localStorage.setItem('token', data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
 
+            dispatch(getRecord(data.record))
+
+            const { id, name } = data.usuario
+
             await dispatch(onLogin({
-                uid: resp.data.uid,
-                name: resp.data.name
+                uid: id,
+                name: name,
+                usuarioActivo: data.usuario
             }))
             dispatch(obtenerUsuarioActivo())
 
@@ -159,11 +186,11 @@ export const iniciarActualizacion = (id, name, lastName, email, password, role, 
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role, avatar}, {headers: {'x-token': token}})
+            const { data } = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role, avatar}, {headers: {'x-token': token}})
     
-            if (resp.data.ok) {
+            if (data.ok) {
 
-                dispatch(onUpdate(resp.data.usuario))
+                dispatch(onUpdate(data.usuario))
     
                 const Toast = Swal.mixin({
                     toast: true,
@@ -215,11 +242,11 @@ export const iniciarActualizacionUserSelected = (id, name, lastName, email, pass
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role}, {headers: {'x-token': token}})
+            const { data } = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role}, {headers: {'x-token': token}})
     
-            if (resp.data.ok) {
+            if (data.ok) {
 
-                dispatch(onUpdateUser(resp.data.usuario))
+                dispatch(onUpdateUser(data.usuario))
     
                 const Toast = Swal.mixin({
                     toast: true,
@@ -267,11 +294,11 @@ export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, tema, selected}, {headers: {'x-token': token}})
+            const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, tema, selected}, {headers: {'x-token': token}})
     
-            if (resp.data.ok) {
+            if (data.ok) {
 
-                dispatch(onUpdate(resp.data.usuario))
+                dispatch(onUpdate(data.usuario))
     
                 const Toast = Swal.mixin({
                     toast: true,
@@ -319,11 +346,11 @@ export const iniciarActualizacionPass = (id, name, lastName, email, password, ro
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.put(`${point}/auth/updatePassword/${id}`, {id, name, lastName, email, password, role}, {headers: {'x-token': token}})
+            const { data } = await axios.put(`${point}/auth/updatePassword/${id}`, {id, name, lastName, email, password, role}, {headers: {'x-token': token}})
     
-            if (resp.data.ok) {
+            if (data.ok) {
 
-                dispatch(onUpdate(resp.data.usuario))
+                dispatch(onUpdate(data.usuario))
     
                 const Toast = Swal.mixin({
                     toast: true,
@@ -392,14 +419,19 @@ export const iniciarAutenticacion = () => {
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.get(`${point}/auth/renew`, {headers: {'x-token': token}});
+            const { data } = await axios.get(`${point}/auth/renew`, {headers: {'x-token': token}});
             
-            localStorage.setItem('token', resp.data.token)
+            localStorage.setItem('token', data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
 
+            dispatch(getRecord(data.record))
+
+            const { id, name } = data.usuario
+
             dispatch(onLogin({
-                uid: resp.data.uid,
-                name: resp.data.name
+                uid: id,
+                name: name,
+                usuarioActivo: data.usuario
             }))
         } catch (error) {
             localStorage.removeItem('token')
@@ -416,9 +448,9 @@ export const eliminarUsuario = (usuario) => {
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.delete(`${point}/auth/${usuario?.id}`, {headers: {'x-token': token}});
+            const { data } = await axios.delete(`${point}/auth/${usuario?.id}`, {headers: {'x-token': token}});
 
-            if (resp.data.ok) {
+            if (data.ok) {
 
                 dispatch(onDelete(usuario))
                 
@@ -462,8 +494,8 @@ export const GuardarRecord = (record) => {
         const token = localStorage.getItem('token') || '';
 
         try {
-            const resp = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, juego}, {headers: {'x-token': token}})
-            dispatch(onUpdate(resp.data.usuario))
+            const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, juego}, {headers: {'x-token': token}})
+            dispatch(onUpdate(data.usuario))
             dispatch(obtenerUsuarios())
             
         } catch (error) {

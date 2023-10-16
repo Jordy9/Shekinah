@@ -1,29 +1,34 @@
 import axios from 'axios'
-import { createRecord, deleteRecord, getRecord, updateRecord } from './recordSlice'
+import { getRecord, deleteRecord } from './recordSlice'
 
 const point = process.env.REACT_APP_API_URL
 
-export const obtenerRecord = () => {
-    return async(dispatch) => {
-        const resp = await axios.get(`${point}/record`)
+// export const obtenerRecord = ( id ) => {
+//     return async(dispatch) => {
 
-        dispatch(getRecord(resp.data.record))
-    }
-}
+//         try {   
+//             const { data } = await axios.get(`${point}/record?id=${id}`)
+    
+//             dispatch(getRecord(data.record))
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+// }
 
 export const crearRecord = (idJugador = '123456789', puntos, preguntas, preguntaNo) => {
     return async(dispatch) => {
-        const resp = await axios.post(`${point}/record/new`, {idJugador, puntos, preguntas, preguntaNo})
+        const { data } = await axios.post(`${point}/record/new`, {idJugador, puntos, preguntas, preguntaNo})
 
-        dispatch(createRecord(resp.data.record))
+        dispatch(getRecord(data.record))
     }
 }
 
-export const SiguientePregunta = ({id, puntos, aciertos, racha, preguntaNo, errores, record}) => {
+export const SiguientePregunta = ({id, puntos, aciertos, racha, preguntaNo, errores, record, seleccionadas}) => {
     return async(dispatch) => {
         // reforzar
-        const resp = await axios.put(`${point}/record/${id}`, {...record, puntos, aciertos, racha, preguntaNo, errores})
-        dispatch(updateRecord(resp.data.record))
+        const { data } = await axios.put(`${point}/record/${id}`, {...record, puntos, aciertos, racha, preguntaNo, errores, seleccionadas})
+        dispatch(getRecord(data.record))
     }
 }
 

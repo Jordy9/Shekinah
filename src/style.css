@@ -47,8 +47,8 @@ h4 {
 }
 
 .bg-success {
-    background-color: rgba(33,93,59,255) !important;
-    color: white !important;
+  background-color: rgba(33,93,59,255) !important;
+  color: white !important;
 }
 
 .swal2-container {
@@ -60,7 +60,8 @@ h4 {
 }
 
 .bg-danger {
-    background-color: #b91414 !important;
+  background-color: #FF1744 !important;
+  color: white !important;
 }
 
 .textCard1 {
