@@ -22,7 +22,7 @@ export const Registro = () => {
         },
         enableReinitialize: true,
         onSubmit: ({name, lastName, email, password}) => {
-            dispatch(crearUsuario(name, lastName, email.toLowerCase(), password))
+            dispatch(crearUsuario(name, lastName, email.trim().toLowerCase(), password))
         },
         validationSchema: Yup.object({
             name: Yup.string()

@@ -32,10 +32,10 @@ export const Login = () => {
         onSubmit: ({email, password, rememberme}) => {
             (rememberme)
                 ?
-            localStorage.setItem('email', email)
+            localStorage.setItem('email', email.trim().toLowerCase())
             :
             localStorage.removeItem('email')
-            dispatch(iniciarLogin(email.toLowerCase(), password))
+            dispatch(iniciarLogin(email.trim().toLowerCase(), password))
 
         },
         validationSchema: Yup.object({
