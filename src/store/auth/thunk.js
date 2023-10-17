@@ -11,7 +11,6 @@ export const obtenerUsuarios = () => {
 
         dispatch(onGetUsers(data.usuarios))
         
-        dispatch(obtenerUsuarioActivo())
     }
 }
 
@@ -95,7 +94,6 @@ export const startLoginGoogle = (response) => {
                 usuarioActivo: data.usuario
             }))
             
-            dispatch(obtenerUsuarioActivo())            
         } catch (error) {
             const Toast = Swal.mixin({
                 toast: true,
@@ -137,7 +135,6 @@ export const startLoginFacebook = (response) => {
                 name: name,
                 usuarioActivo: data.usuario
             }))
-            dispatch(obtenerUsuarioActivo())
 
         } catch (error) {
             const Toast = Swal.mixin({
@@ -153,8 +150,8 @@ export const startLoginFacebook = (response) => {
             })
               
             return Toast.fire({
-            icon: 'error',
-            title: error
+                icon: 'error',
+                title: error
             })
         }       
     }
@@ -168,14 +165,29 @@ export const crearUsuario = (name, lastName, email, password) => {
             dispatch(onRegister({
                 uid: data.uid,
                 name: data.name,
-                usuario: data.usuario
+                usuarioActivo: data.usuario
             }))
 
             localStorage.setItem('token', data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
 
-        } catch (error) {
-            console.log(error)
+        } catch ({ response }) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+              
+            return Toast.fire({
+                icon: 'error',
+                title: response.data.msg
+            })
         }
     }
 }
