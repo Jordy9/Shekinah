@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { CreateQuestion } from '../dashBoard/pages/CreateQuestion'
 import { QuestionList } from '../dashBoard/pages/QuestionList'
@@ -8,8 +8,19 @@ import { Lobi } from '../dashBoardUser/pages/Lobi'
 import { Perfil } from '../dashBoardUser/pages/Perfil'
 import { Temas } from '../dashBoardUser/components/Temas'
 import { PreguntasParaTema } from '../dashBoard/components/PreguntasParaTema'
+import { useDispatch } from 'react-redux'
+import { obtenerTemas } from '../store/temas/thunk'
 
 export const AdminRoute = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+      
+    dispatch(obtenerTemas())
+
+  }, [dispatch])
+
   return (
     <Routes>
 

@@ -45,8 +45,6 @@ export const jugarPreguntasPorTema = ( preguntasTOGame ) => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/pregunta/preguntasTOGame?value=${preguntasTOGame}`)
 
-            console.log(data.preguntas)
-
             dispatch(getPreguntasGame(data.preguntas))
     
             dispatch(crearRecord(uid, 0, data.preguntas, 0))

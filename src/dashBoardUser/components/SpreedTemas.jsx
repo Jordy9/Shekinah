@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useResponsive } from '../../hooks/useResponsive';
 import { TableQuestionListTemas } from '../../dashBoard/components/TableQuestionListTemas';
@@ -34,12 +34,6 @@ export const SpreedTemas = () => {
     }
   
     const [ respWidth ] = useResponsive()
-
-    useEffect(() => {
-      
-      dispatch(obtenerTemas())
-
-    }, [dispatch])
 
   return (
     <Box autoComplete="off" sx={{px: 4, mt: 2}}>

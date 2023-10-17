@@ -24,8 +24,8 @@ export const DialogContentCita = ({tipo, nota, ShowDialog, setShowDialog, conten
         }
         <DialogContent>
             {
-                ( tipo === 'Pregunta' )
-                    ?
+                ( tipo === 'Pregunta' && content?.length !== 0 )
+                    &&
                 content?.map((contenido, index) => {
                     return (
                         <Fragment key={contenido + index}>
@@ -33,7 +33,11 @@ export const DialogContentCita = ({tipo, nota, ShowDialog, setShowDialog, conten
                         </Fragment>
                     ) 
                 })
-                    :
+            }
+
+            {
+                ( tipo === 'Tema' )
+                    &&
                 <Typography variant  = 'h6'>{nota}</Typography>
             }
         </DialogContent>

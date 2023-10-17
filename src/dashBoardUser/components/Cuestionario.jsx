@@ -92,7 +92,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
         }
     }
 
-    const [contentBible, setContentBible] = useState()
+    const [contentBible, setContentBible] = useState([])
 
     const next = () => {
         if (change + 1 < record?.preguntas?.length) {
@@ -105,7 +105,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
             setResponse()
             setShow(false)
             setShowTrue(false)
-            setContentBible()
+            setContentBible([])
         } else {
             setShowResultados(true)
         }
@@ -175,9 +175,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
 
     useEffect(() => {
 
-        if ( tipo === 'Tema' ) {
-            setContentBible(record?.preguntas[change]?.nota)
-        } else {
+        if ( tipo === 'Pregunta' ) {
             if ( record?.preguntas[change]?.desdeVersiculo === record?.preguntas[change]?.hastaVersiculo ) {
                 setContentBible(librosBiblia[record?.preguntas[change]?.idLibro][record?.preguntas[change]?.capitulo]?.slice(record?.preguntas[change]?.desdeVersiculo, Number(record?.preguntas[change]?.desdeVersiculo) + 1))
             }
@@ -274,7 +272,14 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
 
                             <Grid container>
                                 <Grid item xs = {12} style={{maxHeight: '150px', overflowY: 'auto'}}>
-                                    <Typography variant = 'h5' id='preguntaScroll' my={2} style={{textAlign: 'justify'}}>{record?.preguntas[change]?.pregunta} <Typography p={0.7} component={'span'} sx = {{backgroundColor: colorChange, borderRadius: '20px', fontSize: '18px'}}>{record?.preguntas[change]?.dificultad}</Typography> </Typography>
+                                    <Typography variant = 'h5' id='preguntaScroll' my={2} style={{textAlign: 'justify'}}>
+                                        {record?.preguntas[change]?.pregunta}
+                                        {
+                                            ( record?.preguntas[change]?.dificultad )
+                                                &&
+                                            <Typography p={0.7} component={'span'} sx = {{backgroundColor: colorChange, borderRadius: '20px', fontSize: '18px'}}>{record?.preguntas[change]?.dificultad}</Typography> 
+                                        }
+                                    </Typography>
                                 </Grid>
                             </Grid>
                         </Grid>

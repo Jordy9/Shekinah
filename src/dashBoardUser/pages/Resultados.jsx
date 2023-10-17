@@ -74,18 +74,31 @@ export const Resultados = () => {
                     {
                         record?.preguntas?.map(( pregunta, index ) => (
                             <Grid key={ pregunta._id } item xs={12} sm={ 6 } md={ 4 } lg={ 4 }>
-                                <Box component={ Paper } elevation={ 5 } sx={{ p: 2, borderRadius: '11px', height: '100%' }} display={ 'flex' } justifyContent={ 'space-between' } flexDirection={ 'column' } className={`${ ( record?.seleccionadas[index]?.respuesta?.correcta ) ? 'bg-success' : 'bg-danger' }`}>
-                                    { pregunta.pregunta }
+                                <Box component={ Paper } elevation={ 5 } sx={{ p: 2, borderRadius: '11px', height: '125px', overflow: 'auto' }} display={ 'flex' } justifyContent={ 'space-between' } flexDirection={ 'column' } className={`${ ( record?.seleccionadas[index]?.respuesta?.correcta ) ? 'bg-success' : 'bg-danger' }`}>
+                                    { pregunta?.pregunta }
 
-                                    <Box display={ 'flex' }>
-                                        {
-                                            ( record?.preguntas[index]?.desdeVersiculo === record?.preguntas[index]?.hastaVersiculo )
-                                                ?
-                                            <Typography sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5 }} variant='subtitle2' color={'white'} component={'span'}>Leer: {record?.preguntas[index]?.libro} {Number(record?.preguntas[index]?.capitulo) + 1}:{Number(record?.preguntas[index]?.desdeVersiculo) + 1}</Typography>
-                                                :
-                                            <Typography sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5 }} variant='subtitle2' color={'white'} component={'span'}>Leer: {record?.preguntas[index]?.libro} {Number(record?.preguntas[index]?.capitulo) + 1}:{Number(record?.preguntas[index]?.desdeVersiculo) + 1}-{Number(record?.preguntas[index]?.hastaVersiculo) + 1}</Typography>
-                                        }
-                                    </Box>
+                                    {
+                                        ( pregunta?.tipo === 'Pregunta' )
+                                            &&
+                                        <Box display={ 'flex' }>
+                                            {
+                                                ( pregunta?.desdeVersiculo === pregunta?.hastaVersiculo )
+                                                    ?
+                                                <Typography sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5 }} variant='subtitle2' color={'white'} component={'span'}>Leer: {pregunta?.libro} {Number(pregunta?.capitulo) + 1}:{Number(pregunta?.desdeVersiculo) + 1}</Typography>
+                                                    :
+                                                <Typography sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5 }} variant='subtitle2' color={'white'} component={'span'}>Leer: {pregunta?.libro} {Number(pregunta?.capitulo) + 1}:{Number(pregunta?.desdeVersiculo) + 1}-{Number(pregunta?.hastaVersiculo) + 1}</Typography>
+                                            }
+                                        </Box>
+                                    }
+
+                                    {
+                                        ( pregunta?.tipo === 'Tema' && pregunta?.nota )
+                                            &&
+                                        <Box display={ 'flex' }>
+                                            <Typography sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5 }} variant='subtitle2' color={'white'} component={'span'}>{ pregunta?.nota }</Typography>
+                                        </Box>
+                                    }
+
                                 </Box>
                             </Grid>
                         ))
@@ -201,6 +214,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         bottom: 0
+    },
+    leerTema: {
+        backgroundColor: 'black', 
+        borderRadius: '11px',
+        color: 'white',
+        padding: 10,
+        marginLeft: 12,
+        marginTop: 12,
+        width: '100%'
     }
   });
 
@@ -210,10 +232,10 @@ const MyDocument = ({ record }) => {
         <Page size="A4" style={styles.body}>
             <Text style={styles.title}>Listado de preguntas</Text>
             {
-                record?.preguntas?.map((item, index) => (
+                record?.preguntas?.map((pregunta, index) => (
                     <Fragment key={index}>
                         <Text style={ styles.text }>
-                            {`${index + 1}. ${item.pregunta} ` }
+                            {`${index + 1}. ${pregunta.pregunta} ` }
                         </Text>
 
                         <View style={{ display: 'flex', position: 'relative', marginTop: 30 }}>
@@ -227,15 +249,17 @@ const MyDocument = ({ record }) => {
                             }
 
                             {
-                                ( item?.desdeVersiculo === item?.hastaVersiculo )
-                                    ?
-                                <Text strokeWidth={'100px'} style={ styles.leer } variant='subtitle2' color={'white'} component={'span'}>Leer: {item?.libro} {Number(item?.capitulo) + 1}:{Number(item?.desdeVersiculo) + 1}</Text>
-                                    :
-                                <Text strokeWidth={'100px'} style={ styles.leer } variant='subtitle2' color={'white'} component={'span'}>Leer: {item?.libro} {Number(item?.capitulo) + 1}:{Number(item?.desdeVersiculo) + 1}-{Number(item?.hastaVersiculo) + 1}</Text>
+                                ( pregunta?.tipo === 'Pregunta' )
+                                    &&
+                                <PregunComponent pregunta={ pregunta } />
                             }
                         </View>
 
-                            
+                        {
+                            ( pregunta?.tipo === 'Tema' && pregunta?.nota )
+                                &&
+                            <Text strokeWidth={'100px'} style={ styles.leerTema }>{ pregunta?.nota }</Text>
+                        }
                     </Fragment>
                 ))
             }
@@ -263,3 +287,11 @@ const ListToPDF = ({ record }) => {
       </PDFDownloadLink>
     );
 };
+
+const PregunComponent = ({ pregunta }) => (
+    ( pregunta?.desdeVersiculo === pregunta?.hastaVersiculo )
+        ?
+    <Text strokeWidth={'100px'} style={ styles.leer } variant='subtitle2' color={'white'} component={'span'}>Leer: {pregunta?.libro} {Number(pregunta?.capitulo) + 1}:{Number(pregunta?.desdeVersiculo) + 1}</Text>
+        :
+    <Text strokeWidth={'100px'} style={ styles.leer } variant='subtitle2' color={'white'} component={'span'}>Leer: {pregunta?.libro} {Number(pregunta?.capitulo) + 1}:{Number(pregunta?.desdeVersiculo) + 1}-{Number(pregunta?.hastaVersiculo) + 1}</Text>
+)
