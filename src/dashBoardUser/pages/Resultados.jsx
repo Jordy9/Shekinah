@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Box, Button, CircularProgress, Grid, IconButton, Paper, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { BorrarPregunta } from '../../store/record/thunk';
+import { BorrarPregunta, BorrarPreguntaAndSetLevel } from '../../store/record/thunk';
 import { GuardarRecord } from '../../store/auth/thunk';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -10,6 +10,12 @@ import { Download } from '@mui/icons-material';
 import { Document, Page, Text, StyleSheet, PDFDownloadLink, View } from '@react-pdf/renderer';
 import Confetti from '../components/Confetti';
 import { Spinner } from '../../Spinner';
+import { DialogShowLevel } from '../components/DialogShowLevel';
+import { DialogContentCita } from '../components/DialogContentCita';
+import { Antiguotestamento } from '../../Antiguotestamento';
+import { Nuevotestamento } from '../../Nuevotestamento';
+
+const librosBiblia = [...Antiguotestamento(), ...Nuevotestamento()]
 
 export const Resultados = () => {
 
@@ -19,9 +25,17 @@ export const Resultados = () => {
 
     const { record } = useSelector(state => state.rc);
 
+    const { usuarioActivo } = useSelector(state => state.auth);
+
     const terminarJuego = () => {
-        dispatch(BorrarPregunta(record?._id))
-        dispatch(GuardarRecord(record))
+
+        if ( usuarioActivo.isLevel ) {
+            dispatch( BorrarPreguntaAndSetLevel(record?._id, record, usuarioActivo) )
+        } else {
+            dispatch(BorrarPregunta(record?._id))
+            dispatch(GuardarRecord(record))
+        }
+
     }
 
     const precision = ( record?.aciertos / record?.preguntas?.length ) * 100
@@ -47,6 +61,41 @@ export const Resultados = () => {
     const py = ( respWidth > 700 ) ? 3 : 2
 
     const px = ( respWidth > 700 ) ? 3 : 1.5
+
+    const [showDialog, setShowDialog] = useState(false)
+
+    const [cita, setCita] = useState({ content: [] })
+
+    const [tipo, setTipo] = useState('')
+
+    const [nota, setNota] = useState('')
+
+    const handleCita = ( pregunta ) => {
+        setTipo('Pregunta')
+        if ( pregunta?.desdeVersiculo === pregunta?.hastaVersiculo ) {
+            setCita({
+                libro: pregunta?.libro,
+                content: librosBiblia[pregunta?.idLibro][pregunta?.capitulo]?.slice(pregunta?.desdeVersiculo, Number(pregunta?.desdeVersiculo) + 1),
+                inicio: pregunta?.desdeVersiculo,
+                capitulo: pregunta?.capitulo
+            })
+        } else {
+            setCita({
+                libro: pregunta?.libro,
+                content: librosBiblia[pregunta?.idLibro][pregunta?.capitulo]?.slice(pregunta?.desdeVersiculo, Number(pregunta?.hastaVersiculo) + 1),
+                inicio: pregunta?.desdeVersiculo,
+                capitulo: pregunta?.capitulo
+            }) 
+        }
+
+        setShowDialog(true)
+    }
+
+    const handleNota = ( nota ) => {
+        setTipo('Tema')
+        setNota(nota)
+        setShowDialog(true)
+    }
 
     if ( !record ) {
         return <Spinner />
@@ -74,7 +123,7 @@ export const Resultados = () => {
                     {
                         record?.preguntas?.map(( pregunta, index ) => (
                             <Grid key={ pregunta._id } item xs={12} sm={ 6 } md={ 4 } lg={ 4 }>
-                                <Box component={ Paper } elevation={ 5 } sx={{ p: 2, borderRadius: '11px', height: '125px', overflow: 'auto' }} display={ 'flex' } justifyContent={ 'space-between' } flexDirection={ 'column' } className={`${ ( record?.seleccionadas[index]?.respuesta?.correcta ) ? 'bg-success' : 'bg-danger' }`}>
+                                <Box component={ Paper } elevation={ 5 } sx={{ p: 2, borderRadius: '11px', height: '125px', overflow: 'auto' }} display={ 'flex' } justifyContent={ 'space-between' } flexDirection={ 'column' } className={`${ ( record?.seleccionadas[index]?.respuesta?.correcta ) ? 'bg-success-result' : 'bg-danger-result' }`}>
                                     { pregunta?.pregunta }
 
                                     {
@@ -84,9 +133,9 @@ export const Resultados = () => {
                                             {
                                                 ( pregunta?.desdeVersiculo === pregunta?.hastaVersiculo )
                                                     ?
-                                                <Typography sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5 }} variant='subtitle2' color={'white'} component={'span'}>Leer: {pregunta?.libro} {Number(pregunta?.capitulo) + 1}:{Number(pregunta?.desdeVersiculo) + 1}</Typography>
+                                                <Typography onClick={ () => handleCita(pregunta) } sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5, cursor: 'pointer' }} variant='subtitle2' color={'white'} component={'span'}>Leer: {pregunta?.libro} {Number(pregunta?.capitulo) + 1}:{Number(pregunta?.desdeVersiculo) + 1}</Typography>
                                                     :
-                                                <Typography sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5 }} variant='subtitle2' color={'white'} component={'span'}>Leer: {pregunta?.libro} {Number(pregunta?.capitulo) + 1}:{Number(pregunta?.desdeVersiculo) + 1}-{Number(pregunta?.hastaVersiculo) + 1}</Typography>
+                                                <Typography onClick={ () => handleCita(pregunta) } sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5, cursor: 'pointer' }} variant='subtitle2' color={'white'} component={'span'}>Leer: {pregunta?.libro} {Number(pregunta?.capitulo) + 1}:{Number(pregunta?.desdeVersiculo) + 1}-{Number(pregunta?.hastaVersiculo) + 1}</Typography>
                                             }
                                         </Box>
                                     }
@@ -95,7 +144,7 @@ export const Resultados = () => {
                                         ( pregunta?.tipo === 'Tema' && pregunta?.nota )
                                             &&
                                         <Box display={ 'flex' }>
-                                            <Typography sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5 }} variant='subtitle2' color={'white'} component={'span'}>{ pregunta?.nota }</Typography>
+                                            <Typography onClick={ () => handleNota(pregunta?.nota) } sx={{ backgroundColor: 'black', borderRadius: '11px', px: 1, py: 0.5, cursor: 'pointer' }} variant='subtitle2' color={'white'} component={'span'}>Leer nota</Typography>
                                         </Box>
                                     }
 
@@ -140,7 +189,28 @@ export const Resultados = () => {
             <Box position={ 'absolute' } bottom={ 15 } right={ '50%' } sx={{ transform: 'translateX(50%)' }}>
                 <Button sx={{ width: 300 }} onClick={terminarJuego} variant = 'contained'>Terminar</Button>
             </Box>
-        }    
+        }
+
+        {
+            ( usuarioActivo?.isLevel )
+                &&
+            <DialogShowLevel
+                aciertos={ record?.aciertos }
+                show={ usuarioActivo?.isLevel }
+                total={ record?.preguntas?.length }
+            />
+        }
+
+        <DialogContentCita
+            ShowDialog={ showDialog }
+            setShowDialog={ setShowDialog }
+            capitulo={ cita.capitulo }
+            inicio={ cita.inicio }
+            tipo={ tipo }
+            libro={ cita.libro }
+            nota={ nota }
+            content={ cita.content }
+        />
     </Box>
   )
 }

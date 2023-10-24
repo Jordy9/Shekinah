@@ -59,15 +59,15 @@ export const jugarPreguntasPorTema = ( preguntasTOGame ) => {
 export const obtenerPreguntasJuego = (page, size) => {
     return async(dispatch, getState) => {
 
-        const { uid } = getState().auth;
+        const { usuarioActivo } = getState().auth;
 
         try {
-            const { data } = await axios.get(`${point}/pregunta/juego`)
+            const { data } = await axios.get(`${point}/pregunta/juego?dificultad=${usuarioActivo?.level}`)
             // const { data } = await axios.get(`${point}/pregunta/juego?page=${page}&size=${size}`)
 
             dispatch(getPreguntasGame(data.preguntas))
 
-            dispatch(crearRecord(uid, 0, data.preguntas, 0))
+            dispatch(crearRecord(usuarioActivo._id, 0, data.preguntas, 0))
             
             
         } catch (error) {
@@ -149,8 +149,23 @@ export const obtenerPreguntasPorId = (ids) => {
                   })         
             }
 
-        } catch (error) {
-            console.log(error)
+        } catch ({ response }) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+              
+              return Toast.fire({
+                icon: 'error',
+                title: response.data.msg
+              })      
         }
 
     }
@@ -164,6 +179,24 @@ export const obtenerPreguntaFiltrada = (buscadorSearch) => {
             dispatch(getPreguntas(data.preguntas))
             dispatch(paginacion({page: data.page, total: data.total, idPreguntasCount: data.count}))
             
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}
+
+export const obtenerPreguntasAnalisis = ( opcion ) => {
+    return async(dispatch, getState) => {
+
+        const { uid } = getState().auth;
+
+        try {
+            const { data } = await axios.get(`${point}/pregunta/analisis?opcion=${opcion}`)
+
+            dispatch(getPreguntasGame(data.preguntas))
+    
+            dispatch(crearRecord(uid, 0, data.preguntas, 0))    
         } catch (error) {
             console.log(error)
         }

@@ -1,5 +1,5 @@
-import { ArrowBackIos, ArrowForwardIos, MusicNote, MusicOff, QuestionAnswer } from '@mui/icons-material'
-import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material'
+import { ArrowBackIos, ArrowForwardIos, MusicNote, MusicOff } from '@mui/icons-material'
+import { AppBar, Avatar, Box, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
@@ -8,7 +8,7 @@ import { soundLose, soundWin } from '../../helpers/sounds'
 import { useResponsive } from '../../hooks/useResponsive'
 import { Nuevotestamento } from '../../Nuevotestamento'
 import { Spinner } from '../../Spinner'
-import { GuardarRecord } from '../../store/auth/thunk'
+// import { GuardarRecord } from '../../store/auth/thunk'
 import { BorrarPregunta, SiguientePregunta } from '../../store/record/thunk'
 import { Resultados } from '../pages/Resultados'
 import './Cuestionario.css'
@@ -17,6 +17,8 @@ import { ButtonShowDialog } from './ButtonShowDialog'
 import { RespuestasAnteriores } from './RespuestasAnteriores'
 import { RespuestaActualOSiguientes } from './RespuestaActualOSiguientes'
 import { ButtonNavigationQuestions } from './ButtonNavigationQuestions'
+import { ProgressComponent } from './ProgressComponent'
+import { getBackGroundImage } from '../../utils/getBackGroundImage'
 
 const librosBiblia = [...Antiguotestamento(), ...Nuevotestamento()]
 
@@ -84,7 +86,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                 preguntaNo: record?.preguntaNo + 1,
                 errores: record?.errores + 1,
                 record: record,
-                seleccionadas: [ ...record?.seleccionadas, selected ] 
+                seleccionadas: [ ...record?.seleccionadas, selected ]
             }))
             setShow(true)
             setShowTrue(true)
@@ -168,10 +170,26 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
           }).then((result) => {
             if (result.isConfirmed) {
                 dispatch(BorrarPregunta(record?._id))
-                dispatch(GuardarRecord(record))
+                // dispatch(GuardarRecord(record))
             }
           })
     }
+
+    const categoria = record.preguntas[change].categoria
+
+    const [imageSelected, setImageSelected] = useState('')
+
+    const [prevDificult, setprevDificult] = useState('')
+
+    useEffect(() => {
+
+        if ( prevDificult === categoria ) return
+
+        setImageSelected(getBackGroundImage())
+
+        setprevDificult(categoria)
+      
+    }, [prevDificult, categoria])
 
     useEffect(() => {
 
@@ -225,59 +243,53 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
     }
     
   return (
-    <>
+    <Box sx={{ height: '100vh', width: '100%', overflow: 'hidden' }}>
         {
             (!showResultados)
             ?
             <div id='preguntaScroll'>
-                <Box sx={{ flexGrow: 1 }}>
-                    <AppBar position="static">
-                        <Grid p={4}>
+                <Box sx={{ height: '30vh' }}>
+                    <AppBar sx={{ height: '100%' }} position="static">
+                        <Grid p={ 0.5 }>
                             <Grid style={{justifyContent: 'space-between', flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
-                                <IconButton onClick={salir}>
+                                <IconButton sx={{ pl: 2, pr: 0 }} edge='start' onClick={salir}>
                                     <ArrowBackIos sx = {{color: 'secondary.main'}} />
                                 </IconButton>
-                                <Typography variant='h5' color = 'white'>{change + 1} / {record?.preguntas?.length}</Typography>
-                                <Typography variant='h5' color = 'white'>{usuarioActivo?.name}</Typography>
-                                <Typography variant='h5' color = 'white'>Puntos: {record?.puntos}</Typography>
-                            </Grid>
-
-                            <Grid container>
-                                <Grid item xs = {5} sm = {4} md = {4} lg = {3} xl = {3}>
-                                    <Typography variant='h6' mt = {4} mb = {4} color = {'white'}>Racha de: {enRachaDe}x</Typography>
-                                </Grid>
-
-                                <Grid item xs = {7} sm = {8} md = {8} lg = {9} xl = {9} display = {'flex'} justifyContent = {'end'} my = {'auto'}>
+                                {
+                                    ( respWidth > 350 )
+                                        ?
+                                    <Box display={ 'flex' } alignItems={ 'center' }>
+                                        <AvatarComponent usuarioActivo={ usuarioActivo } />
+                                        <Typography ml={ 1 } component={ 'span' } fontSize={ '18px' } color = {'white'}>{usuarioActivo?.name}</Typography>
+                                    </Box>
+                                        :
+                                    <AvatarComponent usuarioActivo={ usuarioActivo } />
+                                }
+                                <Typography component={ 'span' } fontSize={ '18px' } color = {'white'}>Racha: {enRachaDe}x</Typography>
+                                <Typography component={ 'span' } fontSize={ '18px' } color = 'white'>Puntos: {record?.puntos}</Typography>
+                                <IconButton sx={{ pl: 0, pr: 2 }} edge='end' color='secondary' onClick={() => handleSound(!playSound)}>
                                     {
-                                        (show)
-                                            &&
-                                        <>
-                                            <Typography px={1} variant='h6' sx = {{fontSize: '25px', backgroundColor: (showCorrect) ? '#215d3bd9' : 'error.main', borderRadius: '20px'}}>{(showCorrect) ? 'Correcta' : 'Incorrecta'}</Typography>
-                                        </>
+                                        (!playSound)
+                                            ?
+                                        <MusicOff />
+                                            :
+                                        <MusicNote />
                                     }
-
-                                    <IconButton color='secondary' onClick={() => handleSound(!playSound)}>
-                                        {
-                                            (!playSound)
-                                                ?
-                                            <MusicOff />
-                                                :
-                                            <MusicNote />
-                                        }
-                                    </IconButton>
-                                </Grid>
+                                </IconButton>
                             </Grid>
 
-                            <hr style = {{color: 'white'}} />
+                            <hr style = {{ color: 'white', width: '100%' }} />
 
-                            <Grid container>
-                                <Grid item xs = {12} style={{maxHeight: '150px', overflowY: 'auto'}}>
-                                    <Typography variant = 'h5' id='preguntaScroll' my={2} style={{textAlign: 'justify'}}>
+                            <ProgressComponent change={ change } record={ record } />
+
+                            <Grid container sx={{ overflow: 'hidden' }}>
+                                <Grid item xs = {12} style={{maxHeight: '100px', overflowY: 'auto'}}>
+                                    <Typography variant = 'h5' id='preguntaScroll' px={ 2 } fontWeight={ 'bold' } style={{textAlign: 'left'}}>
                                         {record?.preguntas[change]?.pregunta}
                                         {
                                             ( record?.preguntas[change]?.dificultad )
                                                 &&
-                                            <Typography p={0.7} component={'span'} sx = {{backgroundColor: colorChange, borderRadius: '20px', fontSize: '18px'}}>{record?.preguntas[change]?.dificultad}</Typography> 
+                                            <Typography ml={ 1 } p={0.7} component={'span'} sx = {{backgroundColor: colorChange, borderRadius: '20px', fontSize: '18px'}}>{record?.preguntas[change]?.dificultad}</Typography> 
                                         }
                                     </Typography>
                                 </Grid>
@@ -286,7 +298,7 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                     </AppBar>
                 </Box>
 
-                <Grid container>
+                <Grid display={ 'flex' } alignItems={ 'center' } container sx={{ height: '60vh', overflow: 'auto', backgroundImage: `url(${imageSelected})`, backgroundSize: 'cover', backgroundPosition: 'bottom center' }}>
                     {
                         ( DissabledToSelect )
                             ?
@@ -303,11 +315,14 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                             showTrue={ showTrue }
                         />
                     }
+                </Grid>
+
+                <Box sx={{ height: '10vh' }}>
 
                     {
                         (respWidth >= 600)
                             ?
-                        <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+                        <AppBar sx={{ height: '100%' }} position="static" color="primary">
                             <Toolbar>
                                 <Box p={1} sx={{ flexGrow: 1 }} component = {'div'}>
 
@@ -348,53 +363,49 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
                             </Toolbar>
                         </AppBar>
                             :
-                        <Box mt={35}>
-                            {
-                                <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-                                    <Toolbar>
-                                        <Box px={ 1 } py={2} sx={{ flexGrow: 1 }} component = {'div'}>
+                        <AppBar sx={{ height: '100%' }} position="static" color="primary">
+                            <Toolbar>
+                                <Box px={ 1 } py={ 2 } sx={{ flexGrow: 1 }} component = {'div'}>
 
-                                            <Grid display={'flex'} justifyContent = {'space-between'}>
-                                                {
-                                                    (show)
-                                                        &&
-                                                    <ButtonShowDialog
-                                                        change={ change }
-                                                        record={ record }
-                                                        setShowModalContent={ setShowModalContent }
-                                                        tipo={ tipo }
-                                                    />
-                                                }
+                                    <Grid display={'flex'} justifyContent = {'space-between'}>
+                                        {
+                                            (show)
+                                                &&
+                                            <ButtonShowDialog
+                                                change={ change }
+                                                record={ record }
+                                                setShowModalContent={ setShowModalContent }
+                                                tipo={ tipo }
+                                            />
+                                        }
 
-                                                <ButtonNavigationQuestions
-                                                    change={ change }
-                                                    nextForward={ nextForward }
-                                                    preguntaNo={ record.preguntaNo }
-                                                    prev={ prev }
-                                                    show={ show }
-                                                    onClick={ onClick }
-                                                    response={ response }
-                                                    showCorrect={ showCorrect }
-                                                    DissabledToSelect={ DissabledToSelect }
-                                                />
+                                        <ButtonNavigationQuestions
+                                            change={ change }
+                                            nextForward={ nextForward }
+                                            preguntaNo={ record.preguntaNo }
+                                            prev={ prev }
+                                            show={ show }
+                                            onClick={ onClick }
+                                            response={ response }
+                                            showCorrect={ showCorrect }
+                                            DissabledToSelect={ DissabledToSelect }
+                                        />
 
-                                                {
-                                                    (show)
-                                                        &&
-                                                    <Button sx={{ boxShadow: 12 }} endIcon={ <ArrowForwardIos /> } variant='contained' onClick={next}>
-                                                        Siguiente
-                                                    </Button>
-                                                }
-                                            </Grid>
+                                        {
+                                            (show)
+                                                &&
+                                            <Button sx={{ boxShadow: 12 }} endIcon={ <ArrowForwardIos /> } variant='contained' onClick={next}>
+                                                Siguiente
+                                            </Button>
+                                        }
+                                    </Grid>
 
-                                        </Box>
-                                    </Toolbar>
-                                </AppBar>
-                            }
-                        </Box>
+                                </Box>
+                            </Toolbar>
+                        </AppBar>
                     }
 
-                </Grid>
+                </Box>
             </div>
                 :
             <Resultados />
@@ -411,6 +422,35 @@ export const Cuestionario = ({showResultados, setShowResultados}) => {
             inicio = {record?.preguntas[change]?.desdeVersiculo} 
             fin 
         />
-    </>
+    </Box>
   )
+}
+
+const AvatarComponent = ({ usuarioActivo }) => {
+
+    const { name, category, backGround, radius, flip, rotate, translateX, translateY } = usuarioActivo?.avatar
+
+    const isCCbs = ( usuarioActivo?.id === '652469d52449387ebbff39da' ) && 'https://yt3.ggpht.com/mf1VTcWGDbw6SnUd1sBFdLFD-Y1LxrJpPWAcqoCZ-9xBOx7UDevKXkzGpxLzotTDFNM5zQCcWg=s176-c-k-c0x00ffffff-no-rj-mo'
+
+    return (
+        <>
+            {
+                ( isCCbs )
+                ?
+                <Avatar src={ isCCbs } variant='circular' />
+                :
+                <Avatar src={`https://api.dicebear.com/7.x/${category}/svg?seed=${name || usuarioActivo?.name}`}
+                style = {{
+                    backgroundColor: backGround, 
+                    borderRadius: `${radius}%`,
+                    transform: 
+                    `rotate(${rotate}deg) 
+                    translateX(${translateX}%) 
+                    translateY(${translateY}%) 
+                    scaleX(${(flip) ? '-1' : '1'})`,
+                }}
+                alt="" />
+            }
+        </>
+    )
 }

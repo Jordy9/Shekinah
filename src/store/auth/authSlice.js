@@ -26,7 +26,7 @@ reducers: {
     },
 
     onUpdate: (state, action ) => {
-        state.usuarios = state.usuarios.map(
+        state.top10 = state.top10.map(
             e => (e.id === action.payload.id) ? action.payload : e);
         state.usuarioActivo = action.payload;
     },

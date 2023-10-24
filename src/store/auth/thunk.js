@@ -505,14 +505,59 @@ export const GuardarRecord = (record) => {
 
         const token = localStorage.getItem('token') || '';
 
+        const usuarioToSave = {
+            ...usuarioActivo, juego
+        }
+
+        const currentGame = {
+            aciertos: record?.aciertos,
+            total: record?.preguntas?.length
+        }
+
         try {
-            const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, juego}, {headers: {'x-token': token}})
+            const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave, currentGame }, {headers: {'x-token': token}})
             dispatch(onUpdate(data.usuario))
-            dispatch(obtenerUsuarios())
+            dispatch(obtenerUsuariosTop10())
             
         } catch (error) {
             console.log(error)
         }
+
+    }
+}
+
+export const guardarNivel = ( level ) => {
+    return async(dispatch, getState) => {
+
+        const { usuarioActivo } = getState().auth;
+
+        const token = localStorage.getItem('token') || '';
+
+        const usuarioToSave = {
+            ...usuarioActivo, level, isLevel: false
+        }
+
+        const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave }, {headers: {'x-token': token}})
+
+        dispatch( onActiveUser(data.usuario) )
+
+    }
+}
+
+export const guardarNotify = () => {
+    return async(dispatch, getState) => {
+
+        const { usuarioActivo } = getState().auth;
+
+        const token = localStorage.getItem('token') || '';
+
+        const usuarioToSave = {
+            ...usuarioActivo, notifyLevel: false
+        }
+
+        const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave }, {headers: {'x-token': token}})
+
+        dispatch( onActiveUser(data.usuario) )
 
     }
 }
