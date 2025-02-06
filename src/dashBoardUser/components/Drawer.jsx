@@ -4,7 +4,7 @@ import { Box } from '@mui/system'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-export const Drawer = ({show, setShow}) => {
+export const Drawer = ({ show, setShow }) => {
 
     const listRoute = [
         {
@@ -48,29 +48,29 @@ export const Drawer = ({show, setShow}) => {
 
     const { pathname } = useLocation()
 
-  return (
-    <SwipeableDrawer
-      anchor={'left'}
-      open={show}
-      onClose={() => setShow(false)}
-    //   onOpen={true}
-    >
-        <Box sx = {{width: 250}}>
-            {
-                listRoute.map(({label, route, Icon}, index) => (
-                    <ListItem key={route} disablePadding sx={{ backgroundColor: ( pathname === route ) ? 'primary.main' : 'inherit', color: ( pathname === route ) ? 'white' : 'inherit', '&:hover': { backgroundColor: 'primary.main', color: 'white' } }}>
-                        <ListItemButton onClick={() => navigate(route)}>
-                            <ListItemIcon>
-                                <IconButton sx={{ color: ( pathname === route ) ? 'white' : 'inherit' }}>
-                                    <Icon />
-                                </IconButton>
-                            </ListItemIcon>
-                            <ListItemText primary={label} />
-                        </ListItemButton>
-                    </ListItem>
-                ))
-            }
-        </Box>
-    </SwipeableDrawer>
-  )
+    return (
+        <SwipeableDrawer
+            anchor={'left'}
+            open={show}
+            onClose={() => setShow(false)}
+            onOpen={() => null}
+        >
+            <Box sx={{ width: 250 }}>
+                {
+                    listRoute.map(({ label, route, Icon }, index) => (
+                        <ListItem key={route} disablePadding sx={{ backgroundColor: (pathname === route) ? 'primary.main' : 'inherit', color: (pathname === route) ? 'white' : 'inherit', '&:hover': { backgroundColor: 'primary.main', color: 'white' } }}>
+                            <ListItemButton onClick={() => navigate(route)}>
+                                <ListItemIcon>
+                                    <IconButton sx={{ color: (pathname === route) ? 'white' : 'inherit' }}>
+                                        <Icon />
+                                    </IconButton>
+                                </ListItemIcon>
+                                <ListItemText primary={label} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))
+                }
+            </Box>
+        </SwipeableDrawer>
+    )
 }

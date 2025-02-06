@@ -6,20 +6,20 @@ import { getRecord } from '../record/recordSlice';
 const point = process.env.REACT_APP_API_URL
 
 export const obtenerUsuarios = () => {
-    return async(dispatch) => {
+    return async (dispatch) => {
         const { data } = await axios.get(`${point}/auth`)
 
         dispatch(onGetUsers(data.usuarios))
-        
+
     }
 }
 
 export const obtenerUsuariosTop10 = () => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
-        try {   
+        try {
             const { data } = await axios.get(`${point}/auth/top10`)
-    
+
             dispatch(onGetUsersTop10(data.usuarios))
         } catch (error) {
             console.log(error)
@@ -28,14 +28,14 @@ export const obtenerUsuariosTop10 = () => {
 }
 
 export const iniciarLogin = (email, password) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         const token = localStorage.getItem('token') || '';
 
         try {
-            const { data } = await axios.post(`${point}/auth`, {email, password}, {headers: {'x-token': token}})
-    
-            if ( data.ok ) {
+            const { data } = await axios.post(`${point}/auth`, { email, password }, { headers: { 'x-token': token } })
+
+            if (data.ok) {
 
                 dispatch(getRecord(data.record))
 
@@ -46,11 +46,11 @@ export const iniciarLogin = (email, password) => {
                     name: name,
                     usuarioActivo: data.usuario
                 }))
-    
+
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('token-init-date', new Date().getTime());
             }
-        } catch ({response}) {
+        } catch ({ response }) {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -62,38 +62,38 @@ export const iniciarLogin = (email, password) => {
                     toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
-            
+
             return Toast.fire({
                 icon: 'error',
                 title: response.data.msg
             })
         }
-        
+
 
     }
 }
 
 export const startLoginGoogle = (response) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         const token = localStorage.getItem('token') || '';
 
         try {
-            const { data } = await axios.post(`${point}/auth/google`, response, {headers: {'x-token': token}});
-            
+            const { data } = await axios.post(`${point}/auth/google`, response, { headers: { 'x-token': token } });
+
             localStorage.setItem('token', data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
 
             dispatch(getRecord(data.record))
 
             const { id, name } = data.usuario
-    
+
             await dispatch(onLogin({
                 uid: id,
                 name: name,
                 usuarioActivo: data.usuario
             }))
-            
+
         } catch (error) {
             const Toast = Swal.mixin({
                 toast: true,
@@ -102,26 +102,26 @@ export const startLoginGoogle = (response) => {
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
-              })
-              
-              return Toast.fire({
+            })
+
+            return Toast.fire({
                 icon: 'error',
                 title: error
-              })
+            })
         }
     }
 }
 
 export const startLoginFacebook = (response) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         const token = localStorage.getItem('token') || '';
-        
+
         try {
-            const { data } = await axios.post(`${point}/auth/facebook`, response, {headers: {'x-token': token}});
+            const { data } = await axios.post(`${point}/auth/facebook`, response, { headers: { 'x-token': token } });
 
             localStorage.setItem('token', data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
@@ -144,23 +144,23 @@ export const startLoginFacebook = (response) => {
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
-              
+
             return Toast.fire({
                 icon: 'error',
                 title: error
             })
-        }       
+        }
     }
 }
 
 export const crearUsuario = (name, lastName, email, password) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
         try {
-            const { data } = await axios.post(`${point}/auth/new`, {name, lastName, email, password})
+            const { data } = await axios.post(`${point}/auth/new`, { name, lastName, email, password })
 
             dispatch(onRegister({
                 uid: data.uid,
@@ -179,11 +179,11 @@ export const crearUsuario = (name, lastName, email, password) => {
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
-              
+
             return Toast.fire({
                 icon: 'error',
                 title: response.data.msg
@@ -193,17 +193,17 @@ export const crearUsuario = (name, lastName, email, password) => {
 }
 
 export const iniciarActualizacion = (id, name, lastName, email, password, role, avatar) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         const token = localStorage.getItem('token') || '';
 
         try {
-            const { data } = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role, avatar}, {headers: {'x-token': token}})
-    
+            const { data } = await axios.put(`${point}/auth/${id}`, { name, lastName, email, password, role, avatar }, { headers: { 'x-token': token } })
+
             if (data.ok) {
 
                 dispatch(onUpdate(data.usuario))
-    
+
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -211,17 +211,17 @@ export const iniciarActualizacion = (id, name, lastName, email, password, role, 
                     timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
-                
+
                 return Toast.fire({
                     icon: 'success',
                     title: 'Usuario actualizado correctamente'
                 })
             }
-        } catch ({response}) {
+        } catch ({ response }) {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -229,23 +229,23 @@ export const iniciarActualizacion = (id, name, lastName, email, password, role, 
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
-            
+
             return Toast.fire({
                 icon: 'error',
                 title: response.data.msg
             })
         }
-        
+
 
     }
 }
 
 export const iniciarActualizacionUserSelected = (id, name, lastName, email, password, role, oldPassword) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         if (!password) {
             password = oldPassword
@@ -254,12 +254,12 @@ export const iniciarActualizacionUserSelected = (id, name, lastName, email, pass
         const token = localStorage.getItem('token') || '';
 
         try {
-            const { data } = await axios.put(`${point}/auth/${id}`, {name, lastName, email, password, role}, {headers: {'x-token': token}})
-    
+            const { data } = await axios.put(`${point}/auth/${id}`, { name, lastName, email, password, role }, { headers: { 'x-token': token } })
+
             if (data.ok) {
 
                 dispatch(onUpdateUser(data.usuario))
-    
+
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -267,17 +267,17 @@ export const iniciarActualizacionUserSelected = (id, name, lastName, email, pass
                     timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
-                
+
                 return Toast.fire({
                     icon: 'success',
                     title: 'Usuario actualizado correctamente'
                 })
             }
-        } catch ({response}) {
+        } catch ({ response }) {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -285,33 +285,34 @@ export const iniciarActualizacionUserSelected = (id, name, lastName, email, pass
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
-            
+
             return Toast.fire({
                 icon: 'error',
                 title: response.data.msg
             })
         }
-        
+
 
     }
 }
 
 export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         const token = localStorage.getItem('token') || '';
 
+
         try {
-            const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, {...usuarioActivo, tema, selected}, {headers: {'x-token': token}})
-    
+            const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { ...usuarioActivo, tema, selected }, { headers: { 'x-token': token } })
+
             if (data.ok) {
 
                 dispatch(onUpdate(data.usuario))
-    
+
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -319,17 +320,17 @@ export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
                     timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
-                
+
                 return Toast.fire({
                     icon: 'success',
                     title: 'Tema actualizado correctamente'
                 })
             }
-        } catch ({response}) {
+        } catch ({ response }) {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -337,33 +338,33 @@ export const iniciarActualizacionTema = (tema, usuarioActivo, selected) => {
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
-            
+
             return Toast.fire({
                 icon: 'error',
                 title: response.data.msg
             })
         }
-        
+
 
     }
 }
 
 export const iniciarActualizacionPass = (id, name, lastName, email, password, role) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         const token = localStorage.getItem('token') || '';
 
         try {
-            const { data } = await axios.put(`${point}/auth/updatePassword/${id}`, {id, name, lastName, email, password, role}, {headers: {'x-token': token}})
-    
+            const { data } = await axios.put(`${point}/auth/updatePassword/${id}`, { id, name, lastName, email, password, role }, { headers: { 'x-token': token } })
+
             if (data.ok) {
 
                 dispatch(onUpdate(data.usuario))
-    
+
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -371,17 +372,17 @@ export const iniciarActualizacionPass = (id, name, lastName, email, password, ro
                     timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
-                
+
                 return Toast.fire({
                     icon: 'success',
                     title: 'Usuario actualizado correctamente'
                 })
             }
-        } catch ({response}) {
+        } catch ({ response }) {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -389,30 +390,30 @@ export const iniciarActualizacionPass = (id, name, lastName, email, password, ro
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
-            
+
             return Toast.fire({
                 icon: 'error',
                 title: response.data.msg
             })
         }
-        
+
 
     }
 }
 
 export const obtenerUsuarioActivo = () => {
-    return async(dispatch, getState) => {
+    return async (dispatch, getState) => {
 
         const { usuarios, uid } = getState().auth
 
         const usuario = usuarios?.find(usuarios => usuarios.id === uid)
 
         dispatch(onActiveUser(usuario))
-        
+
     }
 }
 
@@ -426,13 +427,13 @@ export const iniciarLogout = () => {
 }
 
 export const iniciarAutenticacion = () => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         const token = localStorage.getItem('token') || '';
 
         try {
-            const { data } = await axios.get(`${point}/auth/renew`, {headers: {'x-token': token}});
-            
+            const { data } = await axios.get(`${point}/auth/renew`, { headers: { 'x-token': token } });
+
             localStorage.setItem('token', data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
 
@@ -455,17 +456,17 @@ export const iniciarAutenticacion = () => {
 }
 
 export const eliminarUsuario = (usuario) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         const token = localStorage.getItem('token') || '';
 
         try {
-            const { data } = await axios.delete(`${point}/auth/${usuario?.id}`, {headers: {'x-token': token}});
+            const { data } = await axios.delete(`${point}/auth/${usuario?.id}`, { headers: { 'x-token': token } });
 
             if (data.ok) {
 
                 dispatch(onDelete(usuario))
-                
+
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -473,11 +474,11 @@ export const eliminarUsuario = (usuario) => {
                     timer: 1500,
                     timerProgressBar: true,
                     didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
-                
+
                 return Toast.fire({
                     icon: 'success',
                     title: 'Usuario eliminado correctamente'
@@ -491,7 +492,7 @@ export const eliminarUsuario = (usuario) => {
 }
 
 export const GuardarRecord = (record) => {
-    return async(dispatch, getState) => {
+    return async (dispatch, getState) => {
 
         const { usuarioActivo } = getState().auth;
 
@@ -515,10 +516,10 @@ export const GuardarRecord = (record) => {
         }
 
         try {
-            const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave, currentGame }, {headers: {'x-token': token}})
+            const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave, currentGame }, { headers: { 'x-token': token } })
             dispatch(onUpdate(data.usuario))
             dispatch(obtenerUsuariosTop10())
-            
+
         } catch (error) {
             console.log(error)
         }
@@ -526,8 +527,8 @@ export const GuardarRecord = (record) => {
     }
 }
 
-export const guardarNivel = ( level ) => {
-    return async(dispatch, getState) => {
+export const guardarNivel = (level) => {
+    return async (dispatch, getState) => {
 
         const { usuarioActivo } = getState().auth;
 
@@ -537,15 +538,15 @@ export const guardarNivel = ( level ) => {
             ...usuarioActivo, level, isLevel: false
         }
 
-        const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave }, {headers: {'x-token': token}})
+        const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave }, { headers: { 'x-token': token } })
 
-        dispatch( onActiveUser(data.usuario) )
+        dispatch(onActiveUser(data.usuario))
 
     }
 }
 
 export const guardarNotify = () => {
-    return async(dispatch, getState) => {
+    return async (dispatch, getState) => {
 
         const { usuarioActivo } = getState().auth;
 
@@ -555,9 +556,9 @@ export const guardarNotify = () => {
             ...usuarioActivo, notifyLevel: false
         }
 
-        const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave }, {headers: {'x-token': token}})
+        const { data } = await axios.put(`${point}/auth/${usuarioActivo?.id}`, { usuarioToSave }, { headers: { 'x-token': token } })
 
-        dispatch( onActiveUser(data.usuario) )
+        dispatch(onActiveUser(data.usuario))
 
     }
 }

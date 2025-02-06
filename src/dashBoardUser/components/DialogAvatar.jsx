@@ -9,7 +9,7 @@ export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
     const dispatch = useDispatch();
 
     const handleClose = () => {
-        setShowDialog(false); 
+        setShowDialog(false);
     };
 
     const [avatarConfig, setAvatarConfig] = useState({
@@ -23,7 +23,7 @@ export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
         translateY: usuarioActivo?.avatar?.translateY,
     })
 
-    const { 
+    const {
         name, category, backGround, radius, flip, rotate, translateX, translateY
     } = avatarConfig
 
@@ -31,90 +31,90 @@ export const DialogAvatar = ({ showDialog, setShowDialog, usuarioActivo }) => {
         dispatch(iniciarActualizacion(usuarioActivo?.id, usuarioActivo?.name, usuarioActivo?.lastName, usuarioActivo?.email, usuarioActivo?.password, usuarioActivo?.role, avatarConfig))
     }
 
-  return (
-    <Dialog
-        open={showDialog}
-        onClose={handleClose}
-        fullWidth
-        maxWidth = 'sm'
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        scroll={'paper'}
-    >
-        <DialogTitle id="alert-dialog-title">
-            <Typography align='center' variant='h5'>Imagen de perfil</Typography>
-        </DialogTitle>
-        <DialogContent>
-            <Grid display={'flex'} justifyContent = {'center'}>
-                <Box mt={2} sx = {{overflow: 'hidden'}}>
-                    <img loading="lazy" src={`https://api.dicebear.com/7.x/${category}/svg?seed=${name}`}
-                        style = {{
-                            backgroundColor: backGround, 
-                            width: '250px', 
-                            height: '250px', 
-                            borderRadius: `${radius}%`,
-                            transform: 
-                                `rotate(${rotate}deg) 
+    return (
+        <Dialog
+            open={showDialog}
+            onClose={handleClose}
+            fullWidth
+            maxWidth='sm'
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            scroll={'paper'}
+        >
+            <DialogTitle id="alert-dialog-title">
+                <Typography align='center' variant='h5'>Imagen de perfil</Typography>
+            </DialogTitle>
+            <DialogContent>
+                <Grid display={'flex'} justifyContent={'center'}>
+                    <Box mt={2} sx={{ overflow: 'hidden' }}>
+                        <img loading="lazy" src={`https://api.dicebear.com/7.x/${category}/svg?seed=${name}`}
+                            style={{
+                                backgroundColor: backGround,
+                                width: '250px',
+                                height: '250px',
+                                borderRadius: `${radius}%`,
+                                transform:
+                                    `rotate(${rotate}deg) 
                                 translateX(${translateX}%) 
                                 translateY(${translateY}%) 
                                 scaleX(${(flip) ? '-1' : '1'})`,
-                        }} 
-                        alt="" 
+                            }}
+                            alt=""
+                        />
+                    </Box>
+                </Grid>
+
+                <Grid mt={2} item xs={12}>
+                    <TextField name='name' value={name} onChange={({ target }) => setAvatarConfig({ ...avatarConfig, name: target.value })} id="filled-basic" fullWidth placeholder='Ejemplo: Mi nombre' label="Referencia del avatar" variant="standard" />
+                </Grid>
+
+                <Grid mt={2} item xs={12}>
+                    <TextField name='category' value={category} onChange={({ target }) => setAvatarConfig({ ...avatarConfig, category: target.value })} id="filled-basic" fullWidth label="Estilo" variant="standard" select>
+                        {
+                            (Categories.map(({ label, name }) => (
+                                <MenuItem key={name} value={name}>
+                                    {label}
+                                </MenuItem>
+                            )))
+                        }
+                    </TextField>
+                </Grid>
+
+                <Grid mt={2}>
+                    <TextField name='backGround' value={backGround} onChange={({ target }) => setAvatarConfig({ ...avatarConfig, backGround: target.value })} id="filled-basic" fullWidth type='color' label="Color del fondo" variant="standard" />
+                </Grid>
+
+                <Grid mt={2}>
+                    {radius}%
+                    <TextField InputProps={{ inputProps: { max: 50, min: 0 } }} name='radius' value={radius} onChange={({ target }) => setAvatarConfig({ ...avatarConfig, radius: target.value })} id="filled-basic" fullWidth type='range' label="Redondez" variant="standard" />
+                </Grid>
+
+                <Grid mt={2} item xs={12}>
+                    <FormControlLabel
+                        control={<Switch defaultChecked={flip} name='flip' value={flip} onChange={({ target }) => setAvatarConfig({ ...avatarConfig, flip: target.checked })} focusVisibleClassName=".Mui-focusVisible" disableRipple />}
+                        label='Voltear'
                     />
-                </Box>
-            </Grid>
+                </Grid>
 
-            <Grid mt={2} xs = {12} sm = {6} md = {6} lg = {6} xl = {6}>
-                <TextField name='name' value={name} onChange={({target}) => setAvatarConfig({...avatarConfig, name: target.value})} id="filled-basic" fullWidth placeholder='Ejemplo: Mi nombre' label="Referencia del avatar" variant="standard" />
-            </Grid>
+                <Grid mt={2} item xs={12}>
+                    {rotate}
+                    <TextField InputProps={{ inputProps: { max: 360, min: 0 } }} name='rotate' value={rotate} onChange={({ target }) => setAvatarConfig({ ...avatarConfig, rotate: target.value })} id="filled-basic" fullWidth type='range' label="Rotar" variant="standard" />
+                </Grid>
 
-            <Grid mt={2} xs = {12} sm = {6} md = {6} lg = {6} xl = {6}>
-                <TextField name='category' value={category} onChange={({target}) => setAvatarConfig({...avatarConfig, category: target.value})} id="filled-basic" fullWidth label="Estilo" variant="standard" select>
-                    {
-                        (Categories.map(({label, name}) => (
-                            <MenuItem key={name} value={name}>
-                                {label}
-                            </MenuItem>
-                        )))
-                    }
-                </TextField>
-            </Grid>
+                <Grid mt={2} item xs={12}>
+                    {translateX}
+                    <TextField InputProps={{ inputProps: { max: 250, min: -250 } }} name='translateX' value={translateX} onChange={({ target }) => setAvatarConfig({ ...avatarConfig, translateX: target.value })} id="filled-basic" fullWidth type='range' label="Mover horizontal" variant="standard" />
+                </Grid>
 
-            <Grid mt={2}>
-                <TextField name='backGround' value={backGround} onChange={({target}) => setAvatarConfig({...avatarConfig, backGround: target.value})} id="filled-basic" fullWidth type='color' label="Color del fondo" variant="standard" />
-            </Grid>
+                <Grid mt={2} item xs={12}>
+                    {translateY}
+                    <TextField InputProps={{ inputProps: { max: 250, min: -250 } }} name='translateY' value={translateY} onChange={({ target }) => setAvatarConfig({ ...avatarConfig, translateY: target.value })} id="filled-basic" fullWidth type='range' label="Mover vertical" variant="standard" />
+                </Grid>
 
-            <Grid mt={2}>
-                {radius}%
-                <TextField InputProps={{inputProps: { max: 50, min: 0 }}} name='radius' value={radius} onChange={({target}) => setAvatarConfig({...avatarConfig, radius: target.value})} id="filled-basic" fullWidth type='range' label="Redondez" variant="standard" />
-            </Grid>
-
-            <Grid mt={2} xs = {12} sm = {6} md = {6} lg = {6} xl = {6}>
-                <FormControlLabel 
-                    control={<Switch defaultChecked = {flip} name='flip' value={flip} onChange={({target}) => setAvatarConfig({...avatarConfig, flip: target.checked})} focusVisibleClassName=".Mui-focusVisible" disableRipple />}
-                    label = 'Voltear'
-                />
-            </Grid>
-
-            <Grid mt={2} xs = {12} sm = {6} md = {6} lg = {6} xl = {6}>
-                {rotate}
-                <TextField InputProps={{inputProps: { max: 360, min: 0 }}} name='rotate' value={rotate} onChange={({target}) => setAvatarConfig({...avatarConfig, rotate: target.value})} id="filled-basic" fullWidth type='range' label="Rotar" variant="standard" />
-            </Grid>
-
-            <Grid mt={2} xs = {12} sm = {6} md = {6} lg = {6} xl = {6}>
-                {translateX}
-                <TextField InputProps={{inputProps: { max: 250, min: -250 }}} name='translateX' value={translateX} onChange={({target}) => setAvatarConfig({...avatarConfig, translateX: target.value})} id="filled-basic" fullWidth type='range' label="Mover horizontal" variant="standard" />
-            </Grid>
-
-            <Grid mt={2} xs = {12} sm = {6} md = {6} lg = {6} xl = {6}>
-                {translateY}
-                <TextField InputProps={{inputProps: { max: 250, min: -250 }}} name='translateY' value={translateY} onChange={({target}) => setAvatarConfig({...avatarConfig, translateY: target.value})} id="filled-basic" fullWidth type='range' label="Mover vertical" variant="standard" />
-            </Grid>
-
-        </DialogContent>
-        <DialogActions>
-            <Button fullWidth onClick={handleAavatar} variant='contained'>Guardar</Button>
-        </DialogActions>
-    </Dialog>
-  )
+            </DialogContent>
+            <DialogActions>
+                <Button fullWidth onClick={handleAavatar} variant='contained'>Guardar</Button>
+            </DialogActions>
+        </Dialog>
+    )
 }

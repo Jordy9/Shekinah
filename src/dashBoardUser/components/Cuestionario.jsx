@@ -286,7 +286,7 @@ export const Cuestionario = ({ showResultados, setShowResultados }) => {
                                     {
                                         (usuarioActivo?.role === 'administrador')
                                         &&
-                                        <Button color='info' onClick={() => dispatch(mostrarIdPregunta())}>{mostrar ? 'Ocultar' : 'Mostrar'} id</Button>
+                                        <Button color='inherit' onClick={() => dispatch(mostrarIdPregunta())}>{mostrar ? 'Ocultar' : 'Mostrar'} id</Button>
                                     }
 
                                     <ProgressComponent change={change} record={record} />

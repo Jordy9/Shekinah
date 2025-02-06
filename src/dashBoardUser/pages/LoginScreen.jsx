@@ -10,26 +10,26 @@ export const LoginScreen = () => {
   const [ShowModalPartidaP, setShowModalPartidaP] = useState(false)
 
   const { uid } = useSelector(state => state.auth);
-  
+
   return (
     <DashBoardLayaout>
       {
         (uid)
-          &&
-        <Grid container mt={2} p = {2}>
-          <Grid display={'flex'} justifyContent = {'center'} xs = {12}>
-            <Button variant = 'contained' onClick={() => setShowModalPartidaP(true)}>Configurar partida personalizada</Button>
+        &&
+        <Grid container mt={2} p={2}>
+          <Grid display={'flex'} justifyContent={'center'} item xs={12}>
+            <Button variant='contained' onClick={() => setShowModalPartidaP(true)}>Configurar partida personalizada</Button>
           </Grid>
         </Grid>
       }
 
-      <Grid container>
-        <Grid xs = {12}>
+      <Grid container height={'93dvh'} justifyContent={'center'} alignItems={'center'}>
+        <Grid item xs={12}>
           <Login />
         </Grid>
       </Grid>
 
-      <DialogPartidaPersonalizada ShowDialogPartidaP = {ShowModalPartidaP} setShowDialogPartidaP = {setShowModalPartidaP} />
+      <DialogPartidaPersonalizada ShowDialogPartidaP={ShowModalPartidaP} setShowDialogPartidaP={setShowModalPartidaP} />
     </DashBoardLayaout>
   )
 }
